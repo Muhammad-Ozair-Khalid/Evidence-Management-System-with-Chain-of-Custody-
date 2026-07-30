@@ -131,7 +131,8 @@ export default async function IntegrityPage() {
   return (
     <div>
       <PageHeader
-        title="Integrity Checks"
+        eyebrow="Integrity"
+        title="Hash verification"
         subtitle="Re-hash on handoff, flag mismatches, and require supervisor resolution."
         actions={<ModuleBadge module="integrity" />}
       />

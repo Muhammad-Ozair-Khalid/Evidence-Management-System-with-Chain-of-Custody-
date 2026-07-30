@@ -12,7 +12,7 @@ const users: {
   badgeNumber: string;
 }[] = [
   {
-    name: "Ayesha Rahman",
+    name: "Muhammad Ozair",
     email: "admin@ems.local",
     role: "ADMIN",
     badgeNumber: "ADM-001",

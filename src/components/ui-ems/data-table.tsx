@@ -130,7 +130,7 @@ export function DataTable<T>({
           </ul>
 
           {/* Desktop / tablet table with horizontal scroll */}
-          <div className="hidden overflow-hidden rounded-lg border border-border bg-card shadow-card md:block">
+          <div className="hidden overflow-hidden rounded-lg border border-border bg-card shadow-card transition-shadow duration-200 ease-smooth hover:shadow-card-hover md:block">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
                 <thead className="border-b border-border bg-secondary/60">
@@ -140,7 +140,7 @@ export function DataTable<T>({
                         key={col.key}
                         scope="col"
                         className={cn(
-                          "px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground",
+                          "px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.07em] text-muted-foreground",
                           col.className
                         )}
                       >
@@ -174,7 +174,7 @@ export function DataTable<T>({
                   {sorted.map((row) => (
                     <tr
                       key={getRowId(row)}
-                      className="border-b border-border last:border-0 hover:bg-secondary/40"
+                      className="border-b border-border transition-colors duration-100 last:border-0 hover:bg-secondary/50"
                     >
                       {columns.map((col) => (
                         <td

@@ -59,6 +59,7 @@ export default async function SettingsPage() {
   return (
     <div>
       <PageHeader
+        eyebrow="Account"
         title="Account settings"
         subtitle="Manage your password and review your own activity."
       />

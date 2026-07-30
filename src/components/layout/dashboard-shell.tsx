@@ -57,7 +57,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           {isMobile && mobileOpen ? (
             <button
               type="button"
-              className="fixed inset-0 z-40 bg-black/45"
+              className="animate-fade fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px]"
               aria-label="Close navigation overlay"
               onClick={() => setMobileOpen(false)}
             />
@@ -84,8 +84,10 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 isMobile ? () => setMobileOpen(true) : undefined
               }
             />
-            <main className="flex-1 px-3 py-5 sm:px-4 md:px-6 md:py-6">
-              <div className="mx-auto w-full max-w-7xl">{children}</div>
+            <main className="flex-1 px-3 py-5 sm:px-4 md:px-6 md:py-7">
+              <div key={pathname} className="animate-rise mx-auto w-full max-w-7xl">
+                {children}
+              </div>
             </main>
           </div>
           <Toaster />

@@ -100,7 +100,8 @@ export default async function CustodyPage({
   return (
     <div>
       <PageHeader
-        title="Chain of Custody"
+        eyebrow="Chain of Custody"
+        title="Custody ledger"
         subtitle="Global ledger of seizure, transfer, examination, and return events."
         actions={<ModuleBadge module="custody" />}
       />

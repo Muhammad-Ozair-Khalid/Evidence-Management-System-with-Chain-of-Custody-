@@ -77,7 +77,8 @@ export default async function AuditPage({
   return (
     <div>
       <PageHeader
-        title="Audit Trail"
+        eyebrow="Audit Trail"
+        title="System activity log"
         subtitle="Append-only, system-wide log of sensitive actions. SUPERVISOR/ADMIN only."
         actions={
           <div className="flex items-center gap-2">

@@ -24,7 +24,7 @@ async function main() {
   for (const r of ["ADMIN", "SUPERVISOR", "EXAMINER", "CUSTODIAN"] as const) {
     if (!roles.has(r)) errors.push(`Missing seeded role: ${r}`);
   }
-  console.log(`  users: ${users.length}, roles: ${[...roles].join(", ")}`);
+  console.log(`  users: ${users.length}, roles: ${Array.from(roles).join(", ")}`);
 
   console.log("— Module route files —");
   const routes = [

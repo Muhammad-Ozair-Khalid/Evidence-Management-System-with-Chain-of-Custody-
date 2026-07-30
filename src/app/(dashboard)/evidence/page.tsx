@@ -94,7 +94,8 @@ export default async function EvidenceListPage({
   return (
     <div>
       <PageHeader
-        title="Evidence Registry"
+        eyebrow="Evidence Registry"
+        title="Exhibit inventory"
         subtitle="Register digital exhibits with unique IDs and ingest-time SHA-256 hashes."
         actions={
           <div className="flex items-center gap-2">

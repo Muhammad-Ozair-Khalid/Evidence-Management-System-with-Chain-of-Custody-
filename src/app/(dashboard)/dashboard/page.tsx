@@ -32,6 +32,7 @@ export default async function DashboardPage({
   return (
     <div>
       <PageHeader
+        eyebrow={isCustodian ? "Custody workspace" : "Command centre"}
         title="Overview"
         subtitle={
           isCustodian

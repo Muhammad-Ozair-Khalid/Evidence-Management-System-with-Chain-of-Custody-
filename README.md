@@ -54,7 +54,7 @@ Password for all: `Password123!`
 
 | Role       | Name           | Email                 |
 |------------|----------------|-----------------------|
-| ADMIN      | Ayesha Rahman  | admin@ems.local       |
+| ADMIN      | Muhammad Ozair | admin@ems.local       |
 | SUPERVISOR | Imran Qureshi  | supervisor@ems.local  |
 | EXAMINER   | Sara Malik     | examiner1@ems.local   |
 | EXAMINER   | Hassan Raza    | examiner2@ems.local   |

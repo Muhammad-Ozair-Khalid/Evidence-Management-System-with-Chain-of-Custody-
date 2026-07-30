@@ -25,61 +25,78 @@ import { MODULES, ROLE_COLORS, type ModuleKey, type RoleKey } from "@/lib/module
 import { can, type Action } from "@/lib/rbac";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS: {
+type NavItem = {
   href: string;
   label: string;
   module: ModuleKey;
   icon: typeof LayoutDashboard;
   action: Action;
-}[] = [
+};
+
+const NAV_GROUPS: { heading: string; items: NavItem[] }[] = [
   {
-    href: "/dashboard",
-    label: "Overview",
-    module: "dashboard",
-    icon: LayoutDashboard,
-    action: "dashboard:view",
+    heading: "Overview",
+    items: [
+      {
+        href: "/dashboard",
+        label: "Overview",
+        module: "dashboard",
+        icon: LayoutDashboard,
+        action: "dashboard:view",
+      },
+    ],
   },
   {
-    href: "/evidence",
-    label: "Evidence Registry",
-    module: "evidence",
-    icon: Fingerprint,
-    action: "evidence:view",
+    heading: "Casework",
+    items: [
+      {
+        href: "/evidence",
+        label: "Evidence Registry",
+        module: "evidence",
+        icon: Fingerprint,
+        action: "evidence:view",
+      },
+      {
+        href: "/custody",
+        label: "Chain of Custody",
+        module: "custody",
+        icon: Scale,
+        action: "custody:view",
+      },
+      {
+        href: "/integrity",
+        label: "Integrity Checks",
+        module: "integrity",
+        icon: ShieldCheck,
+        action: "integrity:rehash",
+      },
+    ],
   },
   {
-    href: "/custody",
-    label: "Chain of Custody",
-    module: "custody",
-    icon: Scale,
-    action: "custody:view",
-  },
-  {
-    href: "/integrity",
-    label: "Integrity Checks",
-    module: "integrity",
-    icon: ShieldCheck,
-    action: "integrity:rehash",
-  },
-  {
-    href: "/reports",
-    label: "Reports",
-    module: "reports",
-    icon: ClipboardList,
-    action: "reports:generate",
-  },
-  {
-    href: "/audit",
-    label: "Audit Trail",
-    module: "audit",
-    icon: FileSearch,
-    action: "audit:view",
-  },
-  {
-    href: "/admin/users",
-    label: "Admin (Users & Roles)",
-    module: "admin",
-    icon: Users,
-    action: "users:view",
+    heading: "Oversight",
+    items: [
+      {
+        href: "/reports",
+        label: "Reports",
+        module: "reports",
+        icon: ClipboardList,
+        action: "reports:generate",
+      },
+      {
+        href: "/audit",
+        label: "Audit Trail",
+        module: "audit",
+        icon: FileSearch,
+        action: "audit:view",
+      },
+      {
+        href: "/admin/users",
+        label: "Users & Roles",
+        module: "admin",
+        icon: Users,
+        action: "users:view",
+      },
+    ],
   },
 ];
 
@@ -119,21 +136,27 @@ export function Sidebar({
   const name = session?.user?.name ?? "Signed out";
   const role = (session?.user?.role ?? "CUSTODIAN") as Role;
   const roleColor = ROLE_COLORS[role as RoleKey] ?? ROLE_COLORS.CUSTODIAN;
-  // Slightly lighter role colour on near-black for contrast.
+  // Lighter role colour so the pill stays legible on near-black.
   const roleOnDark =
     role === "ADMIN" || role === "CUSTODIAN" ? "#A8B4C4" : roleColor;
-  const visibleNav = NAV_ITEMS.filter((item) => can(role, item.action));
   const showLabels = isDrawer || !collapsed;
+  const settingsActive =
+    pathname === "/settings" || pathname.startsWith("/settings/");
+
+  const groups = NAV_GROUPS.map((g) => ({
+    ...g,
+    items: g.items.filter((item) => can(role, item.action)),
+  })).filter((g) => g.items.length > 0);
 
   return (
     <aside
       id="app-sidebar"
       aria-label="Main navigation"
       className={cn(
-        "fixed inset-y-0 left-0 z-50 flex flex-col border-r border-sidebar-border bg-sidebar text-sidebar-text transition-transform duration-200",
+        "fixed inset-y-0 left-0 z-50 flex flex-col border-r border-sidebar-border bg-sidebar text-sidebar-text transition-transform duration-200 ease-smooth",
         isDrawer
           ? cn(
-              "w-[260px]",
+              "w-[260px] shadow-elevated",
               mobileOpen ? "translate-x-0" : "-translate-x-full"
             )
           : cn(
@@ -144,7 +167,7 @@ export function Sidebar({
     >
       <div
         className={cn(
-          "flex h-14 items-center border-b border-sidebar-border px-3",
+          "flex h-14 shrink-0 items-center border-b border-sidebar-border px-3",
           showLabels ? "justify-between gap-2" : "justify-center"
         )}
       >
@@ -180,74 +203,90 @@ export function Sidebar({
         </div>
       ) : null}
 
-      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-3">
-        {visibleNav.map((item) => {
-          const active =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
-          const mod = MODULES[item.module];
-          const accent = mod.onDark ?? mod.hex;
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              title={item.label}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-colors",
-                !showLabels && "justify-center px-0",
-                active
-                  ? "bg-sidebar-hover text-white"
-                  : "text-sidebar-text hover:bg-sidebar-hover hover:text-white"
-              )}
-            >
-              {active ? (
-                <span
-                  className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full"
-                  style={{ backgroundColor: accent }}
-                  aria-hidden
-                />
-              ) : null}
-              <Icon
-                className="h-4 w-4 shrink-0"
-                style={{ color: accent }}
+      <nav className="flex-1 overflow-y-auto px-2 py-3">
+        {groups.map((group, gi) => (
+          <div key={group.heading} className={cn(gi > 0 && "mt-5")}>
+            {showLabels ? (
+              <p className="mb-1.5 px-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-sidebar-muted/70">
+                {group.heading}
+              </p>
+            ) : gi > 0 ? (
+              <div
+                className="mx-3 mb-2 h-px bg-sidebar-border"
                 aria-hidden
               />
-              {showLabels ? (
-                <span className="truncate">{item.label}</span>
-              ) : (
-                <span className="sr-only">{item.label}</span>
-              )}
-            </Link>
-          );
-        })}
+            ) : null}
+
+            <div className="space-y-0.5">
+              {group.items.map((item) => {
+                const active =
+                  pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`);
+                const mod = MODULES[item.module];
+                const accent = mod.onDark ?? mod.hex;
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    title={item.label}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "group relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-colors duration-150",
+                      !showLabels && "justify-center px-0",
+                      active
+                        ? "bg-sidebar-hover font-medium text-white"
+                        : "text-sidebar-text hover:bg-sidebar-hover/70 hover:text-white"
+                    )}
+                  >
+                    {active ? (
+                      <span
+                        className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full"
+                        style={{ backgroundColor: accent }}
+                        aria-hidden
+                      />
+                    ) : null}
+                    <Icon
+                      className={cn(
+                        "h-4 w-4 shrink-0 transition-opacity duration-150",
+                        active ? "opacity-100" : "opacity-80 group-hover:opacity-100"
+                      )}
+                      style={{ color: accent }}
+                      aria-hidden
+                    />
+                    {showLabels ? (
+                      <span className="truncate">{item.label}</span>
+                    ) : (
+                      <span className="sr-only">{item.label}</span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       <div className="border-t border-sidebar-border px-2 py-2">
         <Link
           href={SETTINGS_ITEM.href}
           title={SETTINGS_ITEM.label}
-          aria-current={
-            pathname === "/settings" || pathname.startsWith("/settings/")
-              ? "page"
-              : undefined
-          }
+          aria-current={settingsActive ? "page" : undefined}
           className={cn(
-            "relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-colors",
+            "relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-colors duration-150",
             !showLabels && "justify-center px-0",
-            pathname === "/settings" || pathname.startsWith("/settings/")
-              ? "bg-sidebar-hover text-white"
-              : "text-sidebar-text hover:bg-sidebar-hover hover:text-white"
+            settingsActive
+              ? "bg-sidebar-hover font-medium text-white"
+              : "text-sidebar-text hover:bg-sidebar-hover/70 hover:text-white"
           )}
         >
-          {(pathname === "/settings" ||
-            pathname.startsWith("/settings/")) && (
+          {settingsActive ? (
             <span
-              className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full"
+              className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full"
               style={{ backgroundColor: "#8B9AA9" }}
               aria-hidden
             />
-          )}
+          ) : null}
           <SETTINGS_ITEM.icon
             className="h-4 w-4 shrink-0"
             style={{ color: "#8B9AA9" }}
@@ -268,8 +307,8 @@ export function Sidebar({
             !showLabels && "flex-col gap-2"
           )}
         >
-          <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-[#1c2230] text-xs text-white">
+          <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+            <AvatarFallback className="bg-[#1c2230] text-xs font-medium text-white">
               {initials(name)}
             </AvatarFallback>
           </Avatar>
@@ -277,9 +316,9 @@ export function Sidebar({
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-white">{name}</p>
               <span
-                className="mt-0.5 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                className="mt-1 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
                 style={{
-                  backgroundColor: `${roleOnDark}33`,
+                  backgroundColor: `${roleOnDark}29`,
                   color: roleOnDark,
                 }}
               >

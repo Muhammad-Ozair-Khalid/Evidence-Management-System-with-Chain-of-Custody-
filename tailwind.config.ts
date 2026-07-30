@@ -67,9 +67,18 @@ const config: Config = {
       },
       boxShadow: {
         card: "0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06)",
+        "card-hover":
+          "0 2px 4px rgba(16, 24, 40, 0.06), 0 8px 20px -6px rgba(16, 24, 40, 0.12)",
+        elevated:
+          "0 4px 8px rgba(16, 24, 40, 0.06), 0 16px 32px -12px rgba(16, 24, 40, 0.18)",
+        inset: "inset 0 1px 0 rgba(255, 255, 255, 0.6)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+      },
+      transitionTimingFunction: {
+        smooth: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },

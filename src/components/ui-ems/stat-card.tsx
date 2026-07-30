@@ -20,22 +20,36 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn("relative overflow-hidden", className)}>
+    <Card
+      className={cn(
+        "group relative overflow-hidden p-5 hover:shadow-card-hover",
+        className
+      )}
+    >
+      {/* Accent spine + faint colour wash that warms on hover. */}
       <div
-        className="absolute left-0 top-0 h-full w-1"
+        className="absolute inset-y-0 left-0 w-[3px]"
         style={{ backgroundColor: accentColor }}
         aria-hidden
       />
-      <div className="flex items-start justify-between gap-3 pl-2">
-        <div>
-          <p className="text-muted-ems">{label}</p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight text-canvas-foreground">
+      <div
+        className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full opacity-[0.07] transition-opacity duration-300 ease-smooth group-hover:opacity-[0.14]"
+        style={{ backgroundColor: accentColor }}
+        aria-hidden
+      />
+
+      <div className="relative flex items-start justify-between gap-3 pl-2.5">
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.07em] text-muted-foreground">
+            {label}
+          </p>
+          <p className="tabular mt-1.5 text-[28px] font-semibold leading-none tracking-tight text-canvas-foreground">
             {value}
           </p>
           {trend ? (
             <p
               className={cn(
-                "mt-1 text-xs font-medium",
+                "mt-2 text-xs font-medium",
                 trend.positive === false
                   ? "text-accent-integrity"
                   : "text-accent-evidence"
@@ -46,10 +60,15 @@ export function StatCard({
           ) : null}
         </div>
         <div
-          className="flex h-10 w-10 items-center justify-center rounded-lg"
-          style={{ backgroundColor: `${accentColor}1A`, color: accentColor }}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ring-1 transition-transform duration-300 ease-smooth group-hover:scale-105"
+          style={{
+            backgroundColor: `${accentColor}14`,
+            color: accentColor,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ["--tw-ring-color" as any]: `${accentColor}2E`,
+          }}
         >
-          <Icon className="h-5 w-5" />
+          <Icon className="h-[18px] w-[18px]" aria-hidden />
         </div>
       </div>
     </Card>

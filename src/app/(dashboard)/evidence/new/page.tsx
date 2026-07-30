@@ -15,7 +15,8 @@ export default async function RegisterEvidencePage() {
   return (
     <div>
       <PageHeader
-        title="Register New Evidence"
+        eyebrow="Evidence Registry"
+        title="Register new evidence"
         subtitle="Assign a unique Evidence ID and capture the intake SHA-256 hash."
         actions={<ModuleBadge module="evidence" />}
       />

@@ -38,8 +38,9 @@ export default async function ReportsPage() {
   return (
     <div>
       <PageHeader
-        title="Reports"
-        subtitle="Generate printable Chain of Custody PDFs per exhibit or by case."
+        eyebrow="Reports"
+        title="Custody reporting"
+        subtitle="Generate printable Chain of Custody PDFs per exhibit or by case, typeset in a formal LaTeX-style layout."
         actions={<ModuleBadge module="reports" />}
       />
 
