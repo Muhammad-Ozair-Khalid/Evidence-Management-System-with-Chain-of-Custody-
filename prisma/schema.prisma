@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTODIAN
+  EXAMINER
+  SUPERVISOR
+  ADMIN
+}
+
+enum EvidenceType {
+  DIGITAL_MEDIA
+  DOCUMENT
+  DEVICE
+  IMAGE_FORENSIC
+  OTHER
+}
+
+enum EvidenceStatus {
+  REGISTERED
+  IN_CUSTODY
+  UNDER_EXAMINATION
+  RETURNED
+  ARCHIVED
+  INTEGRITY_FLAGGED
+}
+
+enum CustodyEventType {
+  SEIZURE
+  TRANSFER
+  EXAMINATION
+  RETURN
+  RE_HASH_CHECK
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role
+  badgeNumber  String?
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  evidenceSubmitted     EvidenceItem[]  @relation("EvidenceSubmittedBy")
+  evidenceCustodianOf   EvidenceItem[]  @relation("EvidenceCurrentCustodian")
+  custodyEventsFrom     CustodyEvent[]  @relation("CustodyHandlerFrom")
+  custodyEventsTo       CustodyEvent[]  @relation("CustodyHandlerTo")
+  auditLogEntries       AuditLogEntry[]
+}
+
+model EvidenceItem {
+  id                 String         @id @default(cuid())
+  caseNumber         String
+  evidenceId         String         @unique
+  title              String
+  description        String
+  evidenceType       EvidenceType
+  intakeDate         DateTime
+  intakeLocation     String
+  submittedById      String
+  currentCustodianId String?
+  currentHash        String
+  originalHash       String
+  status             EvidenceStatus @default(REGISTERED)
+  returnedTo         String?
+  fileName           String?
+  filePath           String?
+  fileSize           Int?
+  mimeType           String?
+  hashSource         String         @default("UPLOAD") // UPLOAD | EXTERNAL
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  submittedBy      User           @relation("EvidenceSubmittedBy", fields: [submittedById], references: [id])
+  currentCustodian User?          @relation("EvidenceCurrentCustodian", fields: [currentCustodianId], references: [id])
+  custodyEvents    CustodyEvent[]
+
+  @@index([caseNumber])
+  @@index([status])
+  @@index([currentCustodianId])
+}
+
+model CustodyEvent {
+  id                String           @id @default(cuid())
+  evidenceItemId    String
+  eventType         CustodyEventType
+  handlerFromId     String?
+  handlerToId       String?
+  returnDestination String?
+  timestamp         DateTime         @default(now())
+  location          String
+  reason            String
+  hashAtEvent       String
+  hashMatch         Boolean?
+  notes             String?
+  createdAt         DateTime         @default(now())
+
+  evidenceItem EvidenceItem @relation(fields: [evidenceItemId], references: [id], onDelete: Cascade)
+  handlerFrom  User?        @relation("CustodyHandlerFrom", fields: [handlerFromId], references: [id])
+  handlerTo    User?        @relation("CustodyHandlerTo", fields: [handlerToId], references: [id])
+
+  @@index([evidenceItemId])
+  @@index([eventType])
+  @@index([timestamp])
+}
+
+/// Append-only in application logic — never expose update/delete APIs.
+model AuditLogEntry {
+  id         String   @id @default(cuid())
+  actorId    String
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json
+  timestamp  DateTime @default(now())
+  ipAddress  String?
+
+  actor User @relation(fields: [actorId], references: [id])
+
+  @@index([actorId])
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([timestamp])
+}
+
+/// Sequential counter for human-readable evidence IDs (EVD-YYYY-NNNN).
+model EvidenceIdSequence {
+  year  Int @id
+  lastN Int @default(0)
+}

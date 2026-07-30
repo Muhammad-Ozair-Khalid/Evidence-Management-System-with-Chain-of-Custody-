@@ -2,26 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --sidebar: #0b0e14;
+    --sidebar-text: #c7cbd1;
+    --sidebar-muted: #8a9099;
+    --sidebar-hover: #151a24;
+    --sidebar-border: #1c2230;
+
+    --canvas: #f5f6f7;
+    --canvas-foreground: #1a1d24;
+    --surface: #ffffff;
+    --surface-foreground: #1a1d24;
+    --muted: #6b7280;
+    --muted-foreground: #6b7280;
+    --border: #e5e7eb;
+    --ring: #3f4a5a;
+
+    --accent-dashboard: #3f4a5a;
+    --accent-evidence: #107c10;
+    --accent-custody: #d29200;
+    --accent-integrity: #d13438;
+    --accent-reports: #8764b8;
+    --accent-audit: #00b7c3;
+    --accent-admin: #5c6b7a;
+
+    --background: var(--canvas);
+    --foreground: var(--canvas-foreground);
+    --card: var(--surface);
+    --card-foreground: var(--surface-foreground);
+    --primary: #3f4a5a;
+    --primary-foreground: #ffffff;
+    --secondary: #eef0f3;
+    --secondary-foreground: #1a1d24;
+    --destructive: #d13438;
+    --destructive-foreground: #ffffff;
+    --input: #e5e7eb;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --canvas: #14161c;
+    --canvas-foreground: #e8eaed;
+    --surface: #1a1d26;
+    --surface-foreground: #e8eaed;
+    --muted: #9aa0a6;
+    --muted-foreground: #9aa0a6;
+    --border: #2a2f3a;
+    --ring: #8a93a3;
+
+    --background: var(--canvas);
+    --foreground: var(--canvas-foreground);
+    --card: var(--surface);
+    --card-foreground: var(--surface-foreground);
+    --secondary: #22262f;
+    --secondary-foreground: #e8eaed;
+    --input: #2a2f3a;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-canvas text-canvas-foreground antialiased;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .text-page-title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .text-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .text-body {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .text-muted-ems {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
   }
 }
