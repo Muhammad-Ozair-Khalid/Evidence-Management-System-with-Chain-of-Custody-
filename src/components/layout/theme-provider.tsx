@@ -23,6 +23,7 @@ function applyDomTheme(next: Theme) {
   const root = document.documentElement;
   root.classList.toggle("dark", next === "dark");
   root.classList.toggle("light", next === "light");
+  root.style.colorScheme = next;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {

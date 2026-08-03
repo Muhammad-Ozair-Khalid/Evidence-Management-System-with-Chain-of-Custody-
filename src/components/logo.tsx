@@ -37,46 +37,99 @@ export function LogoMark({ className, size = 32 }: LogoMarkProps) {
   );
 }
 
+const LETTERS = ["E", "M", "S"] as const;
+
 export function LogoWordmark({
   collapsed = false,
   light = false,
   sequenced = false,
+  variant = "nav",
 }: {
   collapsed?: boolean;
   light?: boolean;
   /** Staggered mark → word → tagline entrance for marketing surfaces */
   sequenced?: boolean;
+  /** `hero` = large display lockup for the landing first viewport */
+  variant?: "nav" | "hero";
 }) {
+  const isHero = variant === "hero";
+
   return (
     <div
       className={cn(
-        "flex items-center gap-2.5 overflow-hidden",
-        sequenced && "logo-sequence"
+        "flex overflow-hidden",
+        isHero ? "items-start gap-4 sm:gap-5" : "items-center gap-2.5",
+        sequenced && (isHero ? "logo-sequence logo-sequence--hero" : "logo-sequence")
       )}
     >
-      <span className={cn(sequenced && "logo-seq-mark inline-flex")}>
-        <LogoMark size={28} />
+      <span
+        className={cn(
+          "relative inline-flex",
+          sequenced && "logo-seq-mark",
+          isHero && "logo-seq-mark-glow"
+        )}
+      >
+        <LogoMark size={isHero ? 56 : 28} />
       </span>
       {!collapsed ? (
-        <div className="min-w-0 leading-tight">
-          <p
+        <div className={cn("min-w-0 leading-tight", isHero && "pt-1")}>
+          <span
             className={cn(
-              "truncate font-display text-sm font-bold tracking-tight",
-              light ? "text-canvas-foreground" : "text-white",
-              sequenced && "logo-seq-word"
+              "flex font-display font-extrabold tracking-tight",
+              isHero
+                ? "text-5xl sm:text-6xl lg:text-[4.25rem] leading-[0.92]"
+                : "truncate text-sm font-bold",
+              light ? "text-canvas-foreground" : "text-white"
             )}
+            aria-hidden={isHero ? true : undefined}
           >
-            EMS
-          </p>
-          <p
+            {isHero || sequenced
+              ? LETTERS.map((letter, i) => (
+                  <span
+                    key={letter}
+                    className={cn(
+                      "inline-block",
+                      sequenced && "logo-seq-letter",
+                      isHero && "logo-seq-letter--hero"
+                    )}
+                    style={
+                      sequenced
+                        ? { animationDelay: `${(isHero ? 90 : 100) + i * 70}ms` }
+                        : undefined
+                    }
+                  >
+                    {letter}
+                  </span>
+                ))
+              : "EMS"}
+          </span>
+          <span
             className={cn(
-              "truncate text-[11px]",
-              light ? "text-muted-foreground" : "text-sidebar-muted",
-              sequenced && "logo-seq-tag"
+              "block truncate",
+              isHero
+                ? "mt-2 text-sm tracking-[0.14em] uppercase sm:text-[15px]"
+                : "text-[11px]",
+              light
+                ? "text-muted-foreground"
+                : isHero
+                  ? "text-[#9AA3AD]"
+                  : "text-sidebar-muted",
+              sequenced && "logo-seq-tag",
+              isHero && sequenced && "logo-seq-tag--hero"
             )}
+            aria-hidden={isHero ? true : undefined}
           >
             Chain of Custody
-          </p>
+          </span>
+          {isHero ? (
+            <span
+              className={cn(
+                "mt-3 block h-px w-16 origin-left bg-gradient-to-r from-brand-soft to-transparent",
+                sequenced && "logo-seq-rail"
+              )}
+              aria-hidden
+            />
+          ) : null}
         </div>
       ) : null}
     </div>

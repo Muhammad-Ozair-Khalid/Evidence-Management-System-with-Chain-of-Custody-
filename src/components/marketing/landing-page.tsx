@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
+import { LogoWordmark } from "@/components/logo";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
 import { HeroChain } from "@/components/marketing/hero-chain";
 import { IntegrityDemo } from "@/components/marketing/integrity-demo";
@@ -232,34 +233,46 @@ export function LandingPage() {
           <div>
             <p
               className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em]"
-              style={{ color: MODULES.custody.hex }}
+              style={{ color: MODULES.custody.hex, animationDelay: "40ms" }}
             >
               NCERT Forensic Evidence Unit
             </p>
-            <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]">
-              <span className="block text-white">EMS</span>
-              <span className="mt-4 block max-w-[14ch] text-[0.42em] font-bold leading-[1.2] tracking-tight text-[#E8EAED] sm:text-[0.4em]">
-                {HERO_WORDS.map((word, i) => (
-                  <span
-                    key={word}
-                    className="mr-[0.28em] inline-block animate-reveal"
-                    style={{ animationDelay: `${140 + i * 90}ms` }}
-                  >
-                    {word}
-                  </span>
-                ))}
+
+            {/* Brand lockup — sequenced mark → letters → tagline */}
+            <h1 className="mt-5">
+              <span className="sr-only">
+                EMS — Digital evidence, provably intact.
+              </span>
+              <span aria-hidden="true" className="block">
+                <LogoWordmark sequenced variant="hero" />
               </span>
             </h1>
+
+            <p
+              className="mt-7 max-w-[16ch] font-display text-2xl font-bold leading-[1.2] tracking-tight text-[#E8EAED] sm:text-[1.85rem]"
+              aria-hidden="true"
+            >
+              {HERO_WORDS.map((word, i) => (
+                <span
+                  key={word}
+                  className="mr-[0.28em] inline-block animate-reveal"
+                  style={{ animationDelay: `${480 + i * 90}ms` }}
+                >
+                  {word}
+                </span>
+              ))}
+            </p>
+
             <p
               className="mt-6 max-w-md animate-fade text-base leading-relaxed text-[#B8BEC6] sm:text-lg"
-              style={{ animationDelay: "480ms" }}
+              style={{ animationDelay: "820ms" }}
             >
               Digital evidence inventory meets a tamper-evident chain of custody
               — who held it, when, and whether a single byte changed.
             </p>
             <div
               className="mt-9 flex flex-wrap items-center gap-3 animate-fade"
-              style={{ animationDelay: "560ms" }}
+              style={{ animationDelay: "900ms" }}
             >
               <Button
                 asChild
@@ -279,7 +292,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="animate-chain-in" style={{ animationDelay: "200ms" }}>
+          <div className="animate-chain-in" style={{ animationDelay: "380ms" }}>
             <HeroChain />
           </div>
         </div>
