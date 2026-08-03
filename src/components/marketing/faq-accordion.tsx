@@ -54,7 +54,7 @@ export function FaqAccordion({ className }: { className?: string }) {
                 </span>
               </summary>
               <div className="pb-5 pr-10">
-                <p className="text-sm leading-relaxed text-[#9AA3AD]">{a}</p>
+                <p className="text-sm leading-relaxed text-[#C5CCD6]">{a}</p>
               </div>
             </details>
           </Reveal>

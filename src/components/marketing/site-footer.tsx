@@ -3,7 +3,7 @@ import { LogoWordmark } from "@/components/logo";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/[0.07] bg-[#07090c] text-[#8B9199]">
+    <footer className="border-t border-white/10 bg-[#0e141c] text-[#A8B0BC]">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:items-start sm:justify-between sm:px-6">
         <div>
           <LogoWordmark />

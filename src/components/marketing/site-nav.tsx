@@ -20,7 +20,7 @@ export function SiteNav({ className }: { className?: string }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b border-white/[0.07] bg-[#0B0E14]/80 backdrop-blur-xl",
+        "sticky top-0 z-40 border-b border-white/10 bg-[#121820]/88 backdrop-blur-xl",
         className
       )}
     >
@@ -37,7 +37,7 @@ export function SiteNav({ className }: { className?: string }) {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-2 text-[13px] text-[#A8AEB6] transition-colors hover:bg-white/[0.04] hover:text-white"
+              className="rounded-md px-3 py-2 text-[13px] text-[#C5CCD6] transition-colors hover:bg-white/[0.06] hover:text-white"
             >
               {link.label}
             </a>
@@ -47,7 +47,7 @@ export function SiteNav({ className }: { className?: string }) {
         <div className="flex shrink-0 items-center gap-2">
           <Button
             asChild
-            className="border border-white/15 bg-white/[0.06] text-white shadow-none hover:bg-white/[0.1]"
+            className="border border-white/20 bg-white/[0.08] text-white shadow-none hover:bg-white/[0.14]"
           >
             <Link href={LOGIN_HREF}>Sign in</Link>
           </Button>

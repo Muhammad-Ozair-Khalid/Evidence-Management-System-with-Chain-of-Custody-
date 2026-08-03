@@ -112,7 +112,7 @@ export function LogoWordmark({
               light
                 ? "text-muted-foreground"
                 : isHero
-                  ? "text-[#9AA3AD]"
+                  ? "text-[#C5CCD6]"
                   : "text-sidebar-muted",
               sequenced && "logo-seq-tag",
               isHero && sequenced && "logo-seq-tag--hero"
