@@ -136,7 +136,6 @@ export function Sidebar({
   const name = session?.user?.name ?? "Signed out";
   const role = (session?.user?.role ?? "CUSTODIAN") as Role;
   const roleColor = ROLE_COLORS[role as RoleKey] ?? ROLE_COLORS.CUSTODIAN;
-  // Lighter role colour so the pill stays legible on near-black.
   const roleOnDark =
     role === "ADMIN" || role === "CUSTODIAN" ? "#A8B4C4" : roleColor;
   const showLabels = isDrawer || !collapsed;
@@ -207,9 +206,12 @@ export function Sidebar({
         {groups.map((group, gi) => (
           <div key={group.heading} className={cn(gi > 0 && "mt-5")}>
             {showLabels ? (
-              <p className="mb-1.5 px-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-sidebar-muted/70">
-                {group.heading}
-              </p>
+              <div className="mb-1.5 flex items-center gap-2 px-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sidebar-muted/70">
+                  {group.heading}
+                </p>
+                <span className="h-px flex-1 bg-sidebar-border" aria-hidden />
+              </div>
             ) : gi > 0 ? (
               <div
                 className="mx-3 mb-2 h-px bg-sidebar-border"
@@ -232,20 +234,31 @@ export function Sidebar({
                     title={item.label}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "group relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-colors duration-150",
+                      "group relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-all duration-150",
                       !showLabels && "justify-center px-0",
                       active
-                        ? "bg-sidebar-hover font-medium text-white"
+                        ? "font-medium text-white"
                         : "text-sidebar-text hover:bg-sidebar-hover/70 hover:text-white"
                     )}
+                    style={
+                      active
+                        ? {
+                            backgroundColor: `${accent}22`,
+                            boxShadow: `inset 0 0 0 1px ${accent}33`,
+                          }
+                        : undefined
+                    }
                   >
-                    {active ? (
-                      <span
-                        className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full"
-                        style={{ backgroundColor: accent }}
-                        aria-hidden
-                      />
-                    ) : null}
+                    <span
+                      className={cn(
+                        "absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full transition-all duration-150",
+                        active
+                          ? "opacity-100 shadow-[0_0_8px_currentColor]"
+                          : "opacity-0 group-hover:opacity-40"
+                      )}
+                      style={{ backgroundColor: accent, color: accent }}
+                      aria-hidden
+                    />
                     <Icon
                       className={cn(
                         "h-4 w-4 shrink-0 transition-opacity duration-150",
@@ -273,16 +286,24 @@ export function Sidebar({
           title={SETTINGS_ITEM.label}
           aria-current={settingsActive ? "page" : undefined}
           className={cn(
-            "relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-colors duration-150",
+            "relative flex items-center gap-3 rounded-md px-2.5 py-2 text-sm transition-all duration-150",
             !showLabels && "justify-center px-0",
             settingsActive
-              ? "bg-sidebar-hover font-medium text-white"
+              ? "font-medium text-white"
               : "text-sidebar-text hover:bg-sidebar-hover/70 hover:text-white"
           )}
+          style={
+            settingsActive
+              ? {
+                  backgroundColor: "#8B9AA922",
+                  boxShadow: "inset 0 0 0 1px #8B9AA933",
+                }
+              : undefined
+          }
         >
           {settingsActive ? (
             <span
-              className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full"
+              className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full shadow-[0_0_8px_#8B9AA9]"
               style={{ backgroundColor: "#8B9AA9" }}
               aria-hidden
             />
@@ -307,7 +328,13 @@ export function Sidebar({
             !showLabels && "flex-col gap-2"
           )}
         >
-          <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
+          <Avatar
+            className="h-8 w-8 ring-2"
+            style={{
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ["--tw-ring-color" as any]: `${roleOnDark}55`,
+            }}
+          >
             <AvatarFallback className="bg-[#1c2230] text-xs font-medium text-white">
               {initials(name)}
             </AvatarFallback>
@@ -316,10 +343,12 @@ export function Sidebar({
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-white">{name}</p>
               <span
-                className="mt-1 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+                className="mt-1 inline-flex rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1"
                 style={{
                   backgroundColor: `${roleOnDark}29`,
                   color: roleOnDark,
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  ["--tw-ring-color" as any]: `${roleOnDark}44`,
                 }}
               >
                 {role}

@@ -4,7 +4,7 @@ export function Shimmer({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "animate-pulse rounded-lg border border-border bg-card",
+        "animate-shimmer rounded-lg border border-border",
         className
       )}
       aria-hidden
@@ -16,7 +16,7 @@ export function StatGridSkeleton({ cards = 6 }: { cards?: number }) {
   return (
     <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
       {Array.from({ length: cards }).map((_, i) => (
-        <Shimmer key={i} className="h-[104px]" />
+        <Shimmer key={i} className="h-[120px]" />
       ))}
     </div>
   );
@@ -33,4 +33,8 @@ export function ChartsSkeleton() {
 
 export function PanelSkeleton({ className }: { className?: string }) {
   return <Shimmer className={cn("h-[280px]", className)} />;
+}
+
+export function WelcomeBandSkeleton() {
+  return <Shimmer className="mb-6 h-[110px]" />;
 }

@@ -2,10 +2,12 @@ import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface PageHeaderProps {
-  title: string;
-  subtitle?: string;
+  title: ReactNode;
+  subtitle?: ReactNode;
   /** Small uppercase kicker above the title, e.g. the module name. */
   eyebrow?: string;
+  /** Optional accent colour for the eyebrow (module hex). */
+  eyebrowColor?: string;
   actions?: ReactNode;
   className?: string;
 }
@@ -14,6 +16,7 @@ export function PageHeader({
   title,
   subtitle,
   eyebrow,
+  eyebrowColor,
   actions,
   className,
 }: PageHeaderProps) {
@@ -22,9 +25,20 @@ export function PageHeader({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           {eyebrow ? (
-            <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.09em] text-muted-foreground">
+            <span
+              className="mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.09em]"
+              style={
+                eyebrowColor
+                  ? {
+                      color: eyebrowColor,
+                      backgroundColor: `${eyebrowColor}18`,
+                      boxShadow: `inset 0 0 0 1px ${eyebrowColor}33`,
+                    }
+                  : undefined
+              }
+            >
               {eyebrow}
-            </p>
+            </span>
           ) : null}
           <h1 className="text-page-title text-canvas-foreground">{title}</h1>
           {subtitle ? (
@@ -37,7 +51,17 @@ export function PageHeader({
           </div>
         ) : null}
       </div>
-      <div className="rule-fade mt-4 h-px w-full" aria-hidden />
+      <div
+        className="mt-4 h-px w-full"
+        style={{
+          backgroundImage: eyebrowColor
+            ? `linear-gradient(to right, ${eyebrowColor}66, transparent 70%)`
+            : undefined,
+        }}
+        aria-hidden
+      >
+        {!eyebrowColor ? <div className="rule-fade h-px w-full" /> : null}
+      </div>
     </div>
   );
 }

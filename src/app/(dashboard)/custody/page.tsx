@@ -1,10 +1,18 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { startOfDay } from "date-fns";
+import {
+  ArrowLeftRight,
+  Microscope,
+  Package,
+  RotateCcw,
+} from "lucide-react";
 import { CustodyEventType, Prisma } from "@prisma/client";
 import { CustodyFeedFilters } from "@/components/custody/custody-feed-filters";
 import { CustodyFeedList } from "@/components/custody/custody-feed-list";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
 import { PageHeader } from "@/components/ui-ems/page-header";
+import { StatCard } from "@/components/ui-ems/stat-card";
 import { getSession } from "@/lib/auth";
 import { can } from "@/lib/rbac";
 import { prisma } from "@/lib/prisma";
@@ -60,30 +68,45 @@ export default async function CustodyPage({
     }
   }
 
-  const [events, handlers, evidenceItems] = await Promise.all([
-    prisma.custodyEvent.findMany({
-      where,
-      orderBy: { timestamp: "desc" },
-      take: 200,
-      include: {
-        evidenceItem: {
-          select: { id: true, evidenceId: true, title: true },
+  const todayStart = startOfDay(new Date());
+
+  const [events, handlers, evidenceItems, seizures, transfers, exams, returns] =
+    await Promise.all([
+      prisma.custodyEvent.findMany({
+        where,
+        orderBy: { timestamp: "desc" },
+        take: 200,
+        include: {
+          evidenceItem: {
+            select: { id: true, evidenceId: true, title: true },
+          },
+          handlerFrom: { select: { name: true } },
+          handlerTo: { select: { name: true } },
         },
-        handlerFrom: { select: { name: true } },
-        handlerTo: { select: { name: true } },
-      },
-    }),
-    prisma.user.findMany({
-      where: { isActive: true },
-      select: { id: true, name: true },
-      orderBy: { name: "asc" },
-    }),
-    prisma.evidenceItem.findMany({
-      select: { id: true, evidenceId: true, title: true },
-      orderBy: { createdAt: "desc" },
-      take: 500,
-    }),
-  ]);
+      }),
+      prisma.user.findMany({
+        where: { isActive: true },
+        select: { id: true, name: true },
+        orderBy: { name: "asc" },
+      }),
+      prisma.evidenceItem.findMany({
+        select: { id: true, evidenceId: true, title: true },
+        orderBy: { createdAt: "desc" },
+        take: 500,
+      }),
+      prisma.custodyEvent.count({
+        where: { eventType: "SEIZURE", timestamp: { gte: todayStart } },
+      }),
+      prisma.custodyEvent.count({
+        where: { eventType: "TRANSFER", timestamp: { gte: todayStart } },
+      }),
+      prisma.custodyEvent.count({
+        where: { eventType: "EXAMINATION", timestamp: { gte: todayStart } },
+      }),
+      prisma.custodyEvent.count({
+        where: { eventType: "RETURN", timestamp: { gte: todayStart } },
+      }),
+    ]);
 
   const rows = events.map((e) => ({
     id: e.id,
@@ -101,14 +124,22 @@ export default async function CustodyPage({
     <div>
       <PageHeader
         eyebrow="Chain of Custody"
+        eyebrowColor="#C48A00"
         title="Custody ledger"
         subtitle="Global ledger of seizure, transfer, examination, and return events."
         actions={<ModuleBadge module="custody" />}
       />
 
+      <div className="mb-6 grid gap-4 stagger-children sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard label="Seizures today" value={seizures} icon={Package} accentColor="#C48A00" />
+        <StatCard label="Transfers today" value={transfers} icon={ArrowLeftRight} accentColor="#107C10" />
+        <StatCard label="Examinations today" value={exams} icon={Microscope} accentColor="#8764B8" />
+        <StatCard label="Returns today" value={returns} icon={RotateCcw} accentColor="#5C6B7A" />
+      </div>
+
       <Suspense
         fallback={
-          <div className="mb-4 h-28 animate-pulse rounded-lg border border-border bg-card" />
+          <div className="mb-4 h-28 animate-shimmer rounded-lg border border-border" />
         }
       >
         <CustodyFeedFilters

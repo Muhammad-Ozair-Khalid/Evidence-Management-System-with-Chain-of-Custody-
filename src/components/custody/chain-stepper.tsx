@@ -1,4 +1,5 @@
 import { type CustodyEventType } from "@prisma/client";
+import { CheckCircle2, XCircle } from "lucide-react";
 import { CUSTODY_EVENT_COLORS } from "@/lib/custody-labels";
 import { cn } from "@/lib/utils";
 
@@ -26,22 +27,48 @@ export function CustodyChainStepper({ steps }: { steps: ChainStep[] }) {
         {steps.map((step, i) => {
           const color = CUSTODY_EVENT_COLORS[step.eventType].hex;
           return (
-            <div key={step.id} className="flex items-center">
+            <div
+              key={step.id}
+              className="animate-fade flex items-center"
+              style={{ animationDelay: `${i * 50}ms` }}
+              title={`${step.label}${
+                step.hashMatch === false
+                  ? " — hash mismatch"
+                  : step.hashMatch === true
+                    ? " — hash match"
+                    : ""
+              }`}
+            >
               <div className="flex flex-col items-center px-1">
                 <span
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-bold text-white"
-                  style={{ backgroundColor: color }}
-                  title={step.label}
+                  className="relative flex h-9 w-9 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ring-2 ring-white/40"
+                  style={{
+                    backgroundColor: color,
+                    ["--glow" as string]: `${color}66`,
+                  }}
                 >
                   {i + 1}
+                  {step.hashMatch === true ? (
+                    <CheckCircle2 className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-card text-accent-evidence" />
+                  ) : null}
+                  {step.hashMatch === false ? (
+                    <XCircle className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-card text-accent-integrity" />
+                  ) : null}
                 </span>
-                <span className="mt-1 max-w-[72px] truncate text-center text-[10px] font-medium text-canvas-foreground">
+                <span className="mt-1.5 max-w-[80px] truncate text-center text-[10px] font-medium text-canvas-foreground">
                   {step.label}
                 </span>
               </div>
               {i < steps.length - 1 ? (
                 <div
-                  className={cn("mx-1 h-0.5 w-8 sm:w-12", connectorClass)}
+                  className={cn(
+                    "mx-1 h-0.5 w-10 origin-left sm:w-14",
+                    connectorClass
+                  )}
+                  style={{
+                    animation: "scaleIn 0.4s ease both",
+                    animationDelay: `${i * 50 + 80}ms`,
+                  }}
                   aria-hidden
                 />
               ) : null}

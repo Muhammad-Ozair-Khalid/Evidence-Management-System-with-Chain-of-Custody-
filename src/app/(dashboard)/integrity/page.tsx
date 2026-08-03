@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { format, differenceInMinutes, startOfMonth } from "date-fns";
+import { differenceInMinutes, startOfMonth } from "date-fns";
 import {
   Clock,
   ShieldAlert,
@@ -8,10 +7,9 @@ import {
   ShieldX,
 } from "lucide-react";
 import {
-  ResolveIntegrityDialog,
-  type FlaggedItemContext,
-} from "@/components/integrity/resolve-dialog";
-import { StatusPill } from "@/components/evidence/status-pill";
+  FlaggedIntegrityTable,
+  type FlaggedTableRow,
+} from "@/components/integrity/flagged-table";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
 import { EmptyState } from "@/components/ui-ems/empty-state";
 import { PageHeader } from "@/components/ui-ems/page-header";
@@ -76,7 +74,6 @@ export default async function IntegrityPage() {
     }),
   ]);
 
-  // Avg time to resolution: pair first flag with first subsequent resolve per entity
   const flagByEntity = new Map<string, Date>();
   for (const f of mismatchFlags) {
     if (!flagByEntity.has(f.entityId)) {
@@ -106,14 +103,16 @@ export default async function IntegrityPage() {
         ? `${avgMinutes}m`
         : `${(avgMinutes / 60).toFixed(1)}h`;
 
-  const flaggedContexts: FlaggedItemContext[] = flaggedItems.map((item) => {
+  const flaggedRows: FlaggedTableRow[] = flaggedItems.map((item) => {
     const mismatch = item.custodyEvents[0] ?? null;
     return {
       id: item.id,
       evidenceId: item.evidenceId,
       title: item.title,
       expectedHash: item.currentHash,
-      flaggedAt: mismatch?.timestamp.toISOString() ?? item.updatedAt.toISOString(),
+      flaggedAt:
+        mismatch?.timestamp.toISOString() ?? item.updatedAt.toISOString(),
+      custodianName: item.currentCustodian?.name ?? "—",
       mismatchEvent: mismatch
         ? {
             id: mismatch.id,
@@ -132,6 +131,7 @@ export default async function IntegrityPage() {
     <div>
       <PageHeader
         eyebrow="Integrity"
+        eyebrowColor="#D13438"
         title="Hash verification"
         subtitle="Re-hash on handoff, flag mismatches, and require supervisor resolution."
         actions={<ModuleBadge module="integrity" />}
@@ -143,24 +143,28 @@ export default async function IntegrityPage() {
           value={flaggedItems.length}
           icon={ShieldAlert}
           accentColor="#D13438"
+          riseDelayMs={0}
         />
         <StatCard
           label="Checks passed this month"
           value={checksPassedMonth}
           icon={ShieldCheck}
           accentColor="#5C6B7A"
+          riseDelayMs={40}
         />
         <StatCard
           label="Checks failed this month"
           value={checksFailedMonth}
           icon={ShieldX}
           accentColor="#D13438"
+          riseDelayMs={80}
         />
         <StatCard
           label="Avg. time to resolution"
           value={avgLabel}
           icon={Clock}
           accentColor="#5C6B7A"
+          riseDelayMs={120}
         />
       </div>
 
@@ -168,80 +172,14 @@ export default async function IntegrityPage() {
         Currently flagged
       </h2>
 
-      {flaggedContexts.length === 0 ? (
+      {flaggedRows.length === 0 ? (
         <EmptyState
           icon={ShieldCheck}
           title="All clear"
           description="No items are INTEGRITY_FLAGGED right now. Hash mismatches will land here for supervisor review."
         />
       ) : (
-        <div className="overflow-hidden rounded-lg border border-border bg-card shadow-card">
-          <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="border-b border-border bg-secondary/60">
-              <tr>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Evidence ID
-                </th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Title
-                </th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Status
-                </th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Last mismatch
-                </th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Custodian
-                </th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {flaggedContexts.map((row, idx) => {
-                const raw = flaggedItems[idx];
-                return (
-                  <tr
-                    key={row.id}
-                    className="border-b border-border last:border-0 hover:bg-secondary/40"
-                  >
-                    <td className="px-4 py-3">
-                      <Link
-                        href={`/evidence/${row.id}?tab=integrity`}
-                        className="font-mono text-sm font-medium text-accent-integrity hover:underline"
-                      >
-                        {row.evidenceId}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 font-medium">{row.title}</td>
-                    <td className="px-4 py-3">
-                      <StatusPill status="INTEGRITY_FLAGGED" />
-                    </td>
-                    <td className="px-4 py-3 text-muted-ems">
-                      {row.flaggedAt
-                        ? format(new Date(row.flaggedAt), "dd MMM yyyy HH:mm")
-                        : "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      {raw.currentCustodian?.name ?? "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      {canResolve ? (
-                        <ResolveIntegrityDialog item={row} />
-                      ) : (
-                        <span className="text-muted-ems">
-                          Supervisor only
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <FlaggedIntegrityTable rows={flaggedRows} canResolve={canResolve} />
       )}
     </div>
   );

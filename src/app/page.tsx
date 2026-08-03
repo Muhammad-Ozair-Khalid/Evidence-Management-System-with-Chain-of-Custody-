@@ -1,5 +1,10 @@
-import { redirect } from "next/navigation";
+import { LandingPage } from "@/components/marketing/landing-page";
+import { AuthSessionProvider } from "@/components/providers/session-provider";
 
 export default function HomePage() {
-  redirect("/dashboard");
+  return (
+    <AuthSessionProvider>
+      <LandingPage />
+    </AuthSessionProvider>
+  );
 }

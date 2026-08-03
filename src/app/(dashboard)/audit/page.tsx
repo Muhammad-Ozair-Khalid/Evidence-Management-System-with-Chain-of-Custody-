@@ -1,10 +1,13 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { startOfDay } from "date-fns";
+import { Activity, FileSearch, ShieldAlert, Users } from "lucide-react";
 import { AuditExportButton } from "@/components/audit/audit-export-button";
 import { AuditFilters } from "@/components/audit/audit-filters";
 import { AuditTable, type AuditRow } from "@/components/audit/audit-table";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
 import { PageHeader } from "@/components/ui-ems/page-header";
+import { StatCard } from "@/components/ui-ems/stat-card";
 import { buildAuditWhere } from "@/lib/audit-query";
 import { getSession } from "@/lib/auth";
 import { can } from "@/lib/rbac";
@@ -38,25 +41,42 @@ export default async function AuditPage({
     to: searchParams.to,
   };
 
-  const [entries, actors] = await Promise.all([
-    prisma.auditLogEntry.findMany({
-      where: buildAuditWhere(filters),
-      orderBy: { timestamp: "desc" },
-      take: 500,
-      include: {
-        actor: {
-          select: { id: true, name: true, email: true, role: true },
+  const todayStart = startOfDay(new Date());
+
+  const [entries, actors, todayCount, flagCount, actorDistinct] =
+    await Promise.all([
+      prisma.auditLogEntry.findMany({
+        where: buildAuditWhere(filters),
+        orderBy: { timestamp: "desc" },
+        take: 500,
+        include: {
+          actor: {
+            select: { id: true, name: true, email: true, role: true },
+          },
         },
-      },
-    }),
-    prisma.user.findMany({
-      where: {
-        OR: [{ isActive: true }, { email: SYSTEM_AUDIT_EMAIL }],
-      },
-      select: { id: true, name: true, role: true },
-      orderBy: { name: "asc" },
-    }),
-  ]);
+      }),
+      prisma.user.findMany({
+        where: {
+          OR: [{ isActive: true }, { email: SYSTEM_AUDIT_EMAIL }],
+        },
+        select: { id: true, name: true, role: true },
+        orderBy: { name: "asc" },
+      }),
+      prisma.auditLogEntry.count({
+        where: { timestamp: { gte: todayStart } },
+      }),
+      prisma.auditLogEntry.count({
+        where: {
+          action: "HASH_MISMATCH_FLAGGED",
+          timestamp: { gte: todayStart },
+        },
+      }),
+      prisma.auditLogEntry.findMany({
+        where: { timestamp: { gte: todayStart } },
+        distinct: ["actorId"],
+        select: { actorId: true },
+      }),
+    ]);
 
   const rows: AuditRow[] = entries.map((e) => {
     const meta = e.metadata as Record<string, unknown> | null;
@@ -78,6 +98,7 @@ export default async function AuditPage({
     <div>
       <PageHeader
         eyebrow="Audit Trail"
+        eyebrowColor="#00B7C3"
         title="System activity log"
         subtitle="Append-only, system-wide log of sensitive actions. SUPERVISOR/ADMIN only."
         actions={
@@ -90,9 +111,16 @@ export default async function AuditPage({
         }
       />
 
+      <div className="mb-6 grid gap-4 stagger-children sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard label="Actions today" value={todayCount} icon={Activity} accentColor="#00B7C3" />
+        <StatCard label="Matching rows" value={entries.length} icon={FileSearch} accentColor="#5C6B7A" />
+        <StatCard label="Flags today" value={flagCount} icon={ShieldAlert} accentColor={flagCount > 0 ? "#D13438" : "#5C6B7A"} />
+        <StatCard label="Active actors today" value={actorDistinct.length} icon={Users} accentColor="#8764B8" />
+      </div>
+
       <Suspense
         fallback={
-          <div className="mb-4 h-28 animate-pulse rounded-lg border border-border bg-card" />
+          <div className="mb-4 h-28 animate-shimmer rounded-lg border border-border" />
         }
       >
         <AuditFilters actors={actors} />

@@ -17,7 +17,7 @@ export function StatusPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-semibold shadow-sm",
         className
       )}
       style={{
@@ -26,6 +26,11 @@ export function StatusPill({
         borderColor: style.border,
       }}
     >
+      <span
+        className="h-1.5 w-1.5 rounded-full"
+        style={{ backgroundColor: style.text }}
+        aria-hidden
+      />
       {status === "INTEGRITY_FLAGGED" ? (
         <AlertTriangle className="h-3 w-3" aria-hidden />
       ) : null}

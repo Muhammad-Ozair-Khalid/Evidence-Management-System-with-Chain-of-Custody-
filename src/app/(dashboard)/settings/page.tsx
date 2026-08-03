@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 import { ChangePasswordForm } from "@/components/settings/change-password-form";
 import {
   OwnActivityList,
@@ -7,11 +7,22 @@ import {
 } from "@/components/settings/own-activity-list";
 import { RoleBadge } from "@/components/admin/role-badge";
 import { PageHeader } from "@/components/ui-ems/page-header";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSession } from "@/lib/auth";
+import { ROLE_COLORS, type RoleKey } from "@/lib/modules";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 export default async function SettingsPage() {
   const session = await getSession();
@@ -38,6 +49,10 @@ export default async function SettingsPage() {
 
   if (!profile) redirect("/login");
 
+  const roleColor =
+    ROLE_COLORS[profile.role as RoleKey] ?? ROLE_COLORS.CUSTODIAN;
+  const accountAgeDays = differenceInDays(new Date(), profile.createdAt);
+
   const entries: OwnActivityEntry[] = activity.map((e) => {
     const meta = e.metadata as Record<string, unknown> | null;
     const summary =
@@ -60,47 +75,69 @@ export default async function SettingsPage() {
     <div>
       <PageHeader
         eyebrow="Account"
+        eyebrowColor="#0B5C2E"
         title="Account settings"
         subtitle="Manage your password and review your own activity."
       />
 
-      <div className="mb-6 grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
-          <CardHeader className="pb-2">
-            <CardTitle>Profile</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div>
-              <p className="text-muted-ems">Name</p>
-              <p className="font-medium">{profile.name}</p>
-            </div>
-            <div>
-              <p className="text-muted-ems">Email</p>
-              <p className="font-medium">{profile.email}</p>
-            </div>
-            <div>
-              <p className="text-muted-ems">Role</p>
-              <div className="mt-1">
-                <RoleBadge role={profile.role} />
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card
+          className="overflow-hidden lg:col-span-1"
+          style={{
+            backgroundImage: `linear-gradient(160deg, ${roleColor}14 0%, transparent 50%)`,
+          }}
+        >
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-4">
+              <Avatar
+                className="h-16 w-16 ring-2"
+                style={{
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  ["--tw-ring-color" as any]: `${roleColor}66`,
+                }}
+              >
+                <AvatarFallback
+                  className="text-lg font-semibold text-white"
+                  style={{ backgroundColor: roleColor }}
+                >
+                  {initials(profile.name)}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-lg">{profile.name}</CardTitle>
+                <div className="mt-1.5">
+                  <RoleBadge role={profile.role} />
+                </div>
               </div>
             </div>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
             <div>
-              <p className="text-muted-ems">Badge</p>
-              <p className="font-mono text-xs">
-                {profile.badgeNumber ?? "—"}
+              <p className="text-muted-ems">Email</p>
+              <p className="mt-0.5 font-medium text-canvas-foreground">
+                {profile.email}
               </p>
             </div>
             <div>
+              <p className="text-muted-ems">Badge</p>
+              <p className="mt-0.5 font-mono text-xs text-canvas-foreground">
+                {profile.badgeNumber ?? "—"}
+              </p>
+            </div>
+            <div className="border-t border-border pt-4">
               <p className="text-muted-ems">Last login</p>
-              <p>
+              <p className="mt-0.5 text-canvas-foreground">
                 {profile.lastLoginAt
                   ? format(profile.lastLoginAt, "dd MMM yyyy HH:mm")
                   : "—"}
               </p>
             </div>
             <div>
-              <p className="text-muted-ems">Account created</p>
-              <p>{format(profile.createdAt, "dd MMM yyyy")}</p>
+              <p className="text-muted-ems">Account age</p>
+              <p className="mt-0.5 text-canvas-foreground">
+                {accountAgeDays} day{accountAgeDays === 1 ? "" : "s"} · since{" "}
+                {format(profile.createdAt, "dd MMM yyyy")}
+              </p>
             </div>
           </CardContent>
         </Card>

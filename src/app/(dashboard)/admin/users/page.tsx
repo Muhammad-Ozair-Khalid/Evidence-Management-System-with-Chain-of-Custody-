@@ -57,6 +57,7 @@ export default async function AdminUsersPage() {
     <div>
       <PageHeader
         eyebrow="Admin"
+        eyebrowColor="#5C6B7A"
         title="Users & Roles"
         subtitle="ADMIN-only directory. Soft-deactivate accounts — never hard-delete users with custody history."
         actions={

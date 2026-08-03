@@ -14,12 +14,12 @@ export type IntakePoint = { month: string; count: number };
 
 export function EvidenceIntakeChart({ data }: { data: IntakePoint[] }) {
   return (
-    <div className="h-[240px] w-full">
+    <div className="h-[260px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="intakeFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#107C10" stopOpacity={0.35} />
+              <stop offset="0%" stopColor="#107C10" stopOpacity={0.4} />
               <stop offset="100%" stopColor="#107C10" stopOpacity={0.02} />
             </linearGradient>
           </defs>
@@ -44,6 +44,7 @@ export function EvidenceIntakeChart({ data }: { data: IntakePoint[] }) {
               borderRadius: 8,
               fontSize: 12,
               color: "var(--surface-foreground)",
+              boxShadow: "0 8px 24px -8px rgba(16,24,40,0.18)",
             }}
             labelStyle={{ color: "var(--muted)" }}
             formatter={(value) => [`${String(value)} item(s)`, "Intake"]}
@@ -52,8 +53,10 @@ export function EvidenceIntakeChart({ data }: { data: IntakePoint[] }) {
             type="monotone"
             dataKey="count"
             stroke="#107C10"
-            strokeWidth={2}
+            strokeWidth={2.5}
             fill="url(#intakeFill)"
+            animationDuration={700}
+            activeDot={{ r: 5, fill: "#107C10", stroke: "var(--surface)", strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>

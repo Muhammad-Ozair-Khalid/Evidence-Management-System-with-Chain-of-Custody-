@@ -7,7 +7,10 @@ import { type EvidenceStatus, type EvidenceType } from "@prisma/client";
 import { StatusPill } from "@/components/evidence/status-pill";
 import { DataTable, type DataTableColumn } from "@/components/ui-ems/data-table";
 import { Button } from "@/components/ui/button";
-import { EVIDENCE_TYPE_LABELS } from "@/lib/evidence-labels";
+import {
+  EVIDENCE_STATUS_STYLES,
+  EVIDENCE_TYPE_LABELS,
+} from "@/lib/evidence-labels";
 
 export type EvidenceListRow = {
   id: string;
@@ -98,6 +101,15 @@ export function EvidenceListTable({ rows }: { rows: EvidenceListRow[] }) {
       data={rows}
       getRowId={(r) => r.id}
       emptyMessage="No evidence items match your filters."
+      emptyTitle="No matching exhibits"
+      filterPlaceholder="Filter table…"
+      filterFn={(row, q) =>
+        row.evidenceId.toLowerCase().includes(q) ||
+        row.title.toLowerCase().includes(q) ||
+        row.caseNumber.toLowerCase().includes(q) ||
+        row.custodianName.toLowerCase().includes(q)
+      }
+      rowAccent={(r) => EVIDENCE_STATUS_STYLES[r.status].text}
     />
   );
 }

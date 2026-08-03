@@ -2,7 +2,7 @@
 
 Evidence Management System — digital evidence inventory with a tamper-evident chain-of-custody ledger.
 
-**Current state:** all modules are live — evidence, custody, integrity, reports, audit, dashboard, admin user management, account settings, global search, and polish (toasts, responsive shell, empty/loading states).
+**Current state:** all modules are live — public NCERT-style landing at `/`, evidence, custody, integrity, reports, audit, dashboard, admin user management, account settings, global search, and polish (toasts, responsive shell, empty/loading states).
 
 ## Stack
 
@@ -35,7 +35,7 @@ npm run db:seed
 npm run dev
 ```
 
-Open [http://localhost:3000/login](http://localhost:3000/login).
+Open [http://localhost:3000](http://localhost:3000) for the public landing page, then sign in from there (or go directly to `/login`).
 
 ### Environment variables (see `.env.example`)
 

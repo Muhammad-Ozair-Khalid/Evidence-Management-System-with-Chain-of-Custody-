@@ -14,8 +14,10 @@ import { IntegrityHistory } from "@/components/integrity/integrity-history";
 import { GenerateCustodyReportButton } from "@/components/reports/generate-report-button";
 import { EmptyState } from "@/components/ui-ems/empty-state";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
+import { PageHeader } from "@/components/ui-ems/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSession } from "@/lib/auth";
+import { auditActionLabel } from "@/lib/audit-labels";
 import { CUSTODY_EVENT_LABELS } from "@/lib/custody-labels";
 import { EVIDENCE_TYPE_LABELS } from "@/lib/evidence-labels";
 import { can } from "@/lib/rbac";
@@ -107,221 +109,233 @@ export default async function EvidenceDetailPage({
     hashMatch: e.hashMatch,
   }));
 
+  const headerActions = (
+    <div className="flex flex-wrap items-center gap-2">
+      <ModuleBadge module="evidence" />
+      <StatusPill status={item.status} />
+      {canLog ? (
+        <LogCustodyEventButton
+          evidenceItemId={item.id}
+          evidenceLabel={item.evidenceId}
+          currentHash={item.currentHash}
+          hasStoredFile={Boolean(item.filePath)}
+          users={activeUsers}
+          isOverride={!isCurrentCustodian && canOverride}
+        />
+      ) : item.status === "INTEGRITY_FLAGGED" ? (
+        <p className="max-w-xs text-right text-sm text-accent-integrity">
+          INTEGRITY_FLAGGED — custody handoffs blocked until a supervisor
+          resolves the flag on the Integrity module.
+        </p>
+      ) : null}
+    </div>
+  );
+
   return (
     <div>
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <ModuleBadge module="evidence" />
-            <StatusPill status={item.status} />
-          </div>
-          <p className="font-mono text-sm font-semibold text-accent-evidence">
-            {item.evidenceId}
-          </p>
-          <h1 className="text-page-title text-canvas-foreground">{item.title}</h1>
-          <p className="mt-1 text-muted-ems">{item.description}</p>
-        </div>
-        {canLog ? (
-          <LogCustodyEventButton
-            evidenceItemId={item.id}
-            evidenceLabel={item.evidenceId}
-            currentHash={item.currentHash}
-            hasStoredFile={Boolean(item.filePath)}
-            users={activeUsers}
-            isOverride={!isCurrentCustodian && canOverride}
-          />
-        ) : item.status === "INTEGRITY_FLAGGED" ? (
-          <p className="max-w-xs text-right text-sm text-accent-integrity">
-            INTEGRITY_FLAGGED — custody handoffs blocked until a supervisor
-            resolves the flag on the Integrity module.
-          </p>
-        ) : null}
-      </div>
+      <PageHeader
+        eyebrow="Evidence Registry"
+        eyebrowColor="#107C10"
+        title={
+          <span className="flex flex-col gap-1">
+            <span className="font-mono text-sm font-semibold text-accent-evidence">
+              {item.evidenceId}
+            </span>
+            <span>{item.title}</span>
+          </span>
+        }
+        subtitle={item.description}
+        actions={headerActions}
+      />
 
       <CustodyChainStepper steps={chainSteps} />
 
       <EvidenceDetailTabs evidenceId={item.id} active={tab} />
 
-      {tab === "custody" ? (
-        <CustodyTimeline events={timelineEvents} />
-      ) : null}
+      <div key={tab} className="animate-rise">
+        {tab === "custody" ? (
+          <CustodyTimeline events={timelineEvents} />
+        ) : null}
 
-      {tab === "integrity" ? (
-        <IntegrityHistory
-          rows={[...item.custodyEvents].reverse().map((e) => ({
-            id: e.id,
-            timestamp: e.timestamp.toISOString(),
-            eventType: e.eventType,
-            hashAtEvent: e.hashAtEvent,
-            hashMatch: e.hashMatch,
-            actorName:
-              e.handlerTo?.name ??
-              e.handlerFrom?.name ??
-              item.submittedBy.name,
-          }))}
-        />
-      ) : null}
-
-      {tab === "reports" ? (
-        can(session.user.role, "reports:generate") ? (
-          <GenerateCustodyReportButton
-            evidenceDbId={item.id}
-            evidenceLabel={item.evidenceId}
+        {tab === "integrity" ? (
+          <IntegrityHistory
+            rows={[...item.custodyEvents].reverse().map((e) => ({
+              id: e.id,
+              timestamp: e.timestamp.toISOString(),
+              eventType: e.eventType,
+              hashAtEvent: e.hashAtEvent,
+              hashMatch: e.hashMatch,
+              actorName:
+                e.handlerTo?.name ??
+                e.handlerFrom?.name ??
+                item.submittedBy.name,
+            }))}
           />
-        ) : (
-          <EvidenceTabPlaceholder
-            title="Custody reports"
-            description="PDF custody reports can be generated by examiners, supervisors, and admins."
-          />
-        )
-      ) : null}
+        ) : null}
 
-      {tab === "overview" ? (
-        <div className="grid gap-6 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle>Exhibit details</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <dl className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <dt className="text-muted-ems">Case number</dt>
-                  <dd className="mt-0.5 font-medium">{item.caseNumber}</dd>
-                </div>
-                <div>
-                  <dt className="text-muted-ems">Type</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {EVIDENCE_TYPE_LABELS[item.evidenceType]}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-ems">Intake date</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {format(item.intakeDate, "dd MMM yyyy HH:mm")}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-ems">Intake location</dt>
-                  <dd className="mt-0.5 font-medium">{item.intakeLocation}</dd>
-                </div>
-                <div>
-                  <dt className="text-muted-ems">Submitted by</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {item.submittedBy.name}
-                    <span className="block text-muted-ems">
-                      {item.submittedBy.email}
-                    </span>
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-ems">Current custodian</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {item.currentCustodian ? (
-                      <>
-                        {item.currentCustodian.name}
-                        <span className="block text-muted-ems">
-                          {item.currentCustodian.email}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-muted-foreground">
-                        None (returned
-                        {item.returnedTo ? ` → ${item.returnedTo}` : ""})
-                      </span>
-                    )}
-                  </dd>
-                </div>
-                {item.returnedTo ? (
-                  <div className="sm:col-span-2">
-                    <dt className="text-muted-ems">Returned to</dt>
-                    <dd className="mt-0.5 font-medium">{item.returnedTo}</dd>
+        {tab === "reports" ? (
+          can(session.user.role, "reports:generate") ? (
+            <GenerateCustodyReportButton
+              evidenceDbId={item.id}
+              evidenceLabel={item.evidenceId}
+            />
+          ) : (
+            <EvidenceTabPlaceholder
+              title="Custody reports"
+              description="PDF custody reports can be generated by examiners, supervisors, and admins."
+            />
+          )
+        ) : null}
+
+        {tab === "overview" ? (
+          <div className="grid gap-6 lg:grid-cols-3">
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle>Exhibit details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <dl className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-muted-ems">Case number</dt>
+                    <dd className="mt-0.5 font-medium">{item.caseNumber}</dd>
                   </div>
-                ) : null}
-                {item.fileName ? (
-                  <div className="sm:col-span-2">
-                    <dt className="text-muted-ems">Stored file</dt>
+                  <div>
+                    <dt className="text-muted-ems">Type</dt>
                     <dd className="mt-0.5 font-medium">
-                      {item.fileName}
-                      {item.fileSize != null ? (
-                        <span className="text-muted-ems">
-                          {" "}
-                          ({(item.fileSize / 1024).toFixed(1)} KB)
-                        </span>
-                      ) : null}
+                      {EVIDENCE_TYPE_LABELS[item.evidenceType]}
                     </dd>
                   </div>
-                ) : null}
-                <div className="sm:col-span-2">
-                  <dt className="text-muted-ems">
-                    Current hash{" "}
-                    <span className="normal-case">
-                      ({item.hashSource === "EXTERNAL" ? "external" : "upload"})
-                    </span>
-                  </dt>
-                  <dd className="mt-1 flex flex-wrap items-center gap-2">
-                    <code className="break-all rounded bg-secondary px-2 py-1 font-mono text-xs">
-                      {item.currentHash}
-                    </code>
-                    <CopyButton value={item.currentHash} />
-                  </dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="text-muted-ems">Original hash (intake)</dt>
-                  <dd className="mt-1 flex flex-wrap items-center gap-2">
-                    <code className="break-all rounded bg-secondary px-2 py-1 font-mono text-xs">
-                      {item.originalHash}
-                    </code>
-                    <CopyButton value={item.originalHash} />
-                    {item.currentHash !== item.originalHash ? (
-                      <span className="text-xs font-medium text-accent-integrity">
-                        Differs from current hash
+                  <div>
+                    <dt className="text-muted-ems">Intake date</dt>
+                    <dd className="mt-0.5 font-medium">
+                      {format(item.intakeDate, "dd MMM yyyy HH:mm")}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted-ems">Intake location</dt>
+                    <dd className="mt-0.5 font-medium">{item.intakeLocation}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted-ems">Submitted by</dt>
+                    <dd className="mt-0.5 font-medium">
+                      {item.submittedBy.name}
+                      <span className="block text-muted-ems">
+                        {item.submittedBy.email}
                       </span>
-                    ) : (
-                      <span className="text-xs font-medium text-accent-evidence">
-                        Matches current hash
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted-ems">Current custodian</dt>
+                    <dd className="mt-0.5 font-medium">
+                      {item.currentCustodian ? (
+                        <>
+                          {item.currentCustodian.name}
+                          <span className="block text-muted-ems">
+                            {item.currentCustodian.email}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground">
+                          None (returned
+                          {item.returnedTo ? ` → ${item.returnedTo}` : ""})
+                        </span>
+                      )}
+                    </dd>
+                  </div>
+                  {item.returnedTo ? (
+                    <div className="sm:col-span-2">
+                      <dt className="text-muted-ems">Returned to</dt>
+                      <dd className="mt-0.5 font-medium">{item.returnedTo}</dd>
+                    </div>
+                  ) : null}
+                  {item.fileName ? (
+                    <div className="sm:col-span-2">
+                      <dt className="text-muted-ems">Stored file</dt>
+                      <dd className="mt-0.5 font-medium">
+                        {item.fileName}
+                        {item.fileSize != null ? (
+                          <span className="text-muted-ems">
+                            {" "}
+                            ({(item.fileSize / 1024).toFixed(1)} KB)
+                          </span>
+                        ) : null}
+                      </dd>
+                    </div>
+                  ) : null}
+                  <div className="sm:col-span-2">
+                    <dt className="text-muted-ems">
+                      Current hash{" "}
+                      <span className="normal-case">
+                        ({item.hashSource === "EXTERNAL" ? "external" : "upload"})
                       </span>
-                    )}
-                  </dd>
-                </div>
-              </dl>
-            </CardContent>
-          </Card>
+                    </dt>
+                    <dd className="mt-1 flex flex-wrap items-center gap-2">
+                      <code className="break-all rounded bg-secondary px-2 py-1 font-mono text-xs">
+                        {item.currentHash}
+                      </code>
+                      <CopyButton value={item.currentHash} />
+                    </dd>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <dt className="text-muted-ems">Original hash (intake)</dt>
+                    <dd className="mt-1 flex flex-wrap items-center gap-2">
+                      <code className="break-all rounded bg-secondary px-2 py-1 font-mono text-xs">
+                        {item.originalHash}
+                      </code>
+                      <CopyButton value={item.originalHash} />
+                      {item.currentHash !== item.originalHash ? (
+                        <span className="text-xs font-medium text-accent-integrity">
+                          Differs from current hash
+                        </span>
+                      ) : (
+                        <span className="text-xs font-medium text-accent-evidence">
+                          Matches current hash
+                        </span>
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {recentAudit.length === 0 ? (
-                <EmptyState
-                  compact
-                  icon={FileSearch}
-                  title="No audit entries yet"
-                  description="Actions on this exhibit will appear here."
-                  className="border-0 shadow-none"
-                />
-              ) : (
-                <ul className="space-y-3">
-                  {recentAudit.map((entry) => (
-                    <li
-                      key={entry.id}
-                      className="border-b border-border pb-3 last:border-0 last:pb-0"
-                    >
-                      <p className="text-sm font-medium text-canvas-foreground">
-                        {entry.action}
-                      </p>
-                      <p className="text-muted-ems">
-                        {entry.actor.name} ·{" "}
-                        {format(entry.timestamp, "dd MMM yyyy HH:mm")}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
+            <Card className="border-accent-audit/20">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-accent-audit">Recent activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {recentAudit.length === 0 ? (
+                  <EmptyState
+                    compact
+                    icon={FileSearch}
+                    title="No audit entries yet"
+                    description="Actions on this exhibit will appear here."
+                    className="border-0 shadow-none"
+                  />
+                ) : (
+                  <ul className="space-y-3">
+                    {recentAudit.map((entry) => (
+                      <li
+                        key={entry.id}
+                        className="border-b border-border pb-3 last:border-0 last:pb-0"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-sm font-medium text-canvas-foreground">
+                            {auditActionLabel(entry.action)}
+                          </p>
+                          <time className="shrink-0 text-muted-ems">
+                            {format(entry.timestamp, "dd MMM HH:mm")}
+                          </time>
+                        </div>
+                        <p className="text-muted-ems">{entry.actor.name}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

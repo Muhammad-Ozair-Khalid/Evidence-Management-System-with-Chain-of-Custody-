@@ -1,10 +1,9 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, SearchX } from "lucide-react";
 import { EmptyState } from "@/components/ui-ems/empty-state";
 import { Input } from "@/components/ui/input";
-import { SearchX } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface DataTableColumn<T> {
@@ -29,6 +28,8 @@ interface DataTableProps<T> {
   emptyMessage?: string;
   emptyTitle?: string;
   className?: string;
+  /** Optional accent colour for the left bar on row hover / per-row. */
+  rowAccent?: (row: T) => string | undefined;
 }
 
 type SortDir = "asc" | "desc" | null;
@@ -42,6 +43,7 @@ export function DataTable<T>({
   emptyMessage = "No results.",
   emptyTitle = "Nothing to show",
   className,
+  rowAccent,
 }: DataTableProps<T>) {
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -85,13 +87,22 @@ export function DataTable<T>({
   return (
     <div className={cn("space-y-3", className)}>
       {filterFn ? (
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={filterPlaceholder}
-          className="max-w-sm"
-          aria-label={filterPlaceholder}
-        />
+        <div className="flex flex-wrap items-center gap-3">
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={filterPlaceholder}
+            className="max-w-sm"
+            aria-label={filterPlaceholder}
+          />
+          <p className="text-muted-ems">
+            <span className="font-medium text-canvas-foreground">
+              {sorted.length}
+            </span>{" "}
+            {sorted.length === 1 ? "result" : "results"}
+            {query.trim() ? ` matching “${query.trim()}”` : ""}
+          </p>
+        </div>
       ) : null}
 
       {sorted.length === 0 ? (
@@ -103,37 +114,45 @@ export function DataTable<T>({
         />
       ) : (
         <>
-          {/* Mobile card stack */}
-          <ul className="space-y-3 md:hidden">
-            {sorted.map((row) => (
-              <li
-                key={getRowId(row)}
-                className="rounded-lg border border-border bg-card p-4 shadow-card"
-              >
-                <dl className="space-y-2.5">
-                  {mobileColumns.map((col) => (
-                    <div
-                      key={col.key}
-                      className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3"
-                    >
-                      <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                        {col.mobileLabel ?? col.header}
-                      </dt>
-                      <dd className="min-w-0 text-sm sm:text-right">
-                        {col.cell(row)}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </li>
-            ))}
+          <ul className="stagger-children space-y-3 md:hidden">
+            {sorted.map((row) => {
+              const accent = rowAccent?.(row);
+              return (
+                <li
+                  key={getRowId(row)}
+                  className="relative overflow-hidden rounded-lg border border-border bg-card p-4 shadow-card card-interactive"
+                >
+                  {accent ? (
+                    <span
+                      className="absolute inset-y-0 left-0 w-[3px]"
+                      style={{ backgroundColor: accent }}
+                      aria-hidden
+                    />
+                  ) : null}
+                  <dl className="space-y-2.5 pl-1">
+                    {mobileColumns.map((col) => (
+                      <div
+                        key={col.key}
+                        className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3"
+                      >
+                        <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          {col.mobileLabel ?? col.header}
+                        </dt>
+                        <dd className="min-w-0 text-sm sm:text-right">
+                          {col.cell(row)}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </li>
+              );
+            })}
           </ul>
 
-          {/* Desktop / tablet table with horizontal scroll */}
           <div className="hidden overflow-hidden rounded-lg border border-border bg-card shadow-card transition-shadow duration-200 ease-smooth hover:shadow-card-hover md:block">
-            <div className="overflow-x-auto">
+            <div className="max-h-[70vh] overflow-auto">
               <table className="w-full min-w-[640px] text-left text-sm">
-                <thead className="border-b border-border bg-secondary/60">
+                <thead className="sticky top-0 z-10 border-b border-border bg-secondary/90 backdrop-blur-sm">
                   <tr>
                     {columns.map((col) => (
                       <th
@@ -170,25 +189,35 @@ export function DataTable<T>({
                     ))}
                   </tr>
                 </thead>
-                <tbody>
-                  {sorted.map((row) => (
-                    <tr
-                      key={getRowId(row)}
-                      className="border-b border-border transition-colors duration-100 last:border-0 hover:bg-secondary/50"
-                    >
-                      {columns.map((col) => (
-                        <td
-                          key={col.key}
-                          className={cn(
-                            "px-4 py-3 align-middle",
-                            col.className
-                          )}
-                        >
-                          {col.cell(row)}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
+                <tbody className="stagger-children">
+                  {sorted.map((row) => {
+                    const accent = rowAccent?.(row);
+                    return (
+                      <tr
+                        key={getRowId(row)}
+                        className="group/row relative border-b border-border transition-colors duration-100 last:border-0 hover:bg-secondary/50"
+                      >
+                        {columns.map((col, ci) => (
+                          <td
+                            key={col.key}
+                            className={cn(
+                              "relative px-4 py-3 align-middle",
+                              col.className
+                            )}
+                          >
+                            {ci === 0 && accent ? (
+                              <span
+                                className="absolute inset-y-1 left-0 w-[3px] rounded-r-full opacity-0 transition-opacity group-hover/row:opacity-100"
+                                style={{ backgroundColor: accent }}
+                                aria-hidden
+                              />
+                            ) : null}
+                            {col.cell(row)}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

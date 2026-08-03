@@ -2,6 +2,7 @@
 
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { type EvidenceStatus } from "@prisma/client";
+import { AnimatedNumber } from "@/components/ui-ems/animated-number";
 import {
   EVIDENCE_STATUS_LABELS,
   EVIDENCE_STATUS_STYLES,
@@ -28,21 +29,26 @@ export function StatusDonut({ data }: { data: StatusSlice[] }) {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="relative h-[200px] w-full">
+      <div className="relative h-[220px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={chartData}
               dataKey="value"
               nameKey="name"
-              innerRadius="60%"
+              innerRadius="58%"
               outerRadius="85%"
               paddingAngle={2}
               stroke="var(--surface)"
               strokeWidth={2}
+              animationDuration={700}
             >
               {chartData.map((entry) => (
-                <Cell key={entry.name} fill={entry.color} />
+                <Cell
+                  key={entry.name}
+                  fill={entry.color}
+                  className="transition-opacity hover:opacity-90"
+                />
               ))}
             </Pie>
             <Tooltip
@@ -52,13 +58,14 @@ export function StatusDonut({ data }: { data: StatusSlice[] }) {
                 borderRadius: 8,
                 fontSize: 12,
                 color: "var(--surface-foreground)",
+                boxShadow: "0 8px 24px -8px rgba(16,24,40,0.18)",
               }}
             />
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-semibold text-canvas-foreground">
-            {total}
+          <span className="text-stat-numeral text-canvas-foreground">
+            <AnimatedNumber value={total} />
           </span>
           <span className="text-muted-ems">items</span>
         </div>
@@ -73,7 +80,7 @@ export function StatusDonut({ data }: { data: StatusSlice[] }) {
               aria-hidden
             />
             <span className="truncate text-canvas-foreground">{entry.name}</span>
-            <span className="ml-auto font-medium text-muted-foreground">
+            <span className="ml-auto font-medium tabular text-muted-foreground">
               {entry.value}
             </span>
           </li>

@@ -1,17 +1,32 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Syne } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plex-sans",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "EMS · Chain of Custody",
   description:
-    "Evidence Management System — digital evidence inventory with tamper-evident chain of custody.",
+    "Evidence Management System — digital evidence inventory with tamper-evident chain of custody for NCERT Forensic Evidence Unit.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -24,7 +39,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>{children}</body>
+      <body
+        className={`${plexSans.variable} ${syne.variable} ${plexMono.variable} font-sans antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

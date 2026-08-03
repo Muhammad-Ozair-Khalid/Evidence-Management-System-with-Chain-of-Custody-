@@ -15,8 +15,7 @@ export const MODULES: Record<
     label: "Dashboard",
     accentVar: "var(--accent-dashboard)",
     hex: "#3F4A5A",
-    // The graphite accent is too dark against the near-black sidebar.
-    onDark: "#95A0B0",
+    onDark: "#7CB894",
   },
   evidence: {
     label: "Evidence",
@@ -26,7 +25,7 @@ export const MODULES: Record<
   custody: {
     label: "Custody",
     accentVar: "var(--accent-custody)",
-    hex: "#D29200",
+    hex: "#C48A00",
   },
   integrity: {
     label: "Integrity",

@@ -7,6 +7,7 @@ import { TopBar } from "@/components/layout/top-bar";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { MODULES, type ModuleKey } from "@/lib/modules";
 import { cn } from "@/lib/utils";
 
 type Breakpoint = "mobile" | "tablet" | "desktop";
@@ -29,31 +30,52 @@ function useBreakpoint(): Breakpoint {
   return bp;
 }
 
+function moduleForPath(pathname: string): ModuleKey | null {
+  if (pathname.startsWith("/evidence")) return "evidence";
+  if (pathname.startsWith("/custody")) return "custody";
+  if (pathname.startsWith("/integrity")) return "integrity";
+  if (pathname.startsWith("/reports")) return "reports";
+  if (pathname.startsWith("/audit")) return "audit";
+  if (pathname.startsWith("/admin")) return "admin";
+  if (pathname.startsWith("/dashboard")) return "dashboard";
+  return null;
+}
+
 export function DashboardShell({ children }: { children: ReactNode }) {
   const bp = useBreakpoint();
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Auto-collapse to icon rail on tablet; expand on desktop.
   useEffect(() => {
     if (bp === "tablet") setCollapsed(true);
     if (bp === "desktop") setCollapsed(false);
     if (bp !== "mobile") setMobileOpen(false);
   }, [bp]);
 
-  // Close drawer on route change.
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
   const isMobile = bp === "mobile";
   const effectiveCollapsed = isMobile ? false : collapsed;
+  const modKey = moduleForPath(pathname);
+  const wash = modKey ? MODULES[modKey].hex : undefined;
 
   return (
     <AuthSessionProvider>
       <ThemeProvider>
-        <div className="min-h-screen bg-canvas">
+        <div className="relative min-h-screen bg-canvas">
+          {wash ? (
+            <div
+              className="pointer-events-none fixed inset-0 z-0 opacity-[0.07]"
+              style={{
+                background: `radial-gradient(ellipse 70% 50% at 85% -10%, ${wash}, transparent 55%)`,
+              }}
+              aria-hidden
+            />
+          ) : null}
+
           {isMobile && mobileOpen ? (
             <button
               type="button"
@@ -75,7 +97,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
           <div
             className={cn(
-              "flex min-h-screen flex-col transition-[padding] duration-200",
+              "relative z-10 flex min-h-screen flex-col transition-[padding] duration-200",
               isMobile ? "pl-0" : collapsed ? "pl-16" : "pl-[260px]"
             )}
           >

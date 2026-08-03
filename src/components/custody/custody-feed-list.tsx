@@ -33,14 +33,21 @@ export function CustodyFeedList({ rows }: { rows: CustodyFeedRow[] }) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card shadow-card">
-      <ul className="divide-y divide-border">
+      <ul className="stagger-children divide-y divide-border">
         {rows.map((row) => {
           const toLabel =
             row.eventType === "RETURN"
               ? row.returnDestination ?? "Destination"
               : row.handlerTo?.name ?? "—";
           return (
-            <li key={row.id} className="px-4 py-4 hover:bg-secondary/40">
+            <li
+              key={row.id}
+              className="group relative px-4 py-4 transition-colors hover:bg-secondary/40"
+            >
+              <span
+                className="absolute inset-y-3 left-0 w-[3px] rounded-r-full bg-accent-custody opacity-0 transition-opacity group-hover:opacity-100"
+                aria-hidden
+              />
               <div className="flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
                 <div className="min-w-0 space-y-1">
                   <div className="flex flex-wrap items-center gap-2">

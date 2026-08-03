@@ -113,7 +113,7 @@ export function GlobalSearch() {
         aria-autocomplete="list"
         aria-label="Search evidence, cases, and users"
         placeholder="Search evidence, cases…"
-        className="pl-8 pr-14"
+        className="pl-8 pr-14 focus-visible:ring-brand/30"
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
