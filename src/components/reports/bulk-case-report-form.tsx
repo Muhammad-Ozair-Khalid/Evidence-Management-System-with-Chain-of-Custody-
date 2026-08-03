@@ -55,60 +55,65 @@ export function BulkCaseReportForm({
   }
 
   return (
-    <Card className="border-accent-reports/25">
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div>
-          <p className="text-section-title text-canvas-foreground">
+    <Card className="overflow-hidden border-accent-reports/30">
+      <form onSubmit={onSubmit}>
+        <div className="border-b border-accent-reports/20 bg-accent-reports/[0.07] px-5 py-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-reports">
+            Court-ready PDF
+          </p>
+          <p className="mt-1 text-section-title text-canvas-foreground">
             Bulk generate — case report
           </p>
-          <p className="mt-1 text-muted-ems">
-            Select a case number to produce one PDF with a shared cover page and
-            concatenated custody sections for every exhibit on that case.
+          <p className="mt-1.5 text-sm text-muted-ems">
+            One LaTeX-style PDF with a shared title page and concatenated custody
+            sections for every exhibit on the case.
           </p>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-          <div className="space-y-1.5">
-            <Label htmlFor="caseNumber">Case number</Label>
-            {caseNumbers.length > 0 ? (
-              <select
-                id="caseNumber"
-                className="flex h-9 w-full rounded-md border border-input bg-surface px-3 text-sm"
-                value={caseNumber}
-                onChange={(e) => setCaseNumber(e.target.value)}
-              >
-                {caseNumbers.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <Input
-                id="caseNumber"
-                value={caseNumber}
-                onChange={(e) => setCaseNumber(e.target.value)}
-                placeholder="e.g. FIR-2026-118"
-                required
-              />
-            )}
+        <div className="space-y-4 px-5 py-5">
+          <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div className="space-y-1.5">
+              <Label htmlFor="caseNumber">Case number</Label>
+              {caseNumbers.length > 0 ? (
+                <select
+                  id="caseNumber"
+                  className="flex h-9 w-full rounded-md border border-input bg-surface px-3 text-sm"
+                  value={caseNumber}
+                  onChange={(e) => setCaseNumber(e.target.value)}
+                >
+                  {caseNumbers.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <Input
+                  id="caseNumber"
+                  value={caseNumber}
+                  onChange={(e) => setCaseNumber(e.target.value)}
+                  placeholder="e.g. FIR-2026-118"
+                  required
+                />
+              )}
+            </div>
+            <Button
+              type="submit"
+              disabled={pending || !caseNumber.trim()}
+              style={{ backgroundColor: "#8764B8" }}
+              className="text-white shadow-[0_8px_24px_-12px_rgba(135,100,184,0.7)] hover:opacity-90"
+            >
+              <Download className="h-4 w-4" />
+              {pending ? "Generating…" : "Generate case PDF"}
+            </Button>
           </div>
-          <Button
-            type="submit"
-            disabled={pending || !caseNumber.trim()}
-            style={{ backgroundColor: "#8764B8" }}
-            className="text-white hover:opacity-90"
-          >
-            <Download className="h-4 w-4" />
-            {pending ? "Generating…" : "Generate case PDF"}
-          </Button>
-        </div>
 
-        {error ? (
-          <p className="text-sm text-accent-integrity" role="alert">
-            {error}
-          </p>
-        ) : null}
+          {error ? (
+            <p className="text-sm text-accent-integrity" role="alert">
+              {error}
+            </p>
+          ) : null}
+        </div>
       </form>
     </Card>
   );

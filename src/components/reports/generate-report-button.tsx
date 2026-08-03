@@ -53,19 +53,21 @@ export function GenerateCustodyReportButton({
   }
 
   return (
-    <Card className="border-accent-reports/30">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <Card className="overflow-hidden border-accent-reports/35">
+      <div className="flex flex-col gap-4 border-b border-accent-reports/15 bg-accent-reports/[0.07] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="flex items-start gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-reports/15 text-accent-reports">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-reports/20 text-accent-reports ring-1 ring-accent-reports/30">
             <FileText className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-section-title text-canvas-foreground">
-              Custody report (PDF)
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent-reports">
+              LaTeX-style custody PDF
             </p>
-            <p className="mt-1 text-muted-ems">
-              Generate a formal Chain of Custody report for {evidenceLabel},
-              including hashes in monospace and the full event timeline.
+            <p className="mt-1 text-section-title text-canvas-foreground">
+              Custody report
+            </p>
+            <p className="mt-1 text-sm text-muted-ems">
+              Title page, integrity digests, and full chain for {evidenceLabel}.
             </p>
           </div>
         </div>
@@ -74,14 +76,14 @@ export function GenerateCustodyReportButton({
           onClick={onGenerate}
           disabled={pending}
           style={{ backgroundColor: "#8764B8" }}
-          className="shrink-0 text-white hover:opacity-90"
+          className="shrink-0 text-white shadow-[0_8px_24px_-12px_rgba(135,100,184,0.7)] hover:opacity-90"
         >
           <Download className="h-4 w-4" />
           {pending ? "Generating…" : "Generate Custody Report (PDF)"}
         </Button>
       </div>
       {error ? (
-        <p className="mt-3 text-sm text-accent-integrity" role="alert">
+        <p className="px-5 py-3 text-sm text-accent-integrity" role="alert">
           {error}
         </p>
       ) : null}

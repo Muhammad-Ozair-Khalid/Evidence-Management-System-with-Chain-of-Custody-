@@ -237,8 +237,9 @@ function LoginForm() {
         Sign in
       </h1>
       <p className="mt-1.5 text-sm text-muted-foreground">
-        Use your issued EMS credentials to continue.
+        NCERT Forensic Evidence Unit — use your issued EMS credentials.
       </p>
+      <div className="mt-3 h-px w-16 bg-gradient-to-r from-brand to-transparent" aria-hidden />
 
       <form onSubmit={onSubmit} className="mt-8 space-y-4" noValidate>
         <div className="space-y-1.5">

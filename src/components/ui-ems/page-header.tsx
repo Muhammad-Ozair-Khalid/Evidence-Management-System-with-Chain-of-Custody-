@@ -21,12 +21,19 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   return (
-    <div className={cn("mb-6", className)}>
+    <div className={cn("relative mb-7", className)}>
+      {eyebrowColor ? (
+        <span
+          className="absolute -left-3 top-1 hidden h-[calc(100%-0.5rem)] w-[3px] rounded-full sm:block"
+          style={{ backgroundColor: eyebrowColor }}
+          aria-hidden
+        />
+      ) : null}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           {eyebrow ? (
             <span
-              className="mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.09em]"
+              className="mb-2 inline-flex items-center rounded-md px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.1em]"
               style={
                 eyebrowColor
                   ? {
@@ -55,7 +62,7 @@ export function PageHeader({
         className="mt-4 h-px w-full"
         style={{
           backgroundImage: eyebrowColor
-            ? `linear-gradient(to right, ${eyebrowColor}66, transparent 70%)`
+            ? `linear-gradient(to right, ${eyebrowColor}88, ${eyebrowColor}22 45%, transparent 75%)`
             : undefined,
         }}
         aria-hidden

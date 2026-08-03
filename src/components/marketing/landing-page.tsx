@@ -495,7 +495,8 @@ export function LandingPage() {
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[#9bb0a3]">
               Sign in with a demo account — examiner, custodian, supervisor, or
-              admin — and run the full custody loop end to end.
+              admin — and run the full custody loop end to end. Playbook above
+              has every role and hash rule.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <Button

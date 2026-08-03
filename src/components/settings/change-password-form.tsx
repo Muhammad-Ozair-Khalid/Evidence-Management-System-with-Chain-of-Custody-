@@ -41,14 +41,15 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
+    <Card className="overflow-hidden border-accent-admin/25">
+      <CardHeader className="border-b border-border/60 bg-accent-admin/[0.06] pb-3">
         <CardTitle>Change password</CardTitle>
         <p className="text-muted-ems">
-          Requires your current password. Changes are recorded in the audit trail.
+          Requires your current password. Changes are recorded in the append-only
+          audit trail.
         </p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-5">
         <form onSubmit={onSubmit} className="max-w-md space-y-4">
           <div>
             <Label htmlFor="currentPassword">Current password</Label>
@@ -73,7 +74,7 @@ export function ChangePasswordForm() {
               className="mt-1.5"
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              At least 10 characters.
+              At least 10 characters · avoid reusing lab shared passwords.
             </p>
           </div>
           <div>

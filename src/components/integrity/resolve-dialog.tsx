@@ -134,42 +134,70 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label>Decision</Label>
-            <label className="flex items-start gap-2 text-sm">
-              <input
-                type="radio"
-                name="decisionRadio"
-                checked={decision === "resolve"}
-                onChange={() => setDecision("resolve")}
-                className="mt-1"
-              />
-              <span>
-                Mark resolved (e.g. hashing tool error) — restore status to{" "}
-                <strong>IN_CUSTODY</strong>
-              </span>
-            </label>
-            <label className="flex items-start gap-2 text-sm">
-              <input
-                type="radio"
-                name="decisionRadio"
-                checked={decision === "keep_flagged"}
-                onChange={() => setDecision("keep_flagged")}
-                className="mt-1"
-              />
-              <span>
-                Confirm tampering/error — keep <strong>INTEGRITY_FLAGGED</strong>{" "}
-                for investigation
-              </span>
-            </label>
+            <div className="grid gap-2">
+              <label
+                className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm transition-colors ${
+                  decision === "resolve"
+                    ? "border-accent-evidence/45 bg-accent-evidence/10"
+                    : "border-border bg-surface/40 hover:border-border/80"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="decisionRadio"
+                  checked={decision === "resolve"}
+                  onChange={() => setDecision("resolve")}
+                  className="mt-1"
+                />
+                <span>
+                  <span className="font-semibold text-canvas-foreground">
+                    Mark resolved
+                  </span>
+                  <span className="mt-0.5 block text-muted-ems">
+                    e.g. hashing tool error — restore status to{" "}
+                    <strong>IN_CUSTODY</strong>
+                  </span>
+                </span>
+              </label>
+              <label
+                className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-sm transition-colors ${
+                  decision === "keep_flagged"
+                    ? "border-accent-integrity/45 bg-accent-integrity/10"
+                    : "border-border bg-surface/40 hover:border-border/80"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="decisionRadio"
+                  checked={decision === "keep_flagged"}
+                  onChange={() => setDecision("keep_flagged")}
+                  className="mt-1"
+                />
+                <span>
+                  <span className="font-semibold text-canvas-foreground">
+                    Confirm issue
+                  </span>
+                  <span className="mt-0.5 block text-muted-ems">
+                    Keep <strong>INTEGRITY_FLAGGED</strong> for further
+                    investigation
+                  </span>
+                </span>
+              </label>
+            </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="resolutionNote">Resolution note</Label>
+            <Label htmlFor="resolutionNote">
+              Resolution note{" "}
+              <span className="text-accent-integrity">(required · min 15 chars)</span>
+            </Label>
             <Textarea
               id="resolutionNote"
               name="resolutionNote"
               required
               minLength={15}
               placeholder="Document findings, tools used, and justification for this decision…"
+              className="min-h-[100px]"
             />
           </div>
 

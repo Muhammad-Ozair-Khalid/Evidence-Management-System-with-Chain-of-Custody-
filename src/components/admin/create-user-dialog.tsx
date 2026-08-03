@@ -86,26 +86,29 @@ export function CreateUserDialog() {
           Invite / Create User
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Create user</DialogTitle>
-          <DialogDescription>
-            Generates a temporary password shown once. Ask the user to change it
-            on first login via Account Settings.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-md overflow-hidden p-0">
+        <div className="border-b border-accent-admin/20 bg-accent-admin/[0.08] px-6 py-4">
+          <DialogHeader>
+            <DialogTitle>Create user</DialogTitle>
+            <DialogDescription>
+              Generates a temporary password shown once. Ask the user to change
+              it on first login via Account Settings.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
+        <div className="px-6 py-5">
         {tempPassword ? (
           <div className="space-y-4">
             <div
               role="status"
-              className="rounded-md border border-accent-admin/30 bg-accent-admin/10 px-3 py-2 text-sm"
+              className="rounded-xl border border-accent-admin/30 bg-accent-admin/10 px-3 py-3 text-sm"
             >
               Account created for{" "}
               <span className="font-medium">{createdEmail}</span>.
             </div>
             <div>
-              <Label>Temporary password</Label>
+              <Label>Temporary password — copy now</Label>
               <div className="mt-1.5 flex gap-2">
                 <Input
                   readOnly
@@ -126,8 +129,7 @@ export function CreateUserDialog() {
                 </Button>
               </div>
               <p className="mt-2 text-xs text-accent-integrity">
-                This password is shown once and cannot be retrieved again. Copy
-                it now and tell the user to change it after signing in.
+                This password is shown once and cannot be retrieved again.
               </p>
             </div>
             <Button
@@ -190,6 +192,10 @@ export function CreateUserDialog() {
                   </option>
                 ))}
               </select>
+              <p className="mt-1.5 text-[11px] text-muted-ems">
+                CUSTODIAN hold · EXAMINER register · SUPERVISOR resolve · ADMIN
+                users
+              </p>
             </div>
 
             {error ? (
@@ -211,6 +217,7 @@ export function CreateUserDialog() {
             </Button>
           </form>
         )}
+        </div>
       </DialogContent>
     </Dialog>
   );
