@@ -14,7 +14,7 @@ import { prisma } from "@/lib/prisma";
 function orgName() {
   return (
     process.env.ORGANIZATION_NAME?.trim() ||
-    "NCERT Forensic Evidence Unit (letterhead placeholder)"
+    "NCERT Forensic Evidence Unit"
   );
 }
 

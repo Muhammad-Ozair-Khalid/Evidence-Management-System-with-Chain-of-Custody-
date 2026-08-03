@@ -16,6 +16,7 @@
     "db:studio": "prisma studio",
     "smoke": "tsx scripts/smoke-verify.tsx",
     "test:hash": "tsx scripts/test-register-hash.tsx",
+    "test:demo": "tsx scripts/demo-checklist-verify.tsx",
     "postinstall": "prisma generate"
   },
   "prisma": {
