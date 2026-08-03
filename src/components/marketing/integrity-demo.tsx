@@ -42,7 +42,7 @@ export function IntegrityDemo({ className }: { className?: string }) {
   return (
     <Reveal
       className={cn(
-        "relative overflow-hidden rounded-xl border border-white/10 bg-[#0d1118] p-6 sm:p-8",
+        "relative overflow-hidden rounded-xl border border-[#f0b4b6]/50 bg-gradient-to-br from-[#fff8f8] via-white to-[#f4f6f5] p-6 shadow-sm sm:p-8",
         !matched && "animate-shake",
         className
       )}
@@ -55,7 +55,7 @@ export function IntegrityDemo({ className }: { className?: string }) {
           >
             Integrity check
           </p>
-          <p className="mt-1 font-display text-lg font-semibold text-white">
+          <p className="mt-1 font-display text-lg font-semibold text-[#14201a]">
             Re-hash on every custody move
           </p>
         </div>
@@ -64,8 +64,8 @@ export function IntegrityDemo({ className }: { className?: string }) {
           className={cn(
             "flex items-center gap-2 rounded-lg px-3 py-1.5 transition-colors duration-500",
             matched
-              ? "bg-[#107C10]/20 text-[#7CB894]"
-              : "bg-[#D13438]/20 text-[#F87171]"
+              ? "bg-[#107C10]/12 text-[#0B5C2E]"
+              : "bg-[#D13438]/12 text-[#A4262C]"
           )}
         >
           {matched ? (
@@ -85,7 +85,7 @@ export function IntegrityDemo({ className }: { className?: string }) {
           style={{
             color: integrityColor,
             borderColor: `${integrityColor}55`,
-            backgroundColor: `${integrityColor}18`,
+            backgroundColor: `${integrityColor}12`,
           }}
         >
           <Flag className="h-3 w-3" aria-hidden />
@@ -107,7 +107,7 @@ export function IntegrityDemo({ className }: { className?: string }) {
         />
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-[#9aa0a6]">
+      <p className="mt-5 text-sm leading-relaxed text-[#5f6d66]">
         {matched
           ? "Hashes align — custody may proceed without escalation."
           : "Byte-level drift detected — movement blocked until a supervisor resolves the flag."}
@@ -130,7 +130,7 @@ function HashPanel({
   return (
     <div
       className={cn(
-        "rounded-lg border border-white/10 bg-white/[0.03] p-4 transition-colors duration-500",
+        "rounded-lg border border-[#dde5e0] bg-white/90 p-4 transition-colors duration-500",
         highlight && "border-[#D13438]/40 bg-[#D13438]/5"
       )}
     >
@@ -141,7 +141,7 @@ function HashPanel({
         {label}
       </p>
       <p
-        className="mt-2 break-all font-mono text-sm text-white sm:text-base"
+        className="mt-2 break-all font-mono text-sm text-[#14201a] sm:text-base"
         title={hash}
       >
         {truncateHash(hash)}

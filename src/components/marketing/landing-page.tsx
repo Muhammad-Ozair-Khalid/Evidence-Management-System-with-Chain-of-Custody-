@@ -11,7 +11,6 @@ import { FaqAccordion } from "@/components/marketing/faq-accordion";
 import { HeroChain } from "@/components/marketing/hero-chain";
 import { IntegrityDemo } from "@/components/marketing/integrity-demo";
 import { LiveChainDemo } from "@/components/marketing/live-chain-demo";
-import { PakistanFlagBadge } from "@/components/marketing/pakistan-flag";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteNav } from "@/components/marketing/site-nav";
 import { TechStackBand } from "@/components/marketing/tech-stack-band";
@@ -49,134 +48,44 @@ const CAPABILITIES = [
 ];
 
 const MODULE_LIST = [
-  {
-    key: "evidence" as const,
-    blurb: "Inventory of exhibits with status pills and intake hashes.",
-  },
-  {
-    key: "custody" as const,
-    blurb: "Global ledger and per-item timeline of every event.",
-  },
-  {
-    key: "integrity" as const,
-    blurb: "Mismatch review queue with supervisor resolution.",
-  },
-  {
-    key: "reports" as const,
-    blurb: "LaTeX-style printable custody PDFs per item or case.",
-  },
-  {
-    key: "audit" as const,
-    blurb: "System-wide, filterable, exportable activity log.",
-  },
-  {
-    key: "admin" as const,
-    blurb: "Users, roles, soft-deactivation — ADMIN only.",
-  },
+  { key: "evidence" as const, blurb: "Inventory of exhibits with status pills and intake hashes." },
+  { key: "custody" as const, blurb: "Global ledger and per-item timeline of every event." },
+  { key: "integrity" as const, blurb: "Mismatch review queue with supervisor resolution." },
+  { key: "reports" as const, blurb: "LaTeX-style printable custody PDFs per item or case." },
+  { key: "audit" as const, blurb: "System-wide, filterable, exportable activity log." },
+  { key: "admin" as const, blurb: "Users, roles, soft-deactivation — ADMIN only." },
 ];
 
 const STEPS = [
-  {
-    n: "01",
-    title: "Intake",
-    body: "Register the exhibit, capture location, and lock the original SHA-256.",
-    color: MODULES.evidence.hex,
-  },
-  {
-    n: "02",
-    title: "Handoff",
-    body: "Transfer or examine with a required reason; custodian updates automatically.",
-    color: MODULES.custody.hex,
-  },
-  {
-    n: "03",
-    title: "Integrity",
-    body: "Recompute the hash. Match continues the chain; mismatch escalates.",
-    color: MODULES.integrity.hex,
-  },
-  {
-    n: "04",
-    title: "Report",
-    body: "Generate a formal custody PDF reflecting the trail as of that moment.",
-    color: MODULES.reports.hex,
-  },
+  { n: "01", title: "Intake", body: "Register the exhibit, capture location, and lock the original SHA-256.", color: MODULES.evidence.hex },
+  { n: "02", title: "Handoff", body: "Transfer or examine with a required reason; custodian updates automatically.", color: MODULES.custody.hex },
+  { n: "03", title: "Integrity", body: "Recompute the hash. Match continues the chain; mismatch escalates.", color: MODULES.integrity.hex },
+  { n: "04", title: "Report", body: "Generate a formal custody PDF reflecting the trail as of that moment.", color: MODULES.reports.hex },
 ];
 
 const ROLES = [
-  {
-    role: "CUSTODIAN" as const,
-    title: "Custodian",
-    color: MODULES.admin.hex,
-    body: "Hold exhibits, log transfers and returns for items you currently hold.",
-  },
-  {
-    role: "EXAMINER" as const,
-    title: "Examiner",
-    color: MODULES.reports.hex,
-    body: "Register evidence, run examinations, request re-hash checks, generate reports.",
-  },
-  {
-    role: "SUPERVISOR" as const,
-    title: "Supervisor",
-    color: MODULES.custody.hex,
-    body: "Resolve integrity flags, view the full audit trail, oversee the ledger.",
-  },
-  {
-    role: "ADMIN" as const,
-    title: "Admin",
-    color: MODULES.dashboard.hex,
-    body: "Full access including user and role management.",
-  },
+  { role: "CUSTODIAN" as const, title: "Custodian", color: MODULES.admin.hex, body: "Hold exhibits, log transfers and returns for items you currently hold." },
+  { role: "EXAMINER" as const, title: "Examiner", color: MODULES.reports.hex, body: "Register evidence, run examinations, request re-hash checks, generate reports." },
+  { role: "SUPERVISOR" as const, title: "Supervisor", color: MODULES.custody.hex, body: "Resolve integrity flags, view the full audit trail, oversee the ledger." },
+  { role: "ADMIN" as const, title: "Admin", color: MODULES.dashboard.hex, body: "Full access including user and role management." },
 ];
 
 const TRUST = [
-  {
-    title: "Append-only audit",
-    body: "No update or delete APIs for the tamper-evident log — by design.",
-    color: MODULES.audit.hex,
-  },
-  {
-    title: "Server-side hashing only",
-    body: "Node crypto SHA-256 over stored buffers. Manual hashes require double-entry.",
-    color: MODULES.evidence.hex,
-  },
-  {
-    title: "Court-ready PDFs",
-    body: "Times-serif LaTeX/Overleaf layout with monospace hashes and signature lines.",
-    color: MODULES.reports.hex,
-  },
+  { title: "Append-only audit", body: "No update or delete APIs for the tamper-evident log — by design.", color: MODULES.audit.hex },
+  { title: "Server-side hashing only", body: "Node crypto SHA-256 over stored buffers. Manual hashes require double-entry.", color: MODULES.evidence.hex },
+  { title: "Court-ready PDFs", body: "Times-serif LaTeX/Overleaf layout with monospace hashes and signature lines.", color: MODULES.reports.hex },
 ];
 
 const HERO_WORDS = ["Digital", "evidence,", "provably", "intact."];
 
 const METRICS = [
-  {
-    label: "Hash algorithm",
-    value: 256,
-    suffix: "-bit",
-    prefix: "SHA-",
-    color: MODULES.evidence.hex,
-  },
-  {
-    label: "Roles enforced",
-    value: 4,
-    suffix: "",
-    color: MODULES.custody.hex,
-  },
-  {
-    label: "Core modules",
-    value: 6,
-    suffix: "",
-    color: MODULES.audit.hex,
-  },
-  {
-    label: "Audit mode",
-    value: 1,
-    suffix: "",
-    display: "Append-only",
-    color: MODULES.integrity.hex,
-  },
+  { label: "Hash algorithm", value: 256, suffix: "-bit", prefix: "SHA-", color: MODULES.evidence.hex },
+  { label: "Roles enforced", value: 4, suffix: "", color: MODULES.custody.hex },
+  { label: "Core modules", value: 6, suffix: "", color: MODULES.audit.hex },
+  { label: "Audit mode", value: 1, suffix: "", display: "Append-only", color: MODULES.integrity.hex },
 ];
+
+const LOGIN = "/login?callbackUrl=%2Fdashboard";
 
 function SectionEyebrow({
   children,
@@ -197,7 +106,7 @@ function SectionEyebrow({
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#F7F8FA] sm:text-[2.15rem] sm:leading-[1.15]">
+    <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#14201a] sm:text-[2.15rem] sm:leading-[1.15]">
       {children}
     </h2>
   );
@@ -205,7 +114,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 function SectionLead({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#C5CCD6]">
+    <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#5f6d66]">
       {children}
     </p>
   );
@@ -216,57 +125,39 @@ export function LandingPage() {
     <div className="marketing-ink min-h-screen">
       <SiteNav />
 
-      {/* Hero — one composition */}
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-100" />
-        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-50" />
+        <div className="pointer-events-none absolute inset-0 mesh-brand" />
+        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-70" />
         <div
-          className="pointer-events-none absolute -left-32 top-16 h-96 w-96 animate-float rounded-full bg-accent-custody/25 blur-3xl"
+          className="pointer-events-none absolute -left-24 top-10 h-80 w-80 animate-float rounded-full bg-[#c48a00]/15 blur-3xl"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 animate-float rounded-full bg-accent-audit/20 blur-3xl"
+          className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 animate-float rounded-full bg-[#00b7c3]/12 blur-3xl"
           style={{ animationDelay: "1.4s" }}
           aria-hidden
         />
 
-        {/* Small Pakistan flag — side accent with soft float */}
-        <PakistanFlagBadge className="right-4 top-6 sm:right-8 sm:top-10 lg:right-12 lg:top-14" />
-
-        <div className="relative mx-auto grid max-w-6xl gap-14 px-4 pb-20 pt-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-28">
+        <div className="relative mx-auto grid max-w-6xl gap-14 px-4 pb-20 pt-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-24">
           <div>
-            <div className="flex flex-wrap items-center gap-3">
-              <p
-                className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em]"
-                style={{ color: MODULES.custody.hex, animationDelay: "40ms" }}
-              >
-                NCERT Forensic Evidence Unit
-              </p>
-              <span
-                className="animate-fade hidden h-1 w-1 rounded-full bg-white/40 sm:inline-block"
-                style={{ animationDelay: "80ms" }}
-                aria-hidden
-              />
-              <p
-                className="animate-fade text-[11px] font-medium tracking-wide text-[#D2D8E0]"
-                style={{ animationDelay: "100ms" }}
-              >
-                Pakistan · Digital forensics
-              </p>
-            </div>
+            <p
+              className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em]"
+              style={{ color: MODULES.custody.hex, animationDelay: "40ms" }}
+            >
+              NCERT Forensic Evidence Unit
+            </p>
 
-            {/* Brand lockup — sequenced mark → letters → tagline */}
             <h1 className="mt-5">
               <span className="sr-only">
                 EMS — Digital evidence, provably intact.
               </span>
               <span aria-hidden="true" className="block">
-                <LogoWordmark sequenced variant="hero" />
+                <LogoWordmark sequenced variant="hero" light />
               </span>
             </h1>
 
             <p
-              className="mt-7 max-w-[18ch] font-display text-2xl font-bold leading-[1.25] tracking-tight text-[#F7F8FA] sm:text-[1.95rem]"
+              className="mt-7 max-w-[18ch] font-display text-2xl font-bold leading-[1.25] tracking-tight text-[#14201a] sm:text-[1.95rem]"
               aria-hidden="true"
             >
               {HERO_WORDS.map((word, i) => (
@@ -281,7 +172,7 @@ export function LandingPage() {
             </p>
 
             <p
-              className="mt-6 max-w-md animate-fade text-base leading-relaxed text-[#D5DBE4] sm:text-lg"
+              className="mt-6 max-w-md animate-fade text-base leading-relaxed text-[#5f6d66] sm:text-lg"
               style={{ animationDelay: "820ms" }}
             >
               Digital evidence inventory meets a tamper-evident chain of custody
@@ -294,15 +185,15 @@ export function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-white px-7 text-[#121820] shadow-[0_10px_30px_-10px_rgba(255,255,255,0.35)] hover:bg-[#F0F2F5]"
+                className="bg-[#0b5c2e] px-7 text-white shadow-[0_12px_28px_-12px_rgba(11,92,46,0.55)] hover:bg-[#107c10]"
               >
-                <Link href="/login?callbackUrl=%2Fdashboard">Sign in to EMS</Link>
+                <Link href={LOGIN}>Sign in to EMS</Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white/25 bg-white/[0.04] text-white hover:border-white/40 hover:bg-white/[0.08]"
+                className="border-[#dde5e0] bg-white text-[#14201a] hover:bg-[#e8efe9]"
               >
                 <a href="#modules">Explore modules</a>
               </Button>
@@ -313,21 +204,25 @@ export function LandingPage() {
             className="relative animate-chain-in"
             style={{ animationDelay: "380ms" }}
           >
-            <div className="absolute -inset-4 rounded-3xl bg-white/[0.03] blur-xl" aria-hidden />
-            <HeroChain />
+            <div
+              className="absolute -inset-3 rounded-3xl bg-white/70 shadow-[0_30px_60px_-28px_rgba(20,32,26,0.25)] ring-1 ring-[#dde5e0]"
+              aria-hidden
+            />
+            <div className="relative rounded-2xl bg-white/80 p-4 backdrop-blur-sm">
+              <HeroChain />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Trust metrics band — below first viewport */}
-      <section className="relative border-y border-white/10 marketing-surface-alt">
-        <div className="marketing-section-rule absolute inset-x-0 top-0 opacity-70" />
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px sm:grid-cols-4">
+      <section className="relative border-y border-[#dde5e0] marketing-surface">
+        <div className="marketing-section-rule absolute inset-x-0 top-0" />
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-[#dde5e0] sm:grid-cols-4">
           {METRICS.map((m, i) => (
             <Reveal
               key={m.label}
               delayMs={i * 40}
-              className="px-5 py-8 text-center sm:px-6"
+              className="bg-white px-5 py-8 text-center sm:px-6"
             >
               <p
                 className="font-display text-xl font-bold tracking-tight sm:text-2xl"
@@ -341,7 +236,7 @@ export function LandingPage() {
                   </>
                 )}
               </p>
-              <p className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-[#A8B0BC]">
+              <p className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-[#7a8880]">
                 {m.label}
               </p>
             </Reveal>
@@ -349,8 +244,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Live demos */}
-      <section className="marketing-surface">
+      <section className="marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.custody.hex}>Live demos</SectionEyebrow>
@@ -362,22 +256,28 @@ export function LandingPage() {
           </Reveal>
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal delayMs={40}>
-              <div className="overflow-hidden rounded-2xl border border-white/12 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-1 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.45)]">
-                <div className="rounded-[14px] border border-white/10 bg-[#1c2430]/95 p-4 sm:p-5">
-                  <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent-custody">
+              <div className="overflow-hidden rounded-2xl border border-[#dde5e0] bg-white p-1 shadow-[0_18px_40px_-24px_rgba(20,32,26,0.35)]">
+                <div className="rounded-[14px] border border-[#e8efe9] bg-[#fafbfa] p-4 sm:p-5">
+                  <p
+                    className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em]"
+                    style={{ color: MODULES.custody.hex }}
+                  >
                     Custody chain
                   </p>
-                  <LiveChainDemo className="rounded-lg border-white/10 bg-transparent p-4 shadow-none sm:p-5" />
+                  <LiveChainDemo className="rounded-lg border-[#dde5e0] bg-white p-4 shadow-none sm:p-5" />
                 </div>
               </div>
             </Reveal>
             <Reveal delayMs={100}>
-              <div className="overflow-hidden rounded-2xl border border-white/12 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-1 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.45)]">
-                <div className="rounded-[14px] border border-white/10 bg-[#1c2430]/95 p-4 sm:p-5">
-                  <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent-integrity">
+              <div className="overflow-hidden rounded-2xl border border-[#dde5e0] bg-white p-1 shadow-[0_18px_40px_-24px_rgba(20,32,26,0.35)]">
+                <div className="rounded-[14px] border border-[#e8efe9] bg-[#fafbfa] p-4 sm:p-5">
+                  <p
+                    className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em]"
+                    style={{ color: MODULES.integrity.hex }}
+                  >
                     Integrity check
                   </p>
-                  <IntegrityDemo className="rounded-lg border-white/10 bg-transparent p-4 shadow-none sm:p-5" />
+                  <IntegrityDemo className="rounded-lg border-[#dde5e0] bg-white p-4 shadow-none sm:p-5" />
                 </div>
               </div>
             </Reveal>
@@ -385,13 +285,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Capabilities — editorial rails */}
-      <section id="capabilities" className="border-t border-white/10">
+      <section id="capabilities" className="border-t border-[#dde5e0] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow color={MODULES.evidence.hex}>
-              Capabilities
-            </SectionEyebrow>
+            <SectionEyebrow color={MODULES.evidence.hex}>Capabilities</SectionEyebrow>
             <SectionTitle>
               Everything the brief requires — and nothing silent.
             </SectionTitle>
@@ -409,19 +306,16 @@ export function LandingPage() {
                   style={{ ["--rail" as string]: accent }}
                 >
                   <span
-                    className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-white/15"
-                    style={{
-                      backgroundColor: `${accent}22`,
-                      color: accent,
-                    }}
+                    className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-[#dde5e0]"
+                    style={{ backgroundColor: `${accent}14`, color: accent }}
                   >
                     <Icon className="h-5 w-5" aria-hidden />
                   </span>
                   <div>
-                    <h3 className="font-display text-lg font-semibold tracking-tight text-[#F7F8FA]">
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-[#14201a]">
                       {title}
                     </h3>
-                    <p className="mt-2 text-[15px] leading-relaxed text-[#C5CCD6]">
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#5f6d66]">
                       {body}
                     </p>
                   </div>
@@ -432,11 +326,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Modules */}
-      <section
-        id="modules"
-        className="border-t border-white/10 marketing-surface-alt"
-      >
+      <section id="modules" className="border-t border-[#dde5e0] marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.dashboard.hex}>Modules</SectionEyebrow>
@@ -453,11 +343,11 @@ export function LandingPage() {
               return (
                 <Reveal key={key} as="li" delayMs={i * 40}>
                   <div
-                    className="group relative h-full overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.02] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/[0.04]"
+                    className="group relative h-full overflow-hidden rounded-xl border border-[#dde5e0] bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c5d0c9] hover:shadow-[0_14px_28px_-18px_rgba(20,32,26,0.35)]"
                     style={{ ["--glow" as string]: `${mod.hex}40` }}
                   >
                     <span
-                      className="absolute left-0 top-0 h-full w-[3px] transition-shadow duration-300 group-hover:shadow-[0_0_18px_var(--glow)]"
+                      className="absolute left-0 top-0 h-full w-[3px] transition-shadow duration-300 group-hover:shadow-[0_0_16px_var(--glow)]"
                       style={{ backgroundColor: mod.hex }}
                       aria-hidden
                     />
@@ -467,7 +357,7 @@ export function LandingPage() {
                     >
                       {mod.label}
                     </p>
-                    <p className="mt-2.5 pl-1 text-sm leading-relaxed text-[#D0D6DE]">
+                    <p className="mt-2.5 pl-1 text-sm leading-relaxed text-[#5f6d66]">
                       {blurb}
                     </p>
                   </div>
@@ -478,13 +368,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how-it-works" className="border-t border-white/10">
+      <section id="how-it-works" className="border-t border-[#dde5e0] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow color={MODULES.custody.hex}>
-              How it works
-            </SectionEyebrow>
+            <SectionEyebrow color={MODULES.custody.hex}>How it works</SectionEyebrow>
             <SectionTitle>Intake to courtroom-ready report</SectionTitle>
           </Reveal>
 
@@ -498,15 +385,10 @@ export function LandingPage() {
               aria-hidden
             />
             {STEPS.map((step, i) => (
-              <Reveal
-                key={step.n}
-                as="li"
-                delayMs={i * 70}
-                className="relative"
-              >
+              <Reveal key={step.n} as="li" delayMs={i * 70} className="relative">
                 <p
                   className="font-display text-4xl font-bold tabular-nums tracking-tight"
-                  style={{ color: `${step.color}66` }}
+                  style={{ color: `${step.color}55` }}
                 >
                   {step.n}
                 </p>
@@ -516,7 +398,7 @@ export function LandingPage() {
                 >
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#C5CCD6]">
+                <p className="mt-2 text-sm leading-relaxed text-[#5f6d66]">
                   {step.body}
                 </p>
               </Reveal>
@@ -525,8 +407,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Roles */}
-      <section id="roles" className="border-t border-white/10 marketing-surface-alt">
+      <section id="roles" className="border-t border-[#dde5e0] marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.admin.hex}>Roles</SectionEyebrow>
@@ -541,7 +422,7 @@ export function LandingPage() {
             {ROLES.map(({ role, title, body, color }, i) => (
               <Reveal key={role} as="li" delayMs={i * 50}>
                 <div
-                  className="editorial-rail h-full"
+                  className="editorial-rail h-full rounded-lg bg-white/60 p-4 ring-1 ring-[#dde5e0]"
                   style={{ ["--rail" as string]: color }}
                 >
                   <div className="flex items-center gap-2">
@@ -553,10 +434,10 @@ export function LandingPage() {
                       {role}
                     </span>
                   </div>
-                  <h3 className="mt-3 font-display text-base font-semibold text-[#F7F8FA]">
+                  <h3 className="mt-3 font-display text-base font-semibold text-[#14201a]">
                     {title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#C5CCD6]">
+                  <p className="mt-2 text-sm leading-relaxed text-[#5f6d66]">
                     {body}
                   </p>
                 </div>
@@ -566,8 +447,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Trust */}
-      <section id="trust" className="border-t border-white/10">
+      <section id="trust" className="border-t border-[#dde5e0] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.audit.hex}>Trust</SectionEyebrow>
@@ -586,7 +466,7 @@ export function LandingPage() {
                   >
                     {t.title}
                   </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-[#C5CCD6]">
+                  <p className="mt-2.5 text-sm leading-relaxed text-[#5f6d66]">
                     {t.body}
                   </p>
                 </div>
@@ -596,8 +476,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Stack */}
-      <section className="border-t border-white/10 marketing-surface-alt">
+      <section className="border-t border-[#dde5e0] marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
           <Reveal>
             <SectionEyebrow color={MODULES.dashboard.hex}>Stack</SectionEyebrow>
@@ -609,16 +488,14 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="border-t border-white/10">
+      <section id="faq" className="border-t border-[#dde5e0] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <FaqAccordion />
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative overflow-hidden border-t border-white/10 marketing-surface">
-        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-50" />
+      <section className="relative overflow-hidden border-t border-[#dde5e0] marketing-surface-alt">
+        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-80" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 lg:py-24">
           <Reveal>
             <ClipboardList
@@ -626,10 +503,10 @@ export function LandingPage() {
               style={{ color: MODULES.custody.hex }}
               aria-hidden
             />
-            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#F7F8FA] sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#14201a] sm:text-4xl">
               Ready to walk the chain
             </h2>
-            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[#C5CCD6]">
+            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[#5f6d66]">
               Sign in with a demo account — examiner, custodian, supervisor, or
               admin — and run the full custody loop end to end.
             </p>
@@ -637,12 +514,12 @@ export function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-white px-8 text-[#121820] hover:bg-[#F0F2F5]"
+                className="bg-[#0b5c2e] px-8 text-white hover:bg-[#107c10]"
               >
-                <Link href="/login?callbackUrl=%2Fdashboard">Sign in</Link>
+                <Link href={LOGIN}>Sign in</Link>
               </Button>
             </div>
-            <p className="mt-7 font-mono text-xs text-[#A8B0BC]">
+            <p className="mt-7 font-mono text-xs text-[#7a8880]">
               admin@ems.local · Password123!
             </p>
           </Reveal>

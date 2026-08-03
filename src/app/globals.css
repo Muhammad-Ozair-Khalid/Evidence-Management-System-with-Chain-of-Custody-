@@ -102,21 +102,16 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Readable selection — never force dark ink on dark marketing surfaces */
+  /* Readable selection — marketing is light paper */
   ::selection {
     background-color: rgba(61, 154, 95, 0.35);
     color: #ffffff;
   }
 
-  .light ::selection {
-    background-color: rgba(11, 92, 46, 0.22);
+  .light ::selection,
+  .marketing-ink ::selection {
+    background-color: rgba(11, 92, 46, 0.2);
     color: #14201a;
-  }
-
-  .marketing-ink ::selection,
-  .mesh-brand ::selection {
-    background-color: rgba(61, 154, 95, 0.45);
-    color: #ffffff;
   }
 
   :focus-visible {
@@ -307,31 +302,41 @@
 
   .mesh-brand {
     background-image:
+      radial-gradient(ellipse 70% 55% at 12% 20%, rgba(16, 124, 16, 0.12), transparent 58%),
+      radial-gradient(ellipse 55% 45% at 88% 12%, rgba(196, 138, 0, 0.1), transparent 55%),
+      radial-gradient(ellipse 50% 50% at 70% 90%, rgba(0, 183, 195, 0.08), transparent 55%),
+      linear-gradient(165deg, #f4f6f5 0%, #eef3ef 45%, #f7f8f7 100%);
+    background-size: 200% 200%;
+    animation: gradientPan 18s ease infinite;
+  }
+
+  .mesh-brand-dark {
+    background-image:
       radial-gradient(ellipse 70% 55% at 15% 25%, rgba(61, 154, 95, 0.28), transparent 58%),
       radial-gradient(ellipse 55% 45% at 85% 15%, rgba(196, 138, 0, 0.18), transparent 55%),
       radial-gradient(ellipse 50% 50% at 70% 85%, rgba(0, 183, 195, 0.12), transparent 55%),
-      linear-gradient(160deg, #121820 0%, #152018 42%, #141a22 100%);
+      linear-gradient(160deg, #0b0e14 0%, #0d1510 42%, #0b0e14 100%);
     background-size: 200% 200%;
     animation: gradientPan 16s ease infinite;
   }
 
   .marketing-ink {
-    background-color: #121820;
-    color: #f2f4f7;
+    background-color: #f4f6f5;
+    color: #14201a;
   }
 
   .marketing-surface {
-    background-color: #171e28;
+    background-color: #ffffff;
   }
 
   .marketing-surface-alt {
-    background-color: #1a222e;
+    background-color: #eef2ef;
   }
 
   .marketing-grid {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(11, 92, 46, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(11, 92, 46, 0.06) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
@@ -339,26 +344,13 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(196, 138, 0, 0.5) 18%,
-      rgba(61, 154, 95, 0.45) 50%,
-      rgba(0, 183, 195, 0.4) 82%,
+      rgba(196, 138, 0, 0.45) 18%,
+      rgba(16, 124, 16, 0.4) 50%,
+      rgba(0, 183, 195, 0.35) 82%,
       transparent
     );
     height: 1px;
     width: 100%;
-  }
-
-  .pakistan-flag-badge {
-    animation: floatSlow 7s ease-in-out infinite;
-  }
-
-  .pakistan-flag-glow {
-    background: radial-gradient(
-      circle,
-      rgba(1, 65, 28, 0.55) 0%,
-      rgba(255, 255, 255, 0.12) 45%,
-      transparent 70%
-    );
   }
 
   .logo-sequence .logo-seq-mark {

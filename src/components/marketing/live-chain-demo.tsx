@@ -32,16 +32,16 @@ export function LiveChainDemo({ className }: { className?: string }) {
   return (
     <Reveal
       className={cn(
-        "mesh-brand relative overflow-hidden rounded-xl border border-white/10 p-6 sm:p-8",
+        "relative overflow-hidden rounded-xl border border-[#e8c56a]/40 bg-gradient-to-br from-[#fffbf0] via-white to-[#f4f6f5] p-6 shadow-sm sm:p-8",
         className
       )}
     >
       <div
-        className="pointer-events-none absolute inset-0 opacity-40"
+        className="pointer-events-none absolute inset-0 opacity-50"
         aria-hidden
       >
-        <div className="absolute -left-8 top-0 h-32 w-32 rounded-full bg-accent-custody/25 blur-3xl" />
-        <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-accent-custody/20 blur-3xl" />
+        <div className="absolute -left-8 top-0 h-32 w-32 rounded-full bg-accent-custody/20 blur-3xl" />
+        <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-brand/15 blur-3xl" />
       </div>
 
       <div className="relative">
@@ -51,10 +51,10 @@ export function LiveChainDemo({ className }: { className?: string }) {
         >
           Live custody loop
         </p>
-        <p className="mt-1 font-display text-lg font-semibold text-white">
+        <p className="mt-1 font-display text-lg font-semibold text-[#14201a]">
           Chain of custody in motion
         </p>
-        <p className="mt-1 text-sm text-[#9aa0a6]">
+        <p className="mt-1 text-sm text-[#5f6d66]">
           Each handoff is logged with handler, timestamp, and integrity check.
         </p>
 
@@ -77,7 +77,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
                 <div className="flex w-full items-center">
                   {i > 0 && (
                     <div
-                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-white/10"
+                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-[#dde5e0]"
                       aria-hidden
                     >
                       <div
@@ -85,7 +85,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
                         style={{
                           width: connectorFilled ? "100%" : "0%",
                           backgroundColor: STEPS[i - 1].color,
-                          opacity: connectorFilled ? 0.85 : 0,
+                          opacity: connectorFilled ? 0.9 : 0,
                         }}
                       />
                     </div>
@@ -95,13 +95,15 @@ export function LiveChainDemo({ className }: { className?: string }) {
                     className={cn(
                       "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-500 sm:h-11 sm:w-11",
                       isActive && "glow-ring scale-105",
-                      !isActive && !isComplete && "border-white/15 bg-white/[0.04]"
+                      !isActive &&
+                        !isComplete &&
+                        "border-[#dde5e0] bg-white"
                     )}
                     style={
                       isActive || isComplete
                         ? {
                             borderColor: step.color,
-                            backgroundColor: `${step.color}22`,
+                            backgroundColor: `${step.color}18`,
                             ["--glow" as string]: step.color,
                           }
                         : undefined
@@ -117,7 +119,9 @@ export function LiveChainDemo({ className }: { className?: string }) {
                     <span
                       className={cn(
                         "relative font-display text-sm font-bold tabular-nums",
-                        isActive || isComplete ? "text-white" : "text-[#6b7280]"
+                        isActive || isComplete
+                          ? "text-[#14201a]"
+                          : "text-[#8a9690]"
                       )}
                     >
                       {i + 1}
@@ -126,7 +130,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
 
                   {i < STEPS.length - 1 && (
                     <div
-                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-white/10"
+                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-[#dde5e0]"
                       aria-hidden
                     >
                       <div
@@ -134,7 +138,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
                         style={{
                           width: isComplete ? "100%" : isActive ? "50%" : "0%",
                           backgroundColor: step.color,
-                          opacity: isComplete || isActive ? 0.85 : 0,
+                          opacity: isComplete || isActive ? 0.9 : 0,
                         }}
                       />
                     </div>
@@ -144,7 +148,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
                 <p
                   className={cn(
                     "mt-3 text-center text-[11px] font-semibold uppercase tracking-[0.06em] sm:text-xs",
-                    isActive ? "text-white" : "text-[#9aa0a6]"
+                    isActive ? "text-[#14201a]" : "text-[#5f6d66]"
                   )}
                   style={isActive ? { color: step.color } : undefined}
                 >
@@ -155,16 +159,18 @@ export function LiveChainDemo({ className }: { className?: string }) {
           })}
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-black/20 px-4 py-2.5">
+        <div className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-[#e8c56a]/35 bg-white/80 px-4 py-2.5">
           <span
-            className="h-2 w-2 rounded-full animate-pulse"
+            className="h-2 w-2 animate-pulse rounded-full"
             style={{ backgroundColor: STEPS[activeIndex].color }}
             aria-hidden
           />
-          <p className="font-mono text-xs text-[#C7CBD1]">
+          <p className="font-mono text-xs text-[#5f6d66]">
             Event:{" "}
-            <span className="text-white">{STEPS[activeIndex].label}</span>
-            <span className="text-[#6b7280]"> · </span>
+            <span className="font-semibold text-[#14201a]">
+              {STEPS[activeIndex].label}
+            </span>
+            <span className="text-[#8a9690]"> · </span>
             SHA-256 verified
           </p>
         </div>

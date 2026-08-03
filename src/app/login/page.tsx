@@ -87,9 +87,9 @@ function BrandPanel() {
   }, []);
 
   return (
-    <div className="relative hidden overflow-hidden border-r border-white/[0.06] p-10 lg:flex lg:flex-col lg:justify-between">
-      <div className="pointer-events-none absolute inset-0 mesh-brand" />
-      <div className="pointer-events-none absolute inset-0 marketing-grid opacity-35" />
+    <div className="relative hidden overflow-hidden border-r border-white/[0.08] p-10 lg:flex lg:flex-col lg:justify-between">
+      <div className="pointer-events-none absolute inset-0 mesh-brand-dark" />
+      <div className="pointer-events-none absolute inset-0 marketing-grid opacity-20" />
       <div
         className="pointer-events-none absolute right-16 top-1/3 h-28 w-28 animate-pulse-ring rounded-full border border-brand/35"
         style={{ ["--glow" as string]: "rgba(61,154,95,0.4)" }}
@@ -230,7 +230,7 @@ function LoginForm() {
       </Link>
 
       <div className="mb-8 lg:hidden">
-        <LogoWordmark sequenced />
+        <LogoWordmark sequenced light />
       </div>
 
       <h1 className="font-display text-3xl font-bold tracking-tight text-canvas-foreground">

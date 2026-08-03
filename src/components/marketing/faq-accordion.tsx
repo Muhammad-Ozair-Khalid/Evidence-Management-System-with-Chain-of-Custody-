@@ -35,7 +35,7 @@ export function FaqAccordion({ className }: { className?: string }) {
         >
           FAQ
         </p>
-        <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-[2.15rem]">
+        <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#14201a] sm:text-[2.15rem]">
           Common questions
         </h2>
       </Reveal>
@@ -43,18 +43,18 @@ export function FaqAccordion({ className }: { className?: string }) {
       <div className="mx-auto mt-12 max-w-3xl space-y-2">
         {FAQS.map(({ q, a }, i) => (
           <Reveal key={q} as="article" delayMs={i * 45}>
-            <details className="group border-b border-white/[0.08] transition-colors open:border-[#8764B8]/40">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display text-[15px] font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
+            <details className="group border-b border-[#dde5e0] transition-colors open:border-[#8764B8]/50">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display text-[15px] font-semibold text-[#14201a] marker:content-none [&::-webkit-details-marker]:hidden">
                 <span className="text-left">{q}</span>
                 <span
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/10 text-sm text-[#9aa0a6] transition-all duration-200 group-open:rotate-45 group-open:border-[#8764B8]/50 group-open:text-[#8764B8]"
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#dde5e0] text-sm text-[#5f6d66] transition-all duration-200 group-open:rotate-45 group-open:border-[#8764B8]/50 group-open:text-[#8764B8]"
                   aria-hidden
                 >
                   +
                 </span>
               </summary>
               <div className="pb-5 pr-10">
-                <p className="text-sm leading-relaxed text-[#C5CCD6]">{a}</p>
+                <p className="text-sm leading-relaxed text-[#5f6d66]">{a}</p>
               </div>
             </details>
           </Reveal>
