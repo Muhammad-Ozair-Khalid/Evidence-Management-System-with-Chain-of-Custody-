@@ -12,28 +12,24 @@ const STACK = [
 
 export function TechStackBand({ className }: { className?: string }) {
   return (
-    <Reveal className={cn("w-full", className)}>
-      <p className="text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-        Built with
-      </p>
-      <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {STACK.map(({ name, detail }, i) => (
-          <li key={name}>
-            <Reveal
-              as="article"
-              delayMs={i * 60}
-              className="group flex h-full flex-col items-center rounded-xl border border-white/10 bg-white/[0.03] px-4 py-5 text-center transition-colors hover:border-white/20 hover:bg-white/[0.05]"
-            >
-              <p className="font-display text-sm font-semibold text-white">
-                {name}
-              </p>
-              <p className="mt-1 text-[11px] leading-snug text-[#9aa0a6]">
-                {detail}
-              </p>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
-    </Reveal>
+    <ul
+      className={cn(
+        "grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.04] sm:grid-cols-3 lg:grid-cols-6",
+        className
+      )}
+    >
+      {STACK.map(({ name, detail }, i) => (
+        <Reveal key={name} as="li" delayMs={i * 50}>
+          <article className="flex h-full flex-col items-center bg-[#0B0E14] px-4 py-6 text-center transition-colors hover:bg-[#10151c]">
+            <p className="font-display text-sm font-semibold text-white">
+              {name}
+            </p>
+            <p className="mt-1.5 text-[11px] leading-snug text-[#8B9199]">
+              {detail}
+            </p>
+          </article>
+        </Reveal>
+      ))}
+    </ul>
   );
 }

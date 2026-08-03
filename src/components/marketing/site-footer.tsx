@@ -3,35 +3,44 @@ import { LogoMark } from "@/components/logo";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#080a0e] text-[#9aa0a6]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+    <footer className="border-t border-white/[0.07] bg-[#07090c] text-[#8B9199]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:items-start sm:justify-between sm:px-6">
         <div className="flex items-start gap-3">
-          <LogoMark size={32} />
+          <LogoMark size={36} />
           <div>
-            <p className="font-display text-sm font-bold text-white">EMS</p>
-            <p className="mt-1 max-w-sm text-[13px] leading-relaxed">
+            <p className="font-display text-base font-bold tracking-tight text-white">
+              EMS
+            </p>
+            <p className="mt-1.5 max-w-sm text-[13px] leading-relaxed">
               Evidence Management System with Chain of Custody — NCERT Forensic
               Evidence Unit.
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-6 text-sm">
-          <a href="#capabilities" className="hover:text-white">
+        <div className="flex flex-wrap gap-x-8 gap-y-3 text-[13px]">
+          <a
+            href="#capabilities"
+            className="transition-colors hover:text-white"
+          >
             Capabilities
           </a>
-          <a href="#modules" className="hover:text-white">
+          <a href="#modules" className="transition-colors hover:text-white">
             Modules
           </a>
-          <a href="#roles" className="hover:text-white">
+          <a href="#roles" className="transition-colors hover:text-white">
             Roles
           </a>
-          <Link href="/login" className="hover:text-white">
+          <a href="#faq" className="transition-colors hover:text-white">
+            FAQ
+          </a>
+          <Link href="/login" className="transition-colors hover:text-white">
             Sign in
           </Link>
         </div>
       </div>
-      <div className="border-t border-white/5 py-4 text-center text-[11px] tracking-wide">
+      <div className="marketing-section-rule opacity-60" />
+      <div className="py-5 text-center text-[11px] tracking-[0.06em] text-[#6B7280]">
         Digital evidence inventory · Tamper-evident custody ledger · Append-only
         audit
       </div>

@@ -13,7 +13,7 @@ import {
   Loader2,
   ShieldCheck,
 } from "lucide-react";
-import { LogoMark } from "@/components/logo";
+import { LogoWordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -47,7 +47,7 @@ const DEMO_ACCOUNTS = [
 function HashMotif() {
   return (
     <div
-      className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.16]"
+      className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.14]"
       aria-hidden
     >
       <div className="absolute -right-8 top-20 font-mono text-[11px] leading-6 text-brand-soft">
@@ -66,7 +66,7 @@ function HashMotif() {
           </p>
         ))}
       </div>
-      <div className="absolute bottom-16 left-10 h-px w-40 bg-gradient-to-r from-brand to-transparent" />
+      <div className="absolute bottom-16 left-10 h-px w-44 bg-gradient-to-r from-brand to-transparent" />
       <div className="absolute bottom-16 left-10 h-16 w-px bg-gradient-to-t from-brand/60 to-transparent" />
     </div>
   );
@@ -76,6 +76,10 @@ function BrandPanel() {
   const [activeHighlight, setActiveHighlight] = useState(0);
 
   useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
     const id = setInterval(() => {
       setActiveHighlight((v) => (v + 1) % HIGHLIGHTS.length);
     }, 3200);
@@ -83,55 +87,52 @@ function BrandPanel() {
   }, []);
 
   return (
-    <div className="relative hidden overflow-hidden p-10 lg:flex lg:flex-col lg:justify-between">
+    <div className="relative hidden overflow-hidden border-r border-white/[0.06] p-10 lg:flex lg:flex-col lg:justify-between">
       <div className="pointer-events-none absolute inset-0 mesh-brand" />
-      <div className="pointer-events-none absolute inset-0 marketing-grid opacity-40" />
+      <div className="pointer-events-none absolute inset-0 marketing-grid opacity-35" />
       <div
-        className="pointer-events-none absolute right-16 top-1/3 h-24 w-24 animate-pulse-ring rounded-full border border-brand/40"
-        style={{ ["--glow" as string]: "rgba(11,92,46,0.45)" }}
+        className="pointer-events-none absolute right-16 top-1/3 h-28 w-28 animate-pulse-ring rounded-full border border-brand/35"
+        style={{ ["--glow" as string]: "rgba(61,154,95,0.4)" }}
         aria-hidden
       />
       <HashMotif />
 
-      <Link href="/" className="relative flex items-center gap-3">
-        <LogoMark size={36} />
-        <div className="leading-tight">
-          <p className="font-display text-sm font-bold text-white">EMS</p>
-          <p className="text-[11px] text-sidebar-muted">Chain of Custody</p>
-        </div>
+      <Link href="/" className="relative" aria-label="EMS home">
+        <LogoWordmark sequenced />
       </Link>
 
       <div className="relative max-w-md">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-soft">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-soft">
           NCERT Forensic Evidence Unit
         </p>
-        <h2 className="mt-3 font-display text-[28px] font-bold leading-tight tracking-tight text-white">
-          Digital evidence, provably intact.
+        <h2 className="mt-3 font-display text-[1.85rem] font-bold leading-[1.15] tracking-tight text-white">
+          Digital evidence,{" "}
+          <span className="text-brand-soft">provably intact.</span>
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-sidebar-text">
+        <p className="mt-3 text-sm leading-relaxed text-[#A8AEB6]">
           A forensic inventory and custody ledger built so that every exhibit can
           answer one question without ambiguity: who held it, when, and was it
           altered?
         </p>
 
-        <ul className="mt-8 space-y-4">
+        <ul className="mt-9 space-y-3">
           {HIGHLIGHTS.map(({ icon: Icon, title, body }, i) => {
             const active = i === activeHighlight;
             return (
               <li
                 key={title}
                 className={cn(
-                  "flex gap-3 rounded-lg border p-3 transition-all duration-300",
+                  "flex gap-3 rounded-xl border p-3.5 transition-all duration-500",
                   active
-                    ? "border-brand/40 bg-brand/10"
-                    : "border-transparent opacity-55"
+                    ? "border-brand/35 bg-brand/10 shadow-[0_0_24px_-8px_rgba(61,154,95,0.35)]"
+                    : "border-transparent opacity-50"
                 )}
               >
                 <span
                   className={cn(
-                    "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-1",
+                    "mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ring-1",
                     active
-                      ? "bg-brand/30 text-brand-soft ring-brand/40"
+                      ? "bg-brand/25 text-brand-soft ring-brand/35"
                       : "bg-white/5 text-sidebar-muted ring-white/10"
                   )}
                   aria-hidden
@@ -140,7 +141,7 @@ function BrandPanel() {
                 </span>
                 <div>
                   <p className="text-sm font-medium text-white">{title}</p>
-                  <p className="mt-0.5 text-[13px] leading-relaxed text-sidebar-muted">
+                  <p className="mt-0.5 text-[13px] leading-relaxed text-[#8B9199]">
                     {body}
                   </p>
                 </div>
@@ -150,7 +151,7 @@ function BrandPanel() {
         </ul>
       </div>
 
-      <p className="relative text-[11px] text-sidebar-muted">
+      <p className="relative text-[11px] tracking-wide text-[#6B7280]">
         NCERT Forensic Evidence Unit · Development environment
       </p>
     </div>
@@ -201,7 +202,9 @@ function LoginForm() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid email or password. Check your credentials and try again.");
+      setError(
+        "Invalid email or password. Check your credentials and try again."
+      );
       return;
     }
 
@@ -220,24 +223,24 @@ function LoginForm() {
     <div className="w-full max-w-sm">
       <Link
         href="/"
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+        className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-soft"
       >
         <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
         About EMS
       </Link>
 
       <div className="mb-8 lg:hidden">
-        <LogoMark size={40} />
+        <LogoWordmark sequenced />
       </div>
 
       <h1 className="font-display text-3xl font-bold tracking-tight text-canvas-foreground">
         Sign in
       </h1>
-      <p className="mt-1.5 text-muted-ems">
+      <p className="mt-1.5 text-sm text-muted-foreground">
         Use your issued EMS credentials to continue.
       </p>
 
-      <form onSubmit={onSubmit} className="mt-7 space-y-4" noValidate>
+      <form onSubmit={onSubmit} className="mt-8 space-y-4" noValidate>
         <div className="space-y-1.5">
           <label htmlFor="email" className="text-sm font-medium">
             Email
@@ -256,7 +259,7 @@ function LoginForm() {
             }}
             placeholder="you@ems.local"
             className={cn(
-              "h-10 transition-shadow focus-visible:shadow-[0_0_0_3px_rgba(11,92,46,0.18)]",
+              "h-11 border-border/80 bg-surface/60 transition-shadow focus-visible:shadow-[0_0_0_3px_rgba(61,154,95,0.22)]",
               fieldErrors.email && "border-accent-integrity"
             )}
             aria-invalid={Boolean(fieldErrors.email)}
@@ -285,7 +288,7 @@ function LoginForm() {
               }}
               placeholder="••••••••"
               className={cn(
-                "h-10 pr-10 transition-shadow focus-visible:shadow-[0_0_0_3px_rgba(11,92,46,0.18)]",
+                "h-11 border-border/80 bg-surface/60 pr-10 transition-shadow focus-visible:shadow-[0_0_0_3px_rgba(61,154,95,0.22)]",
                 fieldErrors.password && "border-accent-integrity"
               )}
               aria-invalid={Boolean(fieldErrors.password)}
@@ -323,7 +326,7 @@ function LoginForm() {
         <Button
           type="submit"
           className={cn(
-            "relative h-10 w-full overflow-hidden bg-brand text-white shadow-glow-brand hover:bg-brand-soft",
+            "relative h-11 w-full overflow-hidden bg-brand text-white shadow-glow-brand hover:bg-brand-soft",
             loading && "pointer-events-none"
           )}
           disabled={loading}
@@ -340,21 +343,21 @@ function LoginForm() {
         </Button>
       </form>
 
-      <div className="mt-8 rounded-md border border-dashed border-border bg-secondary/60 px-3.5 py-3">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+      <div className="mt-8 rounded-xl border border-dashed border-border/80 bg-secondary/40 px-4 py-3.5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
           Demo accounts
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
           Click a chip to fill credentials · password{" "}
           <span className="font-mono text-canvas-foreground">Password123!</span>
         </p>
-        <div className="mt-2.5 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {DEMO_ACCOUNTS.map((a) => (
             <button
               key={a.email}
               type="button"
               onClick={() => fillDemo(a.email)}
-              className="rounded-full border border-brand/25 bg-brand/10 px-2.5 py-1 text-xs font-medium text-brand transition-colors hover:bg-brand/20"
+              className="rounded-full border border-brand/30 bg-brand/10 px-3 py-1.5 text-xs font-medium text-brand-soft transition-colors hover:bg-brand/20"
             >
               {a.label}
             </button>
@@ -367,8 +370,8 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-canvas">
-      <div className="mx-auto grid min-h-screen w-full max-w-6xl lg:grid-cols-2 lg:overflow-hidden lg:rounded-none lg:shadow-elevated">
+    <div className="marketing-ink min-h-screen bg-canvas">
+      <div className="mx-auto grid min-h-screen w-full max-w-6xl lg:grid-cols-2">
         <BrandPanel />
         <div className="flex items-center justify-center px-6 py-12 sm:px-10">
           <Suspense
@@ -382,13 +385,13 @@ export default function LoginPage() {
                 <Card className="space-y-4 border-border/80 p-5 shadow-card">
                   <div className="space-y-2">
                     <div className="h-3 w-12 animate-shimmer rounded" />
-                    <div className="h-10 w-full animate-shimmer rounded-md" />
+                    <div className="h-11 w-full animate-shimmer rounded-md" />
                   </div>
                   <div className="space-y-2">
                     <div className="h-3 w-16 animate-shimmer rounded" />
-                    <div className="h-10 w-full animate-shimmer rounded-md" />
+                    <div className="h-11 w-full animate-shimmer rounded-md" />
                   </div>
-                  <div className="h-10 w-full animate-shimmer rounded-md" />
+                  <div className="h-11 w-full animate-shimmer rounded-md" />
                 </Card>
               </div>
             }

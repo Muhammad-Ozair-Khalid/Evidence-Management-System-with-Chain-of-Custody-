@@ -40,19 +40,30 @@ export function LogoMark({ className, size = 32 }: LogoMarkProps) {
 export function LogoWordmark({
   collapsed = false,
   light = false,
+  sequenced = false,
 }: {
   collapsed?: boolean;
   light?: boolean;
+  /** Staggered mark → word → tagline entrance for marketing surfaces */
+  sequenced?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2.5 overflow-hidden">
-      <LogoMark size={28} />
+    <div
+      className={cn(
+        "flex items-center gap-2.5 overflow-hidden",
+        sequenced && "logo-sequence"
+      )}
+    >
+      <span className={cn(sequenced && "logo-seq-mark inline-flex")}>
+        <LogoMark size={28} />
+      </span>
       {!collapsed ? (
         <div className="min-w-0 leading-tight">
           <p
             className={cn(
               "truncate font-display text-sm font-bold tracking-tight",
-              light ? "text-canvas-foreground" : "text-white"
+              light ? "text-canvas-foreground" : "text-white",
+              sequenced && "logo-seq-word"
             )}
           >
             EMS
@@ -60,7 +71,8 @@ export function LogoWordmark({
           <p
             className={cn(
               "truncate text-[11px]",
-              light ? "text-muted-foreground" : "text-sidebar-muted"
+              light ? "text-muted-foreground" : "text-sidebar-muted",
+              sequenced && "logo-seq-tag"
             )}
           >
             Chain of Custody

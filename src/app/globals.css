@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+  /* Default = NCERT dark ink theme. Light is opt-in via .light (toggle). */
   :root {
     --sidebar: #0b0e14;
     --sidebar-text: #c7cbd1;
@@ -10,19 +11,18 @@
     --sidebar-hover: #151a24;
     --sidebar-border: #1c2230;
 
-    /* NCERT-leaning paper canvas (slight green cast, not cream). */
-    --canvas: #f4f6f5;
-    --canvas-foreground: #14201a;
-    --surface: #ffffff;
-    --surface-foreground: #14201a;
-    --muted: #5f6d66;
-    --muted-foreground: #5f6d66;
-    --border: #dde5e0;
-    --ring: #0b5c2e;
+    --canvas: #10140f;
+    --canvas-foreground: #e8eaed;
+    --surface: #171c18;
+    --surface-foreground: #e8eaed;
+    --muted: #9aa39c;
+    --muted-foreground: #9aa39c;
+    --border: #2a332c;
+    --ring: #3d9a5f;
 
     --brand: #0b5c2e;
     --brand-foreground: #ffffff;
-    --brand-soft: #107c10;
+    --brand-soft: #3d9a5f;
 
     --accent-dashboard: #3f4a5a;
     --accent-evidence: #107c10;
@@ -36,43 +36,50 @@
     --foreground: var(--canvas-foreground);
     --card: var(--surface);
     --card-foreground: var(--surface-foreground);
+    --primary: #1a7a40;
+    --primary-foreground: #ffffff;
+    --secondary: #1f2821;
+    --secondary-foreground: #e8eaed;
+    --destructive: #d13438;
+    --destructive-foreground: #ffffff;
+    --input: #2a332c;
+    --radius: 0.5rem;
+
+    --scrollbar-thumb: #2f3a32;
+    --scrollbar-thumb-hover: #3f4d43;
+    --glow: rgba(61, 154, 95, 0.35);
+  }
+
+  .light {
+    --canvas: #f4f6f5;
+    --canvas-foreground: #14201a;
+    --surface: #ffffff;
+    --surface-foreground: #14201a;
+    --muted: #5f6d66;
+    --muted-foreground: #5f6d66;
+    --border: #dde5e0;
+    --ring: #0b5c2e;
+
+    --brand-soft: #107c10;
+
+    --background: var(--canvas);
+    --foreground: var(--canvas-foreground);
+    --card: var(--surface);
+    --card-foreground: var(--surface-foreground);
     --primary: #0b5c2e;
     --primary-foreground: #ffffff;
     --secondary: #e8efe9;
     --secondary-foreground: #14201a;
-    --destructive: #d13438;
-    --destructive-foreground: #ffffff;
     --input: #dde5e0;
-    --radius: 0.5rem;
 
     --scrollbar-thumb: #c5d0c9;
     --scrollbar-thumb-hover: #a8b7af;
     --glow: rgba(11, 92, 46, 0.35);
   }
 
+  /* Keep .dark as alias so existing classList.toggle("dark") still works */
   .dark {
-    --canvas: #10140f;
-    --canvas-foreground: #e8eaed;
-    --surface: #171c18;
-    --surface-foreground: #e8eaed;
-    --muted: #9aa39c;
-    --muted-foreground: #9aa39c;
-    --border: #2a332c;
-    --ring: #3d9a5f;
-
-    --background: var(--canvas);
-    --foreground: var(--canvas-foreground);
-    --card: var(--surface);
-    --card-foreground: var(--surface-foreground);
-    --primary: #1a7a40;
-    --primary-foreground: #ffffff;
-    --secondary: #1f2821;
-    --secondary-foreground: #e8eaed;
-    --input: #2a332c;
-
-    --scrollbar-thumb: #2f3a32;
-    --scrollbar-thumb-hover: #3f4d43;
-    --glow: rgba(61, 154, 95, 0.35);
+    /* inherits :root dark tokens */
   }
 
   * {
@@ -90,9 +97,21 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Readable selection — never force dark ink on dark marketing surfaces */
   ::selection {
-    background-color: color-mix(in srgb, var(--brand) 28%, transparent);
-    color: var(--canvas-foreground);
+    background-color: rgba(61, 154, 95, 0.35);
+    color: #ffffff;
+  }
+
+  .light ::selection {
+    background-color: rgba(11, 92, 46, 0.22);
+    color: #14201a;
+  }
+
+  .marketing-ink ::selection,
+  .mesh-brand ::selection {
+    background-color: rgba(61, 154, 95, 0.45);
+    color: #ffffff;
   }
 
   :focus-visible {
@@ -301,6 +320,49 @@
       linear-gradient(rgba(11, 92, 46, 0.08) 1px, transparent 1px),
       linear-gradient(90deg, rgba(11, 92, 46, 0.08) 1px, transparent 1px);
     background-size: 48px 48px;
+  }
+
+  .marketing-section-rule {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(61, 154, 95, 0.45) 20%,
+      rgba(196, 138, 0, 0.35) 50%,
+      rgba(61, 154, 95, 0.45) 80%,
+      transparent
+    );
+    height: 1px;
+    width: 100%;
+  }
+
+  .logo-sequence .logo-seq-mark {
+    animation: scaleIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .logo-sequence .logo-seq-word {
+    animation: revealUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 120ms;
+  }
+
+  .logo-sequence .logo-seq-tag {
+    animation: revealUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 220ms;
+  }
+
+  .editorial-rail {
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .editorial-rail::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--rail, var(--brand-soft));
   }
 }
 

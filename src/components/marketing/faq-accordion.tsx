@@ -26,36 +26,36 @@ const FAQS = [
 
 export function FaqAccordion({ className }: { className?: string }) {
   return (
-    <Reveal className={cn("w-full", className)}>
-      <div className="mx-auto max-w-3xl">
-        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
+    <div className={cn("w-full", className)}>
+      <Reveal>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-soft">
           FAQ
         </p>
-        <h2 className="mt-2 text-center font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+        <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-[2.15rem]">
           Common questions
         </h2>
+      </Reveal>
 
-        <div className="mt-10 space-y-3">
-          {FAQS.map(({ q, a }, i) => (
-            <Reveal key={q} as="article" delayMs={i * 50}>
-              <details className="group rounded-xl border border-white/10 bg-white/[0.03] transition-colors open:bg-white/[0.05]">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-display text-base font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
-                  <span>{q}</span>
-                  <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-white/10 text-[#9aa0a6] transition-transform duration-200 group-open:rotate-45 group-open:border-brand/40 group-open:text-brand-soft"
-                    aria-hidden
-                  >
-                    +
-                  </span>
-                </summary>
-                <div className="border-t border-white/10 px-5 pb-4 pt-3">
-                  <p className="text-sm leading-relaxed text-[#9aa0a6]">{a}</p>
-                </div>
-              </details>
-            </Reveal>
-          ))}
-        </div>
+      <div className="mx-auto mt-12 max-w-3xl space-y-2">
+        {FAQS.map(({ q, a }, i) => (
+          <Reveal key={q} as="article" delayMs={i * 45}>
+            <details className="group border-b border-white/[0.08] transition-colors open:border-brand/30">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display text-[15px] font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
+                <span className="text-left">{q}</span>
+                <span
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/10 text-sm text-[#9aa0a6] transition-all duration-200 group-open:rotate-45 group-open:border-brand/40 group-open:text-brand-soft"
+                  aria-hidden
+                >
+                  +
+                </span>
+              </summary>
+              <div className="pb-5 pr-10">
+                <p className="text-sm leading-relaxed text-[#9AA3AD]">{a}</p>
+              </div>
+            </details>
+          </Reveal>
+        ))}
       </div>
-    </Reveal>
+    </div>
   );
 }

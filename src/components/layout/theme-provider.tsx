@@ -19,20 +19,27 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function applyDomTheme(next: Theme) {
+  const root = document.documentElement;
+  root.classList.toggle("dark", next === "dark");
+  root.classList.toggle("light", next === "light");
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {
     const stored = window.localStorage.getItem("ems-theme") as Theme | null;
-    const initial = stored === "dark" || stored === "light" ? stored : "light";
+    // Default NCERT dark; light only when explicitly chosen
+    const initial = stored === "light" ? "light" : "dark";
     setThemeState(initial);
-    document.documentElement.classList.toggle("dark", initial === "dark");
+    applyDomTheme(initial);
   }, []);
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
     window.localStorage.setItem("ems-theme", next);
-    document.documentElement.classList.toggle("dark", next === "dark");
+    applyDomTheme(next);
   }, []);
 
   const toggleTheme = useCallback(() => {

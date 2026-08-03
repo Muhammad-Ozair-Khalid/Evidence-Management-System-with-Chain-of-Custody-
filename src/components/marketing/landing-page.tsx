@@ -47,19 +47,53 @@ const CAPABILITIES = [
 ];
 
 const MODULE_LIST = [
-  { key: "evidence" as const, blurb: "Inventory of exhibits with status pills and intake hashes." },
-  { key: "custody" as const, blurb: "Global ledger and per-item timeline of every event." },
-  { key: "integrity" as const, blurb: "Mismatch review queue with supervisor resolution." },
-  { key: "reports" as const, blurb: "LaTeX-style printable custody PDFs per item or case." },
-  { key: "audit" as const, blurb: "System-wide, filterable, exportable activity log." },
-  { key: "admin" as const, blurb: "Users, roles, soft-deactivation — ADMIN only." },
+  {
+    key: "evidence" as const,
+    blurb: "Inventory of exhibits with status pills and intake hashes.",
+  },
+  {
+    key: "custody" as const,
+    blurb: "Global ledger and per-item timeline of every event.",
+  },
+  {
+    key: "integrity" as const,
+    blurb: "Mismatch review queue with supervisor resolution.",
+  },
+  {
+    key: "reports" as const,
+    blurb: "LaTeX-style printable custody PDFs per item or case.",
+  },
+  {
+    key: "audit" as const,
+    blurb: "System-wide, filterable, exportable activity log.",
+  },
+  {
+    key: "admin" as const,
+    blurb: "Users, roles, soft-deactivation — ADMIN only.",
+  },
 ];
 
 const STEPS = [
-  { n: "01", title: "Intake", body: "Register the exhibit, capture location, and lock the original SHA-256." },
-  { n: "02", title: "Handoff", body: "Transfer or examine with a required reason; custodian updates automatically." },
-  { n: "03", title: "Integrity", body: "Recompute the hash. Match continues the chain; mismatch escalates." },
-  { n: "04", title: "Report", body: "Generate a formal custody PDF reflecting the trail as of that moment." },
+  {
+    n: "01",
+    title: "Intake",
+    body: "Register the exhibit, capture location, and lock the original SHA-256.",
+  },
+  {
+    n: "02",
+    title: "Handoff",
+    body: "Transfer or examine with a required reason; custodian updates automatically.",
+  },
+  {
+    n: "03",
+    title: "Integrity",
+    body: "Recompute the hash. Match continues the chain; mismatch escalates.",
+  },
+  {
+    n: "04",
+    title: "Report",
+    body: "Generate a formal custody PDF reflecting the trail as of that moment.",
+  },
 ];
 
 const ROLES = [
@@ -113,52 +147,85 @@ const METRICS = [
   { label: "Audit mode", value: 1, suffix: "", display: "Append-only" },
 ];
 
+function SectionEyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-soft">
+      {children}
+    </p>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-[2.15rem] sm:leading-[1.15]">
+      {children}
+    </h2>
+  );
+}
+
+function SectionLead({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#9AA3AD]">
+      {children}
+    </p>
+  );
+}
+
 export function LandingPage() {
   return (
     <div className="marketing-ink min-h-screen">
       <SiteNav />
 
+      {/* Hero — one composition */}
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-90" />
-        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-50" />
+        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-95" />
+        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-40" />
         <div
-          className="pointer-events-none absolute -left-32 top-20 h-80 w-80 animate-float rounded-full bg-brand/30 blur-3xl"
+          className="pointer-events-none absolute -left-32 top-16 h-96 w-96 animate-float rounded-full bg-brand/25 blur-3xl"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 animate-float rounded-full bg-accent-custody/20 blur-3xl"
-          style={{ animationDelay: "1.5s" }}
+          className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 animate-float rounded-full bg-accent-custody/15 blur-3xl"
+          style={{ animationDelay: "1.4s" }}
           aria-hidden
         />
 
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:pb-24 lg:pt-24">
+        <div className="relative mx-auto grid max-w-6xl gap-14 px-4 pb-20 pt-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-28">
           <div>
-            <p className="animate-fade text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-soft">
+            <p className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-soft">
               NCERT Forensic Evidence Unit
             </p>
-            <h1 className="mt-3 font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl">
-              <span className="block text-brand-soft">EMS</span>
-              <span className="mt-2 block text-[0.55em] font-bold sm:text-[0.5em]">
+            <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]">
+              <span className="block bg-gradient-to-r from-brand-soft via-[#5ecf7a] to-brand-soft bg-clip-text text-transparent">
+                EMS
+              </span>
+              <span className="mt-4 block max-w-[14ch] text-[0.42em] font-bold leading-[1.2] tracking-tight text-white sm:text-[0.4em]">
                 {HERO_WORDS.map((word, i) => (
                   <span
                     key={word}
                     className="mr-[0.28em] inline-block animate-reveal"
-                    style={{ animationDelay: `${120 + i * 80}ms` }}
+                    style={{ animationDelay: `${140 + i * 90}ms` }}
                   >
                     {word}
                   </span>
                 ))}
               </span>
             </h1>
-            <p className="mt-4 max-w-md animate-fade text-lg leading-relaxed text-[#C7CBD1]" style={{ animationDelay: "400ms" }}>
-              Digital evidence inventory meets a tamper-evident chain of
-              custody — who held it, when, and whether a single byte changed.
+            <p
+              className="mt-6 max-w-md animate-fade text-base leading-relaxed text-[#B8BEC6] sm:text-lg"
+              style={{ animationDelay: "480ms" }}
+            >
+              Digital evidence inventory meets a tamper-evident chain of custody
+              — who held it, when, and whether a single byte changed.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div
+              className="mt-9 flex flex-wrap items-center gap-3 animate-fade"
+              style={{ animationDelay: "560ms" }}
+            >
               <Button
                 asChild
                 size="lg"
-                className="bg-brand px-6 text-white shadow-glow-brand hover:bg-brand-soft"
+                className="bg-brand px-7 text-white shadow-glow-brand hover:bg-brand-soft"
               >
                 <Link href="/login">Sign in to EMS</Link>
               </Button>
@@ -166,94 +233,120 @@ export function LandingPage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white/20 bg-transparent text-white hover:bg-white/5"
+                className="border-white/15 bg-transparent text-white hover:border-white/25 hover:bg-white/[0.04]"
               >
                 <a href="#modules">Explore modules</a>
               </Button>
             </div>
-
-            <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {METRICS.map((m, i) => (
-                <li
-                  key={m.label}
-                  className="animate-reveal rounded-lg border border-white/10 bg-white/[0.04] px-3 py-3"
-                  style={{ animationDelay: `${500 + i * 60}ms` }}
-                >
-                  <p className="font-display text-lg font-bold text-white">
-                    {m.display ?? (
-                      <>
-                        {m.prefix}
-                        <AnimatedNumber value={m.value} />
-                        {m.suffix}
-                      </>
-                    )}
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-[#9aa0a6]">{m.label}</p>
-                </li>
-              ))}
-            </ul>
           </div>
 
-          <HeroChain />
+          <div className="animate-chain-in" style={{ animationDelay: "200ms" }}>
+            <HeroChain />
+          </div>
         </div>
       </section>
 
-      <section className="border-t border-white/10 bg-[#0d1118]">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      {/* Trust metrics band — below first viewport */}
+      <section className="relative border-y border-white/[0.06] bg-[#0a0d12]">
+        <div className="marketing-section-rule absolute inset-x-0 top-0 opacity-40" />
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px sm:grid-cols-4">
+          {METRICS.map((m, i) => (
+            <Reveal
+              key={m.label}
+              delayMs={i * 40}
+              className="px-5 py-7 text-center sm:px-6"
+            >
+              <p className="font-display text-xl font-bold tracking-tight text-white sm:text-2xl">
+                {m.display ?? (
+                  <>
+                    {m.prefix}
+                    <AnimatedNumber value={m.value} />
+                    {m.suffix}
+                  </>
+                )}
+              </p>
+              <p className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-[#7A828C]">
+                {m.label}
+              </p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Live demos */}
+      <section className="bg-[#0B0E14]">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              Live demos
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              See the chain and the check
-            </h2>
+            <SectionEyebrow>Live demos</SectionEyebrow>
+            <SectionTitle>See the chain and the check</SectionTitle>
+            <SectionLead>
+              Interactive previews of custody flow and hash integrity — the same
+              ideas the lab uses end to end.
+            </SectionLead>
           </Reveal>
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal delayMs={40}>
-              <LiveChainDemo />
+              <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent p-1 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.7)]">
+                <div className="rounded-[14px] border border-white/[0.06] bg-[#0d1118]/90 p-4 sm:p-5">
+                  <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent-custody">
+                    Custody chain
+                  </p>
+                  <LiveChainDemo className="rounded-lg border-white/[0.06] bg-transparent p-4 shadow-none sm:p-5" />
+                </div>
+              </div>
             </Reveal>
             <Reveal delayMs={100}>
-              <IntegrityDemo />
+              <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent p-1 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.7)]">
+                <div className="rounded-[14px] border border-white/[0.06] bg-[#0d1118]/90 p-4 sm:p-5">
+                  <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-accent-integrity">
+                    Integrity check
+                  </p>
+                  <IntegrityDemo className="rounded-lg border-white/[0.06] bg-transparent p-4 shadow-none sm:p-5" />
+                </div>
+              </div>
             </Reveal>
           </div>
         </div>
       </section>
 
-      <section id="capabilities" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      {/* Capabilities — editorial rails */}
+      <section id="capabilities" className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              Capabilities
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
+            <SectionEyebrow>Capabilities</SectionEyebrow>
+            <SectionTitle>
               Everything the brief requires — and nothing silent.
-            </h2>
-            <p className="mt-3 max-w-2xl text-[#9aa0a6]">
+            </SectionTitle>
+            <SectionLead>
               Register, track, verify, and report. Every state change leaves an
               audit trail that cannot be quietly rewritten.
-            </p>
+            </SectionLead>
           </Reveal>
 
-          <ul className="mt-12 grid gap-8 sm:grid-cols-2">
+          <ul className="mt-14 grid gap-10 sm:grid-cols-2">
             {CAPABILITIES.map(({ title, body, accent, icon: Icon }, i) => (
-              <Reveal key={title} as="li" delayMs={i * 50} className="flex gap-4">
-                <span
-                  className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ring-1 ring-white/10"
-                  style={{
-                    backgroundColor: `${accent}22`,
-                    color: accent,
-                    ["--glow" as string]: `${accent}55`,
-                  }}
+              <Reveal key={title} as="li" delayMs={i * 50}>
+                <div
+                  className="editorial-rail flex gap-4"
+                  style={{ ["--rail" as string]: accent }}
                 >
-                  <Icon className="h-5 w-5" aria-hidden />
-                </span>
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-white">
-                    {title}
-                  </h3>
-                  <p className="mt-1.5 text-[15px] leading-relaxed text-[#9aa0a6]">
-                    {body}
-                  </p>
+                  <span
+                    className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-white/10"
+                    style={{
+                      backgroundColor: `${accent}18`,
+                      color: accent,
+                    }}
+                  >
+                    <Icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-white">
+                      {title}
+                    </h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#9AA3AD]">
+                      {body}
+                    </p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -261,42 +354,42 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="modules" className="border-t border-white/10 bg-[#0d1118]">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      {/* Modules */}
+      <section
+        id="modules"
+        className="border-t border-white/[0.06] bg-[#0a0d12]"
+      >
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              Modules
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              Colour-coded command surface
-            </h2>
-            <p className="mt-3 max-w-2xl text-[#9aa0a6]">
-              Each module carries a distinct accent so operators always know where
-              they are.
-            </p>
+            <SectionEyebrow>Modules</SectionEyebrow>
+            <SectionTitle>Colour-coded command surface</SectionTitle>
+            <SectionLead>
+              Each module carries a distinct accent so operators always know
+              where they are.
+            </SectionLead>
           </Reveal>
 
-          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {MODULE_LIST.map(({ key, blurb }, i) => {
               const mod = MODULES[key];
               return (
                 <Reveal key={key} as="li" delayMs={i * 40}>
                   <div
-                    className="group relative h-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-all duration-200 hover:-translate-y-1 hover:bg-white/[0.06]"
-                    style={{ ["--glow" as string]: `${mod.hex}55` }}
+                    className="group relative h-full overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.02] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-white/[0.04]"
+                    style={{ ["--glow" as string]: `${mod.hex}40` }}
                   >
                     <span
-                      className="absolute left-0 top-0 h-full w-1 transition-shadow group-hover:shadow-[0_0_12px_var(--glow)]"
+                      className="absolute left-0 top-0 h-full w-[3px] transition-shadow duration-300 group-hover:shadow-[0_0_18px_var(--glow)]"
                       style={{ backgroundColor: mod.hex }}
                       aria-hidden
                     />
                     <p
-                      className="text-[11px] font-semibold uppercase tracking-[0.08em]"
+                      className="pl-1 text-[11px] font-semibold uppercase tracking-[0.1em]"
                       style={{ color: mod.hex }}
                     >
                       {mod.label}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-[#C7CBD1]">
+                    <p className="mt-2.5 pl-1 text-sm leading-relaxed text-[#C2C8D0]">
                       {blurb}
                     </p>
                   </div>
@@ -307,27 +400,33 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="how-it-works" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      {/* How it works */}
+      <section id="how-it-works" className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              How it works
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              Intake to courtroom-ready report
-            </h2>
+            <SectionEyebrow>How it works</SectionEyebrow>
+            <SectionTitle>Intake to courtroom-ready report</SectionTitle>
           </Reveal>
 
-          <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="relative mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            <div
+              className="pointer-events-none absolute left-[12%] right-[12%] top-5 hidden h-px bg-gradient-to-r from-brand/0 via-brand/40 to-brand/0 lg:block"
+              aria-hidden
+            />
             {STEPS.map((step, i) => (
-              <Reveal key={step.n} as="li" delayMs={i * 60} className="relative">
-                <p className="font-display text-3xl font-bold text-brand/50">
+              <Reveal
+                key={step.n}
+                as="li"
+                delayMs={i * 70}
+                className="relative"
+              >
+                <p className="font-display text-4xl font-bold tabular-nums tracking-tight text-brand/35">
                   {step.n}
                 </p>
-                <h3 className="mt-2 font-display text-lg font-semibold text-white">
+                <h3 className="mt-3 font-display text-lg font-semibold text-white">
                   {step.title}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[#9aa0a6]">
+                <p className="mt-2 text-sm leading-relaxed text-[#9AA3AD]">
                   {step.body}
                 </p>
               </Reveal>
@@ -336,41 +435,38 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="roles" className="border-t border-white/10 bg-[#0d1118]">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      {/* Roles */}
+      <section id="roles" className="border-t border-white/[0.06] bg-[#0a0d12]">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              Roles
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              Access matched to the lab floor
-            </h2>
-            <p className="mt-3 max-w-2xl text-[#9aa0a6]">
+            <SectionEyebrow>Roles</SectionEyebrow>
+            <SectionTitle>Access matched to the lab floor</SectionTitle>
+            <SectionLead>
               Permissions are enforced in middleware and again in every server
               action — hiding a button is never enough.
-            </p>
+            </SectionLead>
           </Reveal>
 
-          <ul className="mt-12 grid gap-5 sm:grid-cols-2">
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {ROLES.map(({ role, title, body, color }, i) => (
               <Reveal key={role} as="li" delayMs={i * 50}>
                 <div
-                  className="h-full rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-all duration-200 hover:-translate-y-1 hover:bg-white/[0.06]"
-                  style={{ ["--glow" as string]: `${color}44` }}
+                  className="editorial-rail h-full"
+                  style={{ ["--rail" as string]: color }}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <Users className="h-4 w-4" style={{ color }} aria-hidden />
                     <span
-                      className="rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
-                      style={{ color, backgroundColor: `${color}22` }}
+                      className="text-[10px] font-bold uppercase tracking-[0.12em]"
+                      style={{ color }}
                     >
                       {role}
                     </span>
-                    <h3 className="font-display text-base font-semibold text-white">
-                      {title}
-                    </h3>
                   </div>
-                  <p className="mt-3 text-sm leading-relaxed text-[#9aa0a6]">
+                  <h3 className="mt-3 font-display text-base font-semibold text-white">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#9AA3AD]">
                     {body}
                   </p>
                 </div>
@@ -380,40 +476,39 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="trust" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      {/* Trust */}
+      <section id="trust" className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              Trust
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              Built so discrepancies cannot hide
-            </h2>
+            <SectionEyebrow>Trust</SectionEyebrow>
+            <SectionTitle>Built so discrepancies cannot hide</SectionTitle>
           </Reveal>
-          <ul className="mt-12 grid gap-8 md:grid-cols-3">
+          <ul className="mt-14 grid gap-10 md:grid-cols-3">
             {TRUST.map((t, i) => (
               <Reveal key={t.title} as="li" delayMs={i * 60}>
-                <h3 className="font-display text-lg font-semibold text-white">
-                  {t.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#9aa0a6]">
-                  {t.body}
-                </p>
+                <div
+                  className="editorial-rail"
+                  style={{ ["--rail" as string]: "#3d9a5f" }}
+                >
+                  <h3 className="font-display text-lg font-semibold text-white">
+                    {t.title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-[#9AA3AD]">
+                    {t.body}
+                  </p>
+                </div>
               </Reveal>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="border-t border-white/10 bg-[#0d1118]">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      {/* Stack */}
+      <section className="border-t border-white/[0.06] bg-[#0a0d12]">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
           <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              Stack
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              Built on proven foundations
-            </h2>
+            <SectionEyebrow>Stack</SectionEyebrow>
+            <SectionTitle>Built on proven foundations</SectionTitle>
           </Reveal>
           <div className="mt-10">
             <TechStackBand />
@@ -421,46 +516,39 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="faq" className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <Reveal>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
-              FAQ
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white">
-              Common questions
-            </h2>
-          </Reveal>
-          <div className="mt-10">
-            <FaqAccordion />
-          </div>
+      {/* FAQ */}
+      <section id="faq" className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
+          <FaqAccordion />
         </div>
       </section>
 
-      <section className="border-t border-white/10 bg-[#0d1118]">
-        <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
+      {/* CTA */}
+      <section className="relative overflow-hidden border-t border-white/[0.06] bg-[#0a0d12]">
+        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-40" />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 lg:py-24">
           <Reveal>
             <ClipboardList
-              className="mx-auto h-8 w-8 text-brand-soft"
+              className="mx-auto h-9 w-9 text-brand-soft"
               aria-hidden
             />
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-white">
+            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Ready to walk the chain
             </h2>
-            <p className="mx-auto mt-3 max-w-lg text-[#9aa0a6]">
+            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[#9AA3AD]">
               Sign in with a demo account — examiner, custodian, supervisor, or
               admin — and run the full custody loop end to end.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <Button
                 asChild
                 size="lg"
-                className="bg-brand px-6 text-white shadow-glow-brand hover:bg-brand-soft"
+                className="bg-brand px-8 text-white shadow-glow-brand hover:bg-brand-soft"
               >
                 <Link href="/login">Sign in</Link>
               </Button>
             </div>
-            <p className="mt-6 font-mono text-xs text-[#6b7280]">
+            <p className="mt-7 font-mono text-xs text-[#6B7280]">
               admin@ems.local · Password123!
             </p>
           </Reveal>
