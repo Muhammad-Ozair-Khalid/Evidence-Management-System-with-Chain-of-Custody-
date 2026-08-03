@@ -28,6 +28,9 @@ export function SiteFooter() {
           <a href="#modules" className="transition-colors hover:text-[#3d9a5f]">
             Modules
           </a>
+          <a href="#playbook" className="transition-colors hover:text-[#3d9a5f]">
+            Playbook
+          </a>
           <a href="#roles" className="transition-colors hover:text-[#3d9a5f]">
             Roles
           </a>

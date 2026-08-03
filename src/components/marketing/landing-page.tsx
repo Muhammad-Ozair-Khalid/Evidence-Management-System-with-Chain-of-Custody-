@@ -11,6 +11,7 @@ import { FaqAccordion } from "@/components/marketing/faq-accordion";
 import { HeroChain } from "@/components/marketing/hero-chain";
 import { IntegrityDemo } from "@/components/marketing/integrity-demo";
 import { LiveChainDemo } from "@/components/marketing/live-chain-demo";
+import { PlaybookSection } from "@/components/marketing/playbook-section";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteNav } from "@/components/marketing/site-nav";
 import { TechStackBand } from "@/components/marketing/tech-stack-band";
@@ -465,6 +466,13 @@ export function LandingPage() {
           <div className="mt-10">
             <TechStackBand />
           </div>
+        </div>
+      </section>
+
+      <section id="playbook" className="relative overflow-hidden border-t border-[#1a3d28] marketing-surface-alt">
+        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-30" />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
+          <PlaybookSection />
         </div>
       </section>
 

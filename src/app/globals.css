@@ -616,6 +616,53 @@
   }
 }
 
+@keyframes playbookPop {
+  0% {
+    transform: scale(0.86);
+    opacity: 0.5;
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes playbookPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-playbook-pop {
+  animation: playbookPop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-playbook-panel {
+  animation: playbookPanelIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.playbook-card {
+  transform-origin: center top;
+  will-change: transform, box-shadow;
+}
+
+.playbook-step {
+  animation: playbookPanelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.playbook-pop {
+  animation: playbookPanelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--pop-delay, 0ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
