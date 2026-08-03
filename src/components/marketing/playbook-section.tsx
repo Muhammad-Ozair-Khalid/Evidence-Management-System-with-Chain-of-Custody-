@@ -10,7 +10,6 @@ import {
   Play,
   Server,
   Shield,
-  Terminal,
   Users,
 } from "lucide-react";
 import { Reveal } from "@/components/ui-ems/reveal";
@@ -66,65 +65,6 @@ const CHAPTERS: Chapter[] = [
           Built for the NCERT Digital Forensics internship (Group 2) — Project 1
           brief: register, chain of custody, re-hash, reports, RBAC, audit.
         </p>
-      </div>
-    ),
-  },
-  {
-    id: "run",
-    title: "How to run locally",
-    blurb: "Install → Postgres → migrate → seed → npm run dev",
-    accent: MODULES.evidence.hex,
-    icon: Terminal,
-    body: (
-      <div className="space-y-4 text-[14px] leading-relaxed text-[#9bb0a3]">
-        <ol className="space-y-3">
-          {[
-            { cmd: "npm install", note: "Install dependencies" },
-            { cmd: "npm run db:up", note: "Start Postgres via Docker" },
-            {
-              cmd: "cp .env.example .env",
-              note: "Set DATABASE_URL, NEXTAUTH_URL, NEXTAUTH_SECRET",
-            },
-            {
-              cmd: "npx prisma migrate dev && npm run db:seed",
-              note: "Schema + demo users",
-            },
-            {
-              cmd: "npm run dev",
-              note: "Open http://localhost:3000 — landing, then Sign in",
-            },
-          ].map((step, i) => (
-            <li
-              key={step.cmd}
-              className="playbook-step flex gap-3 rounded-xl border border-[#1a3d28] bg-[#06140c]/80 p-3"
-              style={{ animationDelay: `${i * 60}ms` }}
-            >
-              <span
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg font-display text-sm font-bold text-[#06140c]"
-                style={{ backgroundColor: MODULES.evidence.hex }}
-              >
-                {i + 1}
-              </span>
-              <div className="min-w-0">
-                <code className="block overflow-x-auto font-mono text-[12px] text-[#7cb894]">
-                  {step.cmd}
-                </code>
-                <p className="mt-1 text-[13px]">{step.note}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <div className="rounded-xl border border-[#2a5a3c]/50 bg-[#0c2216] p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#3d9a5f]">
-            Env essentials
-          </p>
-          <ul className="mt-2 space-y-1 font-mono text-[12px] text-[#9bb0a3]">
-            <li>DATABASE_URL — Postgres connection</li>
-            <li>NEXTAUTH_URL — http://localhost:3000</li>
-            <li>NEXTAUTH_SECRET — long random string</li>
-            <li>STORAGE_MODE — local (default) or s3</li>
-          </ul>
-        </div>
       </div>
     ),
   },
@@ -554,12 +494,12 @@ export function PlaybookSection({ className }: { className?: string }) {
           Operator playbook
         </p>
         <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold tracking-tight text-[#e8f0ea] sm:text-[2.25rem] sm:leading-[1.15]">
-          Everything you need — what it is, how to run it, how to demo it
+          Everything you need — what it is, how to demo it, how it stays trusted
         </h2>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#9bb0a3]">
           Expand any chapter. Each panel pops forward with the full NCERT green
-          treatment — setup, accounts, hash rules, RBAC, modules, and trust
-          guarantees in one place.
+          treatment — accounts, hash rules, RBAC, modules, and trust guarantees
+          in one place.
         </p>
       </Reveal>
 
