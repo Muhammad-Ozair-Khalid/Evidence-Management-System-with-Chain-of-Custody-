@@ -78,21 +78,25 @@ const STEPS = [
     n: "01",
     title: "Intake",
     body: "Register the exhibit, capture location, and lock the original SHA-256.",
+    color: MODULES.evidence.hex,
   },
   {
     n: "02",
     title: "Handoff",
     body: "Transfer or examine with a required reason; custodian updates automatically.",
+    color: MODULES.custody.hex,
   },
   {
     n: "03",
     title: "Integrity",
     body: "Recompute the hash. Match continues the chain; mismatch escalates.",
+    color: MODULES.integrity.hex,
   },
   {
     n: "04",
     title: "Report",
     body: "Generate a formal custody PDF reflecting the trail as of that moment.",
+    color: MODULES.reports.hex,
   },
 ];
 
@@ -100,25 +104,25 @@ const ROLES = [
   {
     role: "CUSTODIAN" as const,
     title: "Custodian",
-    color: "#94A3B8",
+    color: MODULES.admin.hex,
     body: "Hold exhibits, log transfers and returns for items you currently hold.",
   },
   {
     role: "EXAMINER" as const,
     title: "Examiner",
-    color: "#A78BDB",
+    color: MODULES.reports.hex,
     body: "Register evidence, run examinations, request re-hash checks, generate reports.",
   },
   {
     role: "SUPERVISOR" as const,
     title: "Supervisor",
-    color: "#E0A800",
+    color: MODULES.custody.hex,
     body: "Resolve integrity flags, view the full audit trail, oversee the ledger.",
   },
   {
     role: "ADMIN" as const,
     title: "Admin",
-    color: "#A8B4C4",
+    color: MODULES.dashboard.hex,
     body: "Full access including user and role management.",
   },
 ];
@@ -127,29 +131,63 @@ const TRUST = [
   {
     title: "Append-only audit",
     body: "No update or delete APIs for the tamper-evident log — by design.",
+    color: MODULES.audit.hex,
   },
   {
     title: "Server-side hashing only",
     body: "Node crypto SHA-256 over stored buffers. Manual hashes require double-entry.",
+    color: MODULES.evidence.hex,
   },
   {
     title: "Court-ready PDFs",
     body: "Times-serif LaTeX/Overleaf layout with monospace hashes and signature lines.",
+    color: MODULES.reports.hex,
   },
 ];
 
 const HERO_WORDS = ["Digital", "evidence,", "provably", "intact."];
 
 const METRICS = [
-  { label: "Hash algorithm", value: 256, suffix: "-bit", prefix: "SHA-" },
-  { label: "Roles enforced", value: 4, suffix: "" },
-  { label: "Core modules", value: 6, suffix: "" },
-  { label: "Audit mode", value: 1, suffix: "", display: "Append-only" },
+  {
+    label: "Hash algorithm",
+    value: 256,
+    suffix: "-bit",
+    prefix: "SHA-",
+    color: MODULES.evidence.hex,
+  },
+  {
+    label: "Roles enforced",
+    value: 4,
+    suffix: "",
+    color: MODULES.custody.hex,
+  },
+  {
+    label: "Core modules",
+    value: 6,
+    suffix: "",
+    color: MODULES.audit.hex,
+  },
+  {
+    label: "Audit mode",
+    value: 1,
+    suffix: "",
+    display: "Append-only",
+    color: MODULES.integrity.hex,
+  },
 ];
 
-function SectionEyebrow({ children }: { children: React.ReactNode }) {
+function SectionEyebrow({
+  children,
+  color = MODULES.evidence.hex,
+}: {
+  children: React.ReactNode;
+  color?: string;
+}) {
   return (
-    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-soft">
+    <p
+      className="text-[11px] font-semibold uppercase tracking-[0.16em]"
+      style={{ color }}
+    >
       {children}
     </p>
   );
@@ -181,25 +219,26 @@ export function LandingPage() {
         <div className="pointer-events-none absolute inset-0 mesh-brand opacity-95" />
         <div className="pointer-events-none absolute inset-0 marketing-grid opacity-40" />
         <div
-          className="pointer-events-none absolute -left-32 top-16 h-96 w-96 animate-float rounded-full bg-brand/25 blur-3xl"
+          className="pointer-events-none absolute -left-32 top-16 h-96 w-96 animate-float rounded-full bg-accent-custody/20 blur-3xl"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 animate-float rounded-full bg-accent-custody/15 blur-3xl"
+          className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 animate-float rounded-full bg-accent-audit/15 blur-3xl"
           style={{ animationDelay: "1.4s" }}
           aria-hidden
         />
 
         <div className="relative mx-auto grid max-w-6xl gap-14 px-4 pb-20 pt-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-28">
           <div>
-            <p className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-soft">
+            <p
+              className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em]"
+              style={{ color: MODULES.custody.hex }}
+            >
               NCERT Forensic Evidence Unit
             </p>
             <h1 className="mt-4 font-display text-5xl font-extrabold leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]">
-              <span className="block bg-gradient-to-r from-brand-soft via-[#5ecf7a] to-brand-soft bg-clip-text text-transparent">
-                EMS
-              </span>
-              <span className="mt-4 block max-w-[14ch] text-[0.42em] font-bold leading-[1.2] tracking-tight text-white sm:text-[0.4em]">
+              <span className="block text-white">EMS</span>
+              <span className="mt-4 block max-w-[14ch] text-[0.42em] font-bold leading-[1.2] tracking-tight text-[#E8EAED] sm:text-[0.4em]">
                 {HERO_WORDS.map((word, i) => (
                   <span
                     key={word}
@@ -225,9 +264,9 @@ export function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-brand px-7 text-white shadow-glow-brand hover:bg-brand-soft"
+                className="bg-white px-7 text-[#0B0E14] hover:bg-[#E8EAED]"
               >
-                <Link href="/login">Sign in to EMS</Link>
+                <Link href="/login?callbackUrl=%2Fdashboard">Sign in to EMS</Link>
               </Button>
               <Button
                 asChild
@@ -256,7 +295,10 @@ export function LandingPage() {
               delayMs={i * 40}
               className="px-5 py-7 text-center sm:px-6"
             >
-              <p className="font-display text-xl font-bold tracking-tight text-white sm:text-2xl">
+              <p
+                className="font-display text-xl font-bold tracking-tight sm:text-2xl"
+                style={{ color: m.color }}
+              >
                 {m.display ?? (
                   <>
                     {m.prefix}
@@ -277,7 +319,7 @@ export function LandingPage() {
       <section className="bg-[#0B0E14]">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow>Live demos</SectionEyebrow>
+            <SectionEyebrow color={MODULES.custody.hex}>Live demos</SectionEyebrow>
             <SectionTitle>See the chain and the check</SectionTitle>
             <SectionLead>
               Interactive previews of custody flow and hash integrity — the same
@@ -313,7 +355,9 @@ export function LandingPage() {
       <section id="capabilities" className="border-t border-white/[0.06]">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow>Capabilities</SectionEyebrow>
+            <SectionEyebrow color={MODULES.evidence.hex}>
+              Capabilities
+            </SectionEyebrow>
             <SectionTitle>
               Everything the brief requires — and nothing silent.
             </SectionTitle>
@@ -361,7 +405,7 @@ export function LandingPage() {
       >
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow>Modules</SectionEyebrow>
+            <SectionEyebrow color={MODULES.dashboard.hex}>Modules</SectionEyebrow>
             <SectionTitle>Colour-coded command surface</SectionTitle>
             <SectionLead>
               Each module carries a distinct accent so operators always know
@@ -404,13 +448,19 @@ export function LandingPage() {
       <section id="how-it-works" className="border-t border-white/[0.06]">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow>How it works</SectionEyebrow>
+            <SectionEyebrow color={MODULES.custody.hex}>
+              How it works
+            </SectionEyebrow>
             <SectionTitle>Intake to courtroom-ready report</SectionTitle>
           </Reveal>
 
           <ol className="relative mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             <div
-              className="pointer-events-none absolute left-[12%] right-[12%] top-5 hidden h-px bg-gradient-to-r from-brand/0 via-brand/40 to-brand/0 lg:block"
+              className="pointer-events-none absolute left-[12%] right-[12%] top-5 hidden h-px lg:block"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, #C48A0066, #D1343866, #8764B866, transparent)",
+              }}
               aria-hidden
             />
             {STEPS.map((step, i) => (
@@ -420,10 +470,16 @@ export function LandingPage() {
                 delayMs={i * 70}
                 className="relative"
               >
-                <p className="font-display text-4xl font-bold tabular-nums tracking-tight text-brand/35">
+                <p
+                  className="font-display text-4xl font-bold tabular-nums tracking-tight"
+                  style={{ color: `${step.color}66` }}
+                >
                   {step.n}
                 </p>
-                <h3 className="mt-3 font-display text-lg font-semibold text-white">
+                <h3
+                  className="mt-3 font-display text-lg font-semibold"
+                  style={{ color: step.color }}
+                >
                   {step.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-[#9AA3AD]">
@@ -439,7 +495,7 @@ export function LandingPage() {
       <section id="roles" className="border-t border-white/[0.06] bg-[#0a0d12]">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow>Roles</SectionEyebrow>
+            <SectionEyebrow color={MODULES.admin.hex}>Roles</SectionEyebrow>
             <SectionTitle>Access matched to the lab floor</SectionTitle>
             <SectionLead>
               Permissions are enforced in middleware and again in every server
@@ -480,7 +536,7 @@ export function LandingPage() {
       <section id="trust" className="border-t border-white/[0.06]">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow>Trust</SectionEyebrow>
+            <SectionEyebrow color={MODULES.audit.hex}>Trust</SectionEyebrow>
             <SectionTitle>Built so discrepancies cannot hide</SectionTitle>
           </Reveal>
           <ul className="mt-14 grid gap-10 md:grid-cols-3">
@@ -488,9 +544,12 @@ export function LandingPage() {
               <Reveal key={t.title} as="li" delayMs={i * 60}>
                 <div
                   className="editorial-rail"
-                  style={{ ["--rail" as string]: "#3d9a5f" }}
+                  style={{ ["--rail" as string]: t.color }}
                 >
-                  <h3 className="font-display text-lg font-semibold text-white">
+                  <h3
+                    className="font-display text-lg font-semibold"
+                    style={{ color: t.color }}
+                  >
                     {t.title}
                   </h3>
                   <p className="mt-2.5 text-sm leading-relaxed text-[#9AA3AD]">
@@ -507,7 +566,7 @@ export function LandingPage() {
       <section className="border-t border-white/[0.06] bg-[#0a0d12]">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
           <Reveal>
-            <SectionEyebrow>Stack</SectionEyebrow>
+            <SectionEyebrow color={MODULES.dashboard.hex}>Stack</SectionEyebrow>
             <SectionTitle>Built on proven foundations</SectionTitle>
           </Reveal>
           <div className="mt-10">
@@ -529,7 +588,8 @@ export function LandingPage() {
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 lg:py-24">
           <Reveal>
             <ClipboardList
-              className="mx-auto h-9 w-9 text-brand-soft"
+              className="mx-auto h-9 w-9"
+              style={{ color: MODULES.custody.hex }}
               aria-hidden
             />
             <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -543,9 +603,9 @@ export function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-brand px-8 text-white shadow-glow-brand hover:bg-brand-soft"
+                className="bg-white px-8 text-[#0B0E14] hover:bg-[#E8EAED]"
               >
-                <Link href="/login">Sign in</Link>
+                <Link href="/login?callbackUrl=%2Fdashboard">Sign in</Link>
               </Button>
             </div>
             <p className="mt-7 font-mono text-xs text-[#6B7280]">

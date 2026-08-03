@@ -34,7 +34,10 @@ export function SiteFooter() {
           <a href="#faq" className="transition-colors hover:text-white">
             FAQ
           </a>
-          <Link href="/login" className="transition-colors hover:text-white">
+          <Link
+            href="/login?callbackUrl=%2Fdashboard"
+            className="transition-colors hover:text-white"
+          >
             Sign in
           </Link>
         </div>

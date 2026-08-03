@@ -49,7 +49,10 @@ export function IntegrityDemo({ className }: { className?: string }) {
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
+          <p
+            className="text-[11px] font-semibold uppercase tracking-[0.12em]"
+            style={{ color: "#D13438" }}
+          >
             Integrity check
           </p>
           <p className="mt-1 font-display text-lg font-semibold text-white">

@@ -40,12 +40,15 @@ export function LiveChainDemo({ className }: { className?: string }) {
         className="pointer-events-none absolute inset-0 opacity-40"
         aria-hidden
       >
-        <div className="absolute -left-8 top-0 h-32 w-32 rounded-full bg-brand/30 blur-3xl" />
+        <div className="absolute -left-8 top-0 h-32 w-32 rounded-full bg-accent-custody/25 blur-3xl" />
         <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-accent-custody/20 blur-3xl" />
       </div>
 
       <div className="relative">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-soft">
+        <p
+          className="text-[11px] font-semibold uppercase tracking-[0.12em]"
+          style={{ color: "#C48A00" }}
+        >
           Live custody loop
         </p>
         <p className="mt-1 font-display text-lg font-semibold text-white">

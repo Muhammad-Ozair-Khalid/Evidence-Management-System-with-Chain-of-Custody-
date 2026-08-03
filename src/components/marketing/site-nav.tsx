@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { LogoWordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -14,10 +13,10 @@ const LINKS = [
   { href: "#faq", label: "FAQ" },
 ];
 
-export function SiteNav({ className }: { className?: string }) {
-  const { data: session, status } = useSession();
-  const signedIn = status === "authenticated" && !!session?.user;
+/** Public landing always routes through login — never skip auth. */
+const LOGIN_HREF = "/login?callbackUrl=%2Fdashboard";
 
+export function SiteNav({ className }: { className?: string }) {
   return (
     <header
       className={cn(
@@ -46,21 +45,12 @@ export function SiteNav({ className }: { className?: string }) {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2">
-          {signedIn ? (
-            <Button
-              asChild
-              className="bg-brand text-white shadow-glow-brand hover:bg-brand-soft"
-            >
-              <Link href="/dashboard">Open dashboard</Link>
-            </Button>
-          ) : (
-            <Button
-              asChild
-              className="bg-brand text-white shadow-glow-brand hover:bg-brand-soft"
-            >
-              <Link href="/login">Sign in</Link>
-            </Button>
-          )}
+          <Button
+            asChild
+            className="border border-white/15 bg-white/[0.06] text-white shadow-none hover:bg-white/[0.1]"
+          >
+            <Link href={LOGIN_HREF}>Sign in</Link>
+          </Button>
         </div>
       </div>
     </header>
