@@ -14,17 +14,17 @@ export function TechStackBand({ className }: { className?: string }) {
   return (
     <ul
       className={cn(
-        "grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[#dde5e0] bg-[#dde5e0] sm:grid-cols-3 lg:grid-cols-6",
+        "grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[#1a3d28] bg-[#1a3d28] sm:grid-cols-3 lg:grid-cols-6",
         className
       )}
     >
       {STACK.map(({ name, detail }, i) => (
         <Reveal key={name} as="li" delayMs={i * 50}>
-          <article className="flex h-full flex-col items-center bg-white px-4 py-6 text-center transition-colors hover:bg-[#fafbfa]">
-            <p className="font-display text-sm font-semibold text-[#14201a]">
+          <article className="flex h-full flex-col items-center bg-[#0a1a12] px-4 py-6 text-center transition-colors hover:bg-[#0c2216]">
+            <p className="font-display text-sm font-semibold text-[#e8f0ea]">
               {name}
             </p>
-            <p className="mt-1.5 text-[11px] leading-snug text-[#5f6d66]">
+            <p className="mt-1.5 text-[11px] leading-snug text-[#9bb0a3]">
               {detail}
             </p>
           </article>

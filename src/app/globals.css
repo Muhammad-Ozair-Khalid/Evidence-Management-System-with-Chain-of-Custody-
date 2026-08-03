@@ -102,16 +102,20 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Readable selection — marketing is light paper */
+  /* Readable selection */
   ::selection {
     background-color: rgba(61, 154, 95, 0.35);
     color: #ffffff;
   }
 
-  .light ::selection,
-  .marketing-ink ::selection {
+  .light ::selection {
     background-color: rgba(11, 92, 46, 0.2);
     color: #14201a;
+  }
+
+  .marketing-ink ::selection {
+    background-color: rgba(61, 154, 95, 0.45);
+    color: #f4f6f5;
   }
 
   :focus-visible {
@@ -300,12 +304,13 @@
       0 8px 28px -10px var(--glow);
   }
 
+  /* NCERT forest mesh — deep green, not black wash */
   .mesh-brand {
     background-image:
-      radial-gradient(ellipse 70% 55% at 12% 20%, rgba(16, 124, 16, 0.12), transparent 58%),
-      radial-gradient(ellipse 55% 45% at 88% 12%, rgba(196, 138, 0, 0.1), transparent 55%),
-      radial-gradient(ellipse 50% 50% at 70% 90%, rgba(0, 183, 195, 0.08), transparent 55%),
-      linear-gradient(165deg, #f4f6f5 0%, #eef3ef 45%, #f7f8f7 100%);
+      radial-gradient(ellipse 75% 60% at 18% 18%, rgba(16, 124, 16, 0.38), transparent 58%),
+      radial-gradient(ellipse 50% 45% at 88% 10%, rgba(196, 138, 0, 0.2), transparent 52%),
+      radial-gradient(ellipse 55% 50% at 72% 88%, rgba(11, 92, 46, 0.45), transparent 55%),
+      linear-gradient(165deg, #06140c 0%, #0a1f12 42%, #071810 100%);
     background-size: 200% 200%;
     animation: gradientPan 18s ease infinite;
   }
@@ -314,29 +319,29 @@
     background-image:
       radial-gradient(ellipse 70% 55% at 15% 25%, rgba(61, 154, 95, 0.28), transparent 58%),
       radial-gradient(ellipse 55% 45% at 85% 15%, rgba(196, 138, 0, 0.18), transparent 55%),
-      radial-gradient(ellipse 50% 50% at 70% 85%, rgba(0, 183, 195, 0.12), transparent 55%),
-      linear-gradient(160deg, #0b0e14 0%, #0d1510 42%, #0b0e14 100%);
+      radial-gradient(ellipse 50% 50% at 70% 85%, rgba(16, 124, 16, 0.22), transparent 55%),
+      linear-gradient(160deg, #06140c 0%, #0c1f14 42%, #06140c 100%);
     background-size: 200% 200%;
     animation: gradientPan 16s ease infinite;
   }
 
   .marketing-ink {
-    background-color: #f4f6f5;
-    color: #14201a;
+    background-color: #06140c;
+    color: #e8f0ea;
   }
 
   .marketing-surface {
-    background-color: #ffffff;
+    background-color: #0a1a12;
   }
 
   .marketing-surface-alt {
-    background-color: #eef2ef;
+    background-color: #0c2216;
   }
 
   .marketing-grid {
     background-image:
-      linear-gradient(rgba(11, 92, 46, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(11, 92, 46, 0.06) 1px, transparent 1px);
+      linear-gradient(rgba(61, 154, 95, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61, 154, 95, 0.09) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
@@ -344,9 +349,9 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(196, 138, 0, 0.45) 18%,
-      rgba(16, 124, 16, 0.4) 50%,
-      rgba(0, 183, 195, 0.35) 82%,
+      rgba(196, 138, 0, 0.55) 18%,
+      rgba(61, 154, 95, 0.65) 50%,
+      rgba(16, 124, 16, 0.45) 82%,
       transparent
     );
     height: 1px;

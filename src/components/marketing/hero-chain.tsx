@@ -75,15 +75,15 @@ export function HeroChain({ className }: { className?: string }) {
 
         <svg
           viewBox="0 0 440 200"
-          className="relative h-auto w-full drop-shadow-[0_12px_28px_rgba(20,32,26,0.12)]"
+          className="relative h-auto w-full drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
         >
           <defs>
             <linearGradient id="linkGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0B5C2E" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#C48A00" stopOpacity="0.75" />
+              <stop offset="0%" stopColor="#107C10" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#C48A00" stopOpacity="0.8" />
             </linearGradient>
             <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2" result="b" />
+              <feGaussianBlur stdDeviation="2.5" result="b" />
               <feMerge>
                 <feMergeNode in="b" />
                 <feMergeNode in="SourceGraphic" />
@@ -108,23 +108,23 @@ export function HeroChain({ className }: { className?: string }) {
               className="animate-chain-in"
               style={{ animationDelay: `${120 + i * 110}ms` }}
             >
-              {/* Isometric tile — light paper */}
+              {/* Isometric tile — forest green */}
               <path
                 d={`M${node.x} ${node.y + 28} l28 -14 28 14 -28 14 z`}
-                fill="#e8eeea"
-                stroke="#c5d0ca"
+                fill="#122618"
+                stroke="#1a3d28"
                 strokeWidth="1"
               />
               <path
                 d={`M${node.x} ${node.y + 28} l0 -22 28 -14 0 22 z`}
-                fill="#f4f6f5"
-                stroke="#c5d0ca"
+                fill="#0a1a12"
+                stroke="#1a3d28"
                 strokeWidth="1"
               />
               <path
                 d={`M${node.x + 28} ${node.y - 8} l28 14 0 22 -28 -14 z`}
-                fill="#dce5e0"
-                stroke="#c5d0ca"
+                fill="#163020"
+                stroke="#1a3d28"
                 strokeWidth="1"
               />
               <circle
@@ -139,13 +139,13 @@ export function HeroChain({ className }: { className?: string }) {
                 cx={node.x + 28}
                 cy={node.y + 8}
                 r="4"
-                fill="#F4F6F5"
+                fill="#06140c"
               />
               <text
                 x={node.x + 28}
                 y={node.y + 52}
                 textAnchor="middle"
-                fill="#3d4a44"
+                fill="#9bb0a3"
                 fontSize="11"
                 fontFamily="var(--font-plex-sans), sans-serif"
                 fontWeight="600"
@@ -161,7 +161,7 @@ export function HeroChain({ className }: { className?: string }) {
               width="90"
               height="28"
               rx="6"
-              fill="#0B5C2E"
+              fill="#107C10"
               opacity="0.95"
             />
             <text

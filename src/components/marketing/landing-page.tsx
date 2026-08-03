@@ -79,9 +79,9 @@ const TRUST = [
 const HERO_WORDS = ["Digital", "evidence,", "provably", "intact."];
 
 const METRICS = [
-  { label: "Hash algorithm", value: 256, suffix: "-bit", prefix: "SHA-", color: MODULES.evidence.hex },
+  { label: "Hash algorithm", value: 256, suffix: "-bit", prefix: "SHA-", color: "#3d9a5f" },
   { label: "Roles enforced", value: 4, suffix: "", color: MODULES.custody.hex },
-  { label: "Core modules", value: 6, suffix: "", color: MODULES.audit.hex },
+  { label: "Core modules", value: 6, suffix: "", color: "#7cb894" },
   { label: "Audit mode", value: 1, suffix: "", display: "Append-only", color: MODULES.integrity.hex },
 ];
 
@@ -89,7 +89,7 @@ const LOGIN = "/login?callbackUrl=%2Fdashboard";
 
 function SectionEyebrow({
   children,
-  color = MODULES.evidence.hex,
+  color = "#3d9a5f",
 }: {
   children: React.ReactNode;
   color?: string;
@@ -106,7 +106,7 @@ function SectionEyebrow({
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#14201a] sm:text-[2.15rem] sm:leading-[1.15]">
+    <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#e8f0ea] sm:text-[2.15rem] sm:leading-[1.15]">
       {children}
     </h2>
   );
@@ -114,7 +114,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 function SectionLead({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#5f6d66]">
+    <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[#9bb0a3]">
       {children}
     </p>
   );
@@ -127,13 +127,13 @@ export function LandingPage() {
 
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 mesh-brand" />
-        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-70" />
+        <div className="pointer-events-none absolute inset-0 marketing-grid opacity-50" />
         <div
-          className="pointer-events-none absolute -left-24 top-10 h-80 w-80 animate-float rounded-full bg-[#c48a00]/15 blur-3xl"
+          className="pointer-events-none absolute -left-24 top-10 h-80 w-80 animate-float rounded-full bg-[#107c10]/25 blur-3xl"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 animate-float rounded-full bg-[#00b7c3]/12 blur-3xl"
+          className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 animate-float rounded-full bg-[#c48a00]/15 blur-3xl"
           style={{ animationDelay: "1.4s" }}
           aria-hidden
         />
@@ -141,8 +141,8 @@ export function LandingPage() {
         <div className="relative mx-auto grid max-w-6xl gap-14 px-4 pb-20 pt-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-24">
           <div>
             <p
-              className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em]"
-              style={{ color: MODULES.custody.hex, animationDelay: "40ms" }}
+              className="animate-fade text-[11px] font-semibold uppercase tracking-[0.18em] text-[#c48a00]"
+              style={{ animationDelay: "40ms" }}
             >
               NCERT Forensic Evidence Unit
             </p>
@@ -152,12 +152,12 @@ export function LandingPage() {
                 EMS — Digital evidence, provably intact.
               </span>
               <span aria-hidden="true" className="block">
-                <LogoWordmark sequenced variant="hero" light />
+                <LogoWordmark sequenced variant="hero" />
               </span>
             </h1>
 
             <p
-              className="mt-7 max-w-[18ch] font-display text-2xl font-bold leading-[1.25] tracking-tight text-[#14201a] sm:text-[1.95rem]"
+              className="mt-7 max-w-[18ch] font-display text-2xl font-bold leading-[1.25] tracking-tight text-[#e8f0ea] sm:text-[1.95rem]"
               aria-hidden="true"
             >
               {HERO_WORDS.map((word, i) => (
@@ -172,7 +172,7 @@ export function LandingPage() {
             </p>
 
             <p
-              className="mt-6 max-w-md animate-fade text-base leading-relaxed text-[#5f6d66] sm:text-lg"
+              className="mt-6 max-w-md animate-fade text-base leading-relaxed text-[#9bb0a3] sm:text-lg"
               style={{ animationDelay: "820ms" }}
             >
               Digital evidence inventory meets a tamper-evident chain of custody
@@ -185,7 +185,7 @@ export function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#0b5c2e] px-7 text-white shadow-[0_12px_28px_-12px_rgba(11,92,46,0.55)] hover:bg-[#107c10]"
+                className="bg-[#107c10] px-7 text-white shadow-[0_12px_32px_-10px_rgba(16,124,16,0.75)] hover:bg-[#3d9a5f]"
               >
                 <Link href={LOGIN}>Sign in to EMS</Link>
               </Button>
@@ -193,7 +193,7 @@ export function LandingPage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-[#dde5e0] bg-white text-[#14201a] hover:bg-[#e8efe9]"
+                className="border-[#2a4f38] bg-transparent text-[#e8f0ea] hover:bg-[#107c10]/15 hover:text-white"
               >
                 <a href="#modules">Explore modules</a>
               </Button>
@@ -205,24 +205,24 @@ export function LandingPage() {
             style={{ animationDelay: "380ms" }}
           >
             <div
-              className="absolute -inset-3 rounded-3xl bg-white/70 shadow-[0_30px_60px_-28px_rgba(20,32,26,0.25)] ring-1 ring-[#dde5e0]"
+              className="absolute -inset-3 rounded-3xl bg-[#0c2216]/80 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.55)] ring-1 ring-[#1a3d28]"
               aria-hidden
             />
-            <div className="relative rounded-2xl bg-white/80 p-4 backdrop-blur-sm">
+            <div className="relative rounded-2xl bg-[#0a1a12]/90 p-4 ring-1 ring-[#107c10]/25">
               <HeroChain />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="relative border-y border-[#dde5e0] marketing-surface">
+      <section className="relative border-y border-[#1a3d28] marketing-surface">
         <div className="marketing-section-rule absolute inset-x-0 top-0" />
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-[#dde5e0] sm:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-[#1a3d28] sm:grid-cols-4">
           {METRICS.map((m, i) => (
             <Reveal
               key={m.label}
               delayMs={i * 40}
-              className="bg-white px-5 py-8 text-center sm:px-6"
+              className="bg-[#0a1a12] px-5 py-8 text-center sm:px-6"
             >
               <p
                 className="font-display text-xl font-bold tracking-tight sm:text-2xl"
@@ -236,7 +236,7 @@ export function LandingPage() {
                   </>
                 )}
               </p>
-              <p className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-[#7a8880]">
+              <p className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-[#6f8578]">
                 {m.label}
               </p>
             </Reveal>
@@ -256,39 +256,19 @@ export function LandingPage() {
           </Reveal>
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal delayMs={40}>
-              <div className="overflow-hidden rounded-2xl border border-[#dde5e0] bg-white p-1 shadow-[0_18px_40px_-24px_rgba(20,32,26,0.35)]">
-                <div className="rounded-[14px] border border-[#e8efe9] bg-[#fafbfa] p-4 sm:p-5">
-                  <p
-                    className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em]"
-                    style={{ color: MODULES.custody.hex }}
-                  >
-                    Custody chain
-                  </p>
-                  <LiveChainDemo className="rounded-lg border-[#dde5e0] bg-white p-4 shadow-none sm:p-5" />
-                </div>
-              </div>
+              <LiveChainDemo />
             </Reveal>
             <Reveal delayMs={100}>
-              <div className="overflow-hidden rounded-2xl border border-[#dde5e0] bg-white p-1 shadow-[0_18px_40px_-24px_rgba(20,32,26,0.35)]">
-                <div className="rounded-[14px] border border-[#e8efe9] bg-[#fafbfa] p-4 sm:p-5">
-                  <p
-                    className="mb-4 text-[10px] font-semibold uppercase tracking-[0.14em]"
-                    style={{ color: MODULES.integrity.hex }}
-                  >
-                    Integrity check
-                  </p>
-                  <IntegrityDemo className="rounded-lg border-[#dde5e0] bg-white p-4 shadow-none sm:p-5" />
-                </div>
-              </div>
+              <IntegrityDemo />
             </Reveal>
           </div>
         </div>
       </section>
 
-      <section id="capabilities" className="border-t border-[#dde5e0] marketing-surface">
+      <section id="capabilities" className="border-t border-[#1a3d28] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
-            <SectionEyebrow color={MODULES.evidence.hex}>Capabilities</SectionEyebrow>
+            <SectionEyebrow color="#3d9a5f">Capabilities</SectionEyebrow>
             <SectionTitle>
               Everything the brief requires — and nothing silent.
             </SectionTitle>
@@ -306,16 +286,16 @@ export function LandingPage() {
                   style={{ ["--rail" as string]: accent }}
                 >
                   <span
-                    className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-[#dde5e0]"
-                    style={{ backgroundColor: `${accent}14`, color: accent }}
+                    className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-[#1a3d28]"
+                    style={{ backgroundColor: `${accent}22`, color: accent }}
                   >
                     <Icon className="h-5 w-5" aria-hidden />
                   </span>
                   <div>
-                    <h3 className="font-display text-lg font-semibold tracking-tight text-[#14201a]">
+                    <h3 className="font-display text-lg font-semibold tracking-tight text-[#e8f0ea]">
                       {title}
                     </h3>
-                    <p className="mt-2 text-[15px] leading-relaxed text-[#5f6d66]">
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#9bb0a3]">
                       {body}
                     </p>
                   </div>
@@ -326,7 +306,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="modules" className="border-t border-[#dde5e0] marketing-surface-alt">
+      <section id="modules" className="border-t border-[#1a3d28] marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.dashboard.hex}>Modules</SectionEyebrow>
@@ -343,8 +323,8 @@ export function LandingPage() {
               return (
                 <Reveal key={key} as="li" delayMs={i * 40}>
                   <div
-                    className="group relative h-full overflow-hidden rounded-xl border border-[#dde5e0] bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#c5d0c9] hover:shadow-[0_14px_28px_-18px_rgba(20,32,26,0.35)]"
-                    style={{ ["--glow" as string]: `${mod.hex}40` }}
+                    className="group relative h-full overflow-hidden rounded-xl border border-[#1a3d28] bg-[#06140c]/60 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2a5a3c] hover:bg-[#0a1a12]"
+                    style={{ ["--glow" as string]: `${mod.hex}55` }}
                   >
                     <span
                       className="absolute left-0 top-0 h-full w-[3px] transition-shadow duration-300 group-hover:shadow-[0_0_16px_var(--glow)]"
@@ -357,7 +337,7 @@ export function LandingPage() {
                     >
                       {mod.label}
                     </p>
-                    <p className="mt-2.5 pl-1 text-sm leading-relaxed text-[#5f6d66]">
+                    <p className="mt-2.5 pl-1 text-sm leading-relaxed text-[#9bb0a3]">
                       {blurb}
                     </p>
                   </div>
@@ -368,7 +348,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="how-it-works" className="border-t border-[#dde5e0] marketing-surface">
+      <section id="how-it-works" className="border-t border-[#1a3d28] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.custody.hex}>How it works</SectionEyebrow>
@@ -388,7 +368,7 @@ export function LandingPage() {
               <Reveal key={step.n} as="li" delayMs={i * 70} className="relative">
                 <p
                   className="font-display text-4xl font-bold tabular-nums tracking-tight"
-                  style={{ color: `${step.color}55` }}
+                  style={{ color: `${step.color}66` }}
                 >
                   {step.n}
                 </p>
@@ -398,7 +378,7 @@ export function LandingPage() {
                 >
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#5f6d66]">
+                <p className="mt-2 text-sm leading-relaxed text-[#9bb0a3]">
                   {step.body}
                 </p>
               </Reveal>
@@ -407,7 +387,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="roles" className="border-t border-[#dde5e0] marketing-surface-alt">
+      <section id="roles" className="border-t border-[#1a3d28] marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.admin.hex}>Roles</SectionEyebrow>
@@ -422,7 +402,7 @@ export function LandingPage() {
             {ROLES.map(({ role, title, body, color }, i) => (
               <Reveal key={role} as="li" delayMs={i * 50}>
                 <div
-                  className="editorial-rail h-full rounded-lg bg-white/60 p-4 ring-1 ring-[#dde5e0]"
+                  className="editorial-rail h-full rounded-lg bg-[#06140c]/50 p-4 ring-1 ring-[#1a3d28]"
                   style={{ ["--rail" as string]: color }}
                 >
                   <div className="flex items-center gap-2">
@@ -434,10 +414,10 @@ export function LandingPage() {
                       {role}
                     </span>
                   </div>
-                  <h3 className="mt-3 font-display text-base font-semibold text-[#14201a]">
+                  <h3 className="mt-3 font-display text-base font-semibold text-[#e8f0ea]">
                     {title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#5f6d66]">
+                  <p className="mt-2 text-sm leading-relaxed text-[#9bb0a3]">
                     {body}
                   </p>
                 </div>
@@ -447,7 +427,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="trust" className="border-t border-[#dde5e0] marketing-surface">
+      <section id="trust" className="border-t border-[#1a3d28] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <Reveal>
             <SectionEyebrow color={MODULES.audit.hex}>Trust</SectionEyebrow>
@@ -466,7 +446,7 @@ export function LandingPage() {
                   >
                     {t.title}
                   </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-[#5f6d66]">
+                  <p className="mt-2.5 text-sm leading-relaxed text-[#9bb0a3]">
                     {t.body}
                   </p>
                 </div>
@@ -476,10 +456,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="border-t border-[#dde5e0] marketing-surface-alt">
+      <section className="border-t border-[#1a3d28] marketing-surface-alt">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
           <Reveal>
-            <SectionEyebrow color={MODULES.dashboard.hex}>Stack</SectionEyebrow>
+            <SectionEyebrow color="#3d9a5f">Stack</SectionEyebrow>
             <SectionTitle>Built on proven foundations</SectionTitle>
           </Reveal>
           <div className="mt-10">
@@ -488,25 +468,24 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="faq" className="border-t border-[#dde5e0] marketing-surface">
+      <section id="faq" className="border-t border-[#1a3d28] marketing-surface">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
           <FaqAccordion />
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-t border-[#dde5e0] marketing-surface-alt">
-        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-80" />
+      <section className="relative overflow-hidden border-t border-[#1a3d28] marketing-surface-alt">
+        <div className="pointer-events-none absolute inset-0 mesh-brand opacity-90" />
         <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 lg:py-24">
           <Reveal>
             <ClipboardList
-              className="mx-auto h-9 w-9"
-              style={{ color: MODULES.custody.hex }}
+              className="mx-auto h-9 w-9 text-[#c48a00]"
               aria-hidden
             />
-            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#14201a] sm:text-4xl">
+            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-[#e8f0ea] sm:text-4xl">
               Ready to walk the chain
             </h2>
-            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[#5f6d66]">
+            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-[#9bb0a3]">
               Sign in with a demo account — examiner, custodian, supervisor, or
               admin — and run the full custody loop end to end.
             </p>
@@ -514,12 +493,12 @@ export function LandingPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#0b5c2e] px-8 text-white hover:bg-[#107c10]"
+                className="bg-[#107c10] px-8 text-white shadow-[0_12px_32px_-10px_rgba(16,124,16,0.75)] hover:bg-[#3d9a5f]"
               >
                 <Link href={LOGIN}>Sign in</Link>
               </Button>
             </div>
-            <p className="mt-7 font-mono text-xs text-[#7a8880]">
+            <p className="mt-7 font-mono text-xs text-[#6f8578]">
               admin@ems.local · Password123!
             </p>
           </Reveal>

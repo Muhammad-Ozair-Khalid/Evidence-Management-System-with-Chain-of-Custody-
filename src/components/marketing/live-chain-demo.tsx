@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 
 const STEPS = [
   { label: "Seizure", color: "#C48A00" },
-  { label: "Transfer", color: "#107C10" },
+  { label: "Transfer", color: "#3D9A5F" },
   { label: "Examination", color: "#8764B8" },
-  { label: "Return", color: "#5C6B7A" },
+  { label: "Return", color: "#7CB894" },
 ] as const;
 
 const CYCLE_MS = 2200;
@@ -32,7 +32,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
   return (
     <Reveal
       className={cn(
-        "relative overflow-hidden rounded-xl border border-[#e8c56a]/40 bg-gradient-to-br from-[#fffbf0] via-white to-[#f4f6f5] p-6 shadow-sm sm:p-8",
+        "relative overflow-hidden rounded-xl border border-[#2a5a3c]/60 bg-[#06140c]/80 p-6 ring-1 ring-[#c48a00]/20 sm:p-8",
         className
       )}
     >
@@ -40,21 +40,18 @@ export function LiveChainDemo({ className }: { className?: string }) {
         className="pointer-events-none absolute inset-0 opacity-50"
         aria-hidden
       >
-        <div className="absolute -left-8 top-0 h-32 w-32 rounded-full bg-accent-custody/20 blur-3xl" />
-        <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-brand/15 blur-3xl" />
+        <div className="absolute -left-8 top-0 h-32 w-32 rounded-full bg-[#c48a00]/20 blur-3xl" />
+        <div className="absolute -right-8 bottom-0 h-28 w-28 rounded-full bg-[#107c10]/25 blur-3xl" />
       </div>
 
       <div className="relative">
-        <p
-          className="text-[11px] font-semibold uppercase tracking-[0.12em]"
-          style={{ color: "#C48A00" }}
-        >
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#c48a00]">
           Live custody loop
         </p>
-        <p className="mt-1 font-display text-lg font-semibold text-[#14201a]">
+        <p className="mt-1 font-display text-lg font-semibold text-[#e8f0ea]">
           Chain of custody in motion
         </p>
-        <p className="mt-1 text-sm text-[#5f6d66]">
+        <p className="mt-1 text-sm text-[#9bb0a3]">
           Each handoff is logged with handler, timestamp, and integrity check.
         </p>
 
@@ -77,7 +74,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
                 <div className="flex w-full items-center">
                   {i > 0 && (
                     <div
-                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-[#dde5e0]"
+                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-[#1a3d28]"
                       aria-hidden
                     >
                       <div
@@ -97,13 +94,13 @@ export function LiveChainDemo({ className }: { className?: string }) {
                       isActive && "glow-ring scale-105",
                       !isActive &&
                         !isComplete &&
-                        "border-[#dde5e0] bg-white"
+                        "border-[#1a3d28] bg-[#0a1a12]"
                     )}
                     style={
                       isActive || isComplete
                         ? {
                             borderColor: step.color,
-                            backgroundColor: `${step.color}18`,
+                            backgroundColor: `${step.color}22`,
                             ["--glow" as string]: step.color,
                           }
                         : undefined
@@ -120,8 +117,8 @@ export function LiveChainDemo({ className }: { className?: string }) {
                       className={cn(
                         "relative font-display text-sm font-bold tabular-nums",
                         isActive || isComplete
-                          ? "text-[#14201a]"
-                          : "text-[#8a9690]"
+                          ? "text-[#e8f0ea]"
+                          : "text-[#6f8578]"
                       )}
                     >
                       {i + 1}
@@ -130,7 +127,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
 
                   {i < STEPS.length - 1 && (
                     <div
-                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-[#dde5e0]"
+                      className="relative h-0.5 flex-1 overflow-hidden rounded-full bg-[#1a3d28]"
                       aria-hidden
                     >
                       <div
@@ -148,7 +145,7 @@ export function LiveChainDemo({ className }: { className?: string }) {
                 <p
                   className={cn(
                     "mt-3 text-center text-[11px] font-semibold uppercase tracking-[0.06em] sm:text-xs",
-                    isActive ? "text-[#14201a]" : "text-[#5f6d66]"
+                    isActive ? "text-[#e8f0ea]" : "text-[#6f8578]"
                   )}
                   style={isActive ? { color: step.color } : undefined}
                 >
@@ -159,18 +156,18 @@ export function LiveChainDemo({ className }: { className?: string }) {
           })}
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-[#e8c56a]/35 bg-white/80 px-4 py-2.5">
+        <div className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-[#1a3d28] bg-[#0a1a12]/80 px-4 py-2.5">
           <span
             className="h-2 w-2 animate-pulse rounded-full"
             style={{ backgroundColor: STEPS[activeIndex].color }}
             aria-hidden
           />
-          <p className="font-mono text-xs text-[#5f6d66]">
+          <p className="font-mono text-xs text-[#9bb0a3]">
             Event:{" "}
-            <span className="font-semibold text-[#14201a]">
+            <span className="font-semibold text-[#e8f0ea]">
               {STEPS[activeIndex].label}
             </span>
-            <span className="text-[#8a9690]"> · </span>
+            <span className="text-[#6f8578]"> · </span>
             SHA-256 verified
           </p>
         </div>

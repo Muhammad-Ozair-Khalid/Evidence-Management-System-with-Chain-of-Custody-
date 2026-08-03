@@ -42,20 +42,17 @@ export function IntegrityDemo({ className }: { className?: string }) {
   return (
     <Reveal
       className={cn(
-        "relative overflow-hidden rounded-xl border border-[#f0b4b6]/50 bg-gradient-to-br from-[#fff8f8] via-white to-[#f4f6f5] p-6 shadow-sm sm:p-8",
+        "relative overflow-hidden rounded-xl border border-[#2a5a3c]/60 bg-[#06140c]/80 p-6 ring-1 ring-[#d13438]/20 sm:p-8",
         !matched && "animate-shake",
         className
       )}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p
-            className="text-[11px] font-semibold uppercase tracking-[0.12em]"
-            style={{ color: "#D13438" }}
-          >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d13438]">
             Integrity check
           </p>
-          <p className="mt-1 font-display text-lg font-semibold text-[#14201a]">
+          <p className="mt-1 font-display text-lg font-semibold text-[#e8f0ea]">
             Re-hash on every custody move
           </p>
         </div>
@@ -64,8 +61,8 @@ export function IntegrityDemo({ className }: { className?: string }) {
           className={cn(
             "flex items-center gap-2 rounded-lg px-3 py-1.5 transition-colors duration-500",
             matched
-              ? "bg-[#107C10]/12 text-[#0B5C2E]"
-              : "bg-[#D13438]/12 text-[#A4262C]"
+              ? "bg-[#107c10]/25 text-[#7cb894]"
+              : "bg-[#d13438]/20 text-[#f87171]"
           )}
         >
           {matched ? (
@@ -85,7 +82,7 @@ export function IntegrityDemo({ className }: { className?: string }) {
           style={{
             color: integrityColor,
             borderColor: `${integrityColor}55`,
-            backgroundColor: `${integrityColor}12`,
+            backgroundColor: `${integrityColor}18`,
           }}
         >
           <Flag className="h-3 w-3" aria-hidden />
@@ -97,17 +94,17 @@ export function IntegrityDemo({ className }: { className?: string }) {
         <HashPanel
           label="Stored (intake)"
           hash={STORED_HASH}
-          accent={MODULES.evidence.hex}
+          accent="#3d9a5f"
         />
         <HashPanel
           label="Computed (now)"
           hash={computedHash}
-          accent={matched ? MODULES.evidence.hex : integrityColor}
+          accent={matched ? "#3d9a5f" : integrityColor}
           highlight={!matched}
         />
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-[#5f6d66]">
+      <p className="mt-5 text-sm leading-relaxed text-[#9bb0a3]">
         {matched
           ? "Hashes align — custody may proceed without escalation."
           : "Byte-level drift detected — movement blocked until a supervisor resolves the flag."}
@@ -130,8 +127,8 @@ function HashPanel({
   return (
     <div
       className={cn(
-        "rounded-lg border border-[#dde5e0] bg-white/90 p-4 transition-colors duration-500",
-        highlight && "border-[#D13438]/40 bg-[#D13438]/5"
+        "rounded-lg border border-[#1a3d28] bg-[#0a1a12]/90 p-4 transition-colors duration-500",
+        highlight && "border-[#d13438]/40 bg-[#d13438]/10"
       )}
     >
       <p
@@ -141,7 +138,7 @@ function HashPanel({
         {label}
       </p>
       <p
-        className="mt-2 break-all font-mono text-sm text-[#14201a] sm:text-base"
+        className="mt-2 break-all font-mono text-sm text-[#e8f0ea] sm:text-base"
         title={hash}
       >
         {truncateHash(hash)}
