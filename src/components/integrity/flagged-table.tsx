@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { StatusPill } from "@/components/evidence/status-pill";
@@ -21,6 +21,13 @@ export function FlaggedIntegrityTable({
   rows: FlaggedTableRow[];
   canResolve: boolean;
 }) {
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => new Set());
+
+  const visibleRows = useMemo(
+    () => rows.filter((r) => !hiddenIds.has(r.id)),
+    [rows, hiddenIds]
+  );
+
   const columns = useMemo<DataTableColumn<FlaggedTableRow>[]>(
     () => [
       {
@@ -73,7 +80,12 @@ export function FlaggedIntegrityTable({
         header: "Action",
         cell: (r) =>
           canResolve ? (
-            <ResolveIntegrityDialog item={r} />
+            <ResolveIntegrityDialog
+              item={r}
+              onResolved={(id) =>
+                setHiddenIds((prev) => new Set(prev).add(id))
+              }
+            />
           ) : (
             <span className="text-muted-ems">Supervisor only</span>
           ),
@@ -85,7 +97,7 @@ export function FlaggedIntegrityTable({
   return (
     <DataTable
       columns={columns}
-      data={rows}
+      data={visibleRows}
       getRowId={(r) => r.id}
       emptyTitle="All clear"
       emptyMessage="No items are INTEGRITY_FLAGGED right now."

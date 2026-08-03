@@ -14,6 +14,7 @@ import { EvidenceListTable } from "@/components/evidence/evidence-list-table";
 import { EmptyState } from "@/components/ui-ems/empty-state";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
 import { PageHeader } from "@/components/ui-ems/page-header";
+import { SectionPanel } from "@/components/ui-ems/section-panel";
 import { StatCard } from "@/components/ui-ems/stat-card";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/lib/auth";
@@ -156,39 +157,48 @@ export default async function EvidenceListPage({
         />
       </div>
 
-      <Suspense
-        fallback={
-          <div className="mb-4 h-32 animate-shimmer rounded-lg border border-border" />
-        }
+      <SectionPanel
+        accent="#107C10"
+        title="Registry"
+        description="Filter and open exhibits — each row carries intake hash and current custodian."
       >
-        <EvidenceFilterBar custodians={custodians} resultCount={rows.length} />
-      </Suspense>
+        <Suspense
+          fallback={
+            <div className="mb-4 h-32 animate-shimmer rounded-lg border border-border" />
+          }
+        >
+          <EvidenceFilterBar custodians={custodians} resultCount={rows.length} />
+        </Suspense>
 
-      {rows.length === 0 && !searchParams.q && !searchParams.status && !searchParams.type ? (
-        <EmptyState
-          icon={Fingerprint}
-          title="No evidence registered yet"
-          description={
-            canRegister
-              ? "Register the first exhibit to start the custody ledger."
-              : "Evidence items will appear here once an examiner or supervisor registers them."
-          }
-          accentColor="#107C10"
-          action={
-            canRegister ? (
-              <Button
-                asChild
-                style={{ backgroundColor: "#107C10" }}
-                className="text-white hover:opacity-90"
-              >
-                <Link href="/evidence/new">Register New Evidence</Link>
-              </Button>
-            ) : undefined
-          }
-        />
-      ) : (
-        <EvidenceListTable rows={rows} />
-      )}
+        {rows.length === 0 &&
+        !searchParams.q &&
+        !searchParams.status &&
+        !searchParams.type ? (
+          <EmptyState
+            icon={Fingerprint}
+            title="No evidence registered yet"
+            description={
+              canRegister
+                ? "Register the first exhibit to start the custody ledger."
+                : "Evidence items will appear here once an examiner or supervisor registers them."
+            }
+            accentColor="#107C10"
+            action={
+              canRegister ? (
+                <Button
+                  asChild
+                  style={{ backgroundColor: "#107C10" }}
+                  className="text-white hover:opacity-90"
+                >
+                  <Link href="/evidence/new">Register New Evidence</Link>
+                </Button>
+              ) : undefined
+            }
+          />
+        ) : (
+          <EvidenceListTable rows={rows} />
+        )}
+      </SectionPanel>
     </div>
   );
 }

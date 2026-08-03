@@ -11,7 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { RbacError } from "@/lib/rbac";
 
 export type ResolveIntegrityResult =
-  | { ok: true }
+  | { ok: true; decision: "resolve" | "keep_flagged"; evidenceId: string }
   | { ok: false; error: string };
 
 export async function resolveIntegrityFlag(
@@ -119,8 +119,14 @@ export async function resolveIntegrityFlag(
     revalidatePath("/evidence");
     revalidatePath(`/evidence/${item.id}`);
     revalidatePath("/custody");
+    revalidatePath("/dashboard");
+    revalidatePath("/reports");
 
-    return { ok: true };
+    return {
+      ok: true,
+      decision: decision as "resolve" | "keep_flagged",
+      evidenceId: item.evidenceId,
+    };
   } catch (err) {
     if (err instanceof RbacError) {
       return { ok: false, error: err.message };

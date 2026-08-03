@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState, useTransition } from "react";
 import { format } from "date-fns";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, ShieldCheck } from "lucide-react";
 import { resolveIntegrityFlag } from "@/actions/integrity";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,14 @@ export type FlaggedItemContext = {
   flaggedAt: string | null;
 };
 
-export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
+export function ResolveIntegrityDialog({
+  item,
+  onResolved,
+}: {
+  item: FlaggedItemContext;
+  /** Called only when decision === resolve (item leaves the queue). */
+  onResolved?: (evidenceItemId: string) => void;
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [decision, setDecision] = useState<"keep_flagged" | "resolve">(
@@ -62,15 +69,38 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
         });
         return;
       }
+
       setOpen(false);
-      toast({
-        variant: "integrity",
-        title: "Integrity flag reviewed",
-        description: "Your resolution note has been recorded in the audit trail.",
-      });
+
+      if (result.decision === "resolve") {
+        onResolved?.(item.id);
+        toast({
+          variant: "evidence",
+          title: `${result.evidenceId} cleared`,
+          description:
+            "Status restored to IN_CUSTODY — removed from the flagged queue.",
+        });
+      } else {
+        toast({
+          variant: "integrity",
+          title: `${result.evidenceId} still flagged`,
+          description:
+            "You confirmed the issue. It remains INTEGRITY_FLAGGED until Mark resolved is chosen.",
+        });
+      }
+
       router.refresh();
     });
   }
+
+  const submitLabel =
+    decision === "resolve"
+      ? pending
+        ? "Clearing…"
+        : "Mark resolved · restore IN_CUSTODY"
+      : pending
+        ? "Saving…"
+        : "Confirm · keep flagged";
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -88,7 +118,8 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
         <DialogHeader>
           <DialogTitle>Review integrity flag</DialogTitle>
           <DialogDescription>
-            {item.evidenceId} — {item.title}
+            {item.evidenceId} — {item.title}. Choose carefully: only{" "}
+            <strong>Mark resolved</strong> removes this row from the queue.
           </DialogDescription>
         </DialogHeader>
 
@@ -132,6 +163,7 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
+          <input type="hidden" name="decision" value={decision} readOnly />
           <div className="space-y-2">
             <Label>Decision</Label>
             <div className="grid gap-2">
@@ -150,12 +182,13 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
                   className="mt-1"
                 />
                 <span>
-                  <span className="font-semibold text-canvas-foreground">
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-canvas-foreground">
+                    <ShieldCheck className="h-3.5 w-3.5 text-accent-evidence" />
                     Mark resolved
                   </span>
                   <span className="mt-0.5 block text-muted-ems">
-                    e.g. hashing tool error — restore status to{" "}
-                    <strong>IN_CUSTODY</strong>
+                    Hashing tool error or false positive — restore status to{" "}
+                    <strong>IN_CUSTODY</strong> and <strong>leave this list</strong>
                   </span>
                 </span>
               </label>
@@ -174,12 +207,13 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
                   className="mt-1"
                 />
                 <span>
-                  <span className="font-semibold text-canvas-foreground">
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-canvas-foreground">
+                    <ShieldAlert className="h-3.5 w-3.5 text-accent-integrity" />
                     Confirm issue
                   </span>
                   <span className="mt-0.5 block text-muted-ems">
-                    Keep <strong>INTEGRITY_FLAGGED</strong> for further
-                    investigation
+                    Keep <strong>INTEGRITY_FLAGGED</strong> — row{" "}
+                    <strong>stays in this queue</strong> for further investigation
                   </span>
                 </span>
               </label>
@@ -217,10 +251,13 @@ export function ResolveIntegrityDialog({ item }: { item: FlaggedItemContext }) {
             <Button
               type="submit"
               disabled={pending}
-              style={{ backgroundColor: "#D13438" }}
+              style={{
+                backgroundColor:
+                  decision === "resolve" ? "#107C10" : "#D13438",
+              }}
               className="text-white hover:opacity-90"
             >
-              {pending ? "Saving…" : "Submit resolution"}
+              {submitLabel}
             </Button>
           </div>
         </form>

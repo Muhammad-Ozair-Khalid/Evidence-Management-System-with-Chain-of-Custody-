@@ -12,6 +12,7 @@ import { CustodyFeedFilters } from "@/components/custody/custody-feed-filters";
 import { CustodyFeedList } from "@/components/custody/custody-feed-list";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
 import { PageHeader } from "@/components/ui-ems/page-header";
+import { SectionPanel } from "@/components/ui-ems/section-panel";
 import { StatCard } from "@/components/ui-ems/stat-card";
 import { getSession } from "@/lib/auth";
 import { can } from "@/lib/rbac";
@@ -137,18 +138,24 @@ export default async function CustodyPage({
         <StatCard label="Returns today" value={returns} icon={RotateCcw} accentColor="#5C6B7A" />
       </div>
 
-      <Suspense
-        fallback={
-          <div className="mb-4 h-28 animate-shimmer rounded-lg border border-border" />
-        }
+      <SectionPanel
+        accent="#C48A00"
+        title="Event feed"
+        description="Seizure → transfer → examination → return — every handoff with hash check."
       >
-        <CustodyFeedFilters
-          handlers={handlers}
-          evidenceItems={evidenceItems}
-        />
-      </Suspense>
+        <Suspense
+          fallback={
+            <div className="mb-4 h-28 animate-shimmer rounded-lg border border-border" />
+          }
+        >
+          <CustodyFeedFilters
+            handlers={handlers}
+            evidenceItems={evidenceItems}
+          />
+        </Suspense>
 
-      <CustodyFeedList rows={rows} />
+        <CustodyFeedList rows={rows} />
+      </SectionPanel>
     </div>
   );
 }

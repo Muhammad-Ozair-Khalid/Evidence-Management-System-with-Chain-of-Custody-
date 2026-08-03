@@ -7,6 +7,7 @@ import {
 import { EmptyState } from "@/components/ui-ems/empty-state";
 import { ModuleBadge } from "@/components/ui-ems/module-badge";
 import { PageHeader } from "@/components/ui-ems/page-header";
+import { SectionPanel } from "@/components/ui-ems/section-panel";
 import { getSession } from "@/lib/auth";
 import { can } from "@/lib/rbac";
 import { prisma } from "@/lib/prisma";
@@ -62,27 +63,30 @@ export default async function ReportsPage() {
         actions={<ModuleBadge module="reports" />}
       />
 
-      <div className="mb-6">
+      <SectionPanel
+        accent="#8764B8"
+        title="Generate"
+        description="Bulk case PDFs — same LaTeX-style typesetting as single-exhibit reports."
+        className="mb-6"
+      >
         <BulkCaseReportForm caseNumbers={caseNumbers} />
-      </div>
+      </SectionPanel>
 
-      <h2 className="mb-3 text-section-title text-canvas-foreground">
-        Previously generated reports
-      </h2>
-      <p className="mb-3 text-muted-ems">
-        Recent custody PDFs generated from this workspace or an exhibit&apos;s
-        Reports tab.
-      </p>
-
-      {historyRows.length === 0 ? (
-        <EmptyState
-          icon={ClipboardList}
-          title="No reports generated yet"
-          description="Open an evidence item’s Reports tab or use bulk case generate above to create the first PDF."
-        />
-      ) : (
-        <ReportsHistoryTable rows={historyRows} />
-      )}
+      <SectionPanel
+        accent="#8764B8"
+        title="Previously generated reports"
+        description="Recent custody PDFs from this workspace or an exhibit’s Reports tab."
+      >
+        {historyRows.length === 0 ? (
+          <EmptyState
+            icon={ClipboardList}
+            title="No reports generated yet"
+            description="Open an evidence item’s Reports tab or use bulk case generate above to create the first PDF."
+          />
+        ) : (
+          <ReportsHistoryTable rows={historyRows} />
+        )}
+      </SectionPanel>
     </div>
   );
 }

@@ -68,9 +68,18 @@ export function DashboardShell({ children }: { children: ReactNode }) {
         <div className="relative min-h-screen bg-canvas">
           {wash ? (
             <div
-              className="pointer-events-none fixed inset-0 z-0 opacity-[0.07]"
+              className="pointer-events-none fixed inset-0 z-0"
               style={{
-                background: `radial-gradient(ellipse 70% 50% at 85% -10%, ${wash}, transparent 55%)`,
+                opacity: 0.11,
+                backgroundImage: `
+                  radial-gradient(ellipse 70% 50% at 85% -10%, ${wash}, transparent 55%),
+                  radial-gradient(ellipse 45% 35% at 8% 90%, ${wash}66, transparent 50%),
+                  linear-gradient(${wash}22 1px, transparent 1px),
+                  linear-gradient(90deg, ${wash}22 1px, transparent 1px)
+                `,
+                backgroundSize: "auto, auto, 40px 40px, 40px 40px",
+                maskImage:
+                  "radial-gradient(ellipse 90% 80% at 50% 20%, #000 20%, transparent 75%)",
               }}
               aria-hidden
             />
