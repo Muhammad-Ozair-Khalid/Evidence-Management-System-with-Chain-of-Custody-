@@ -9,9 +9,7 @@ import { revalidatePath } from "next/cache";
 import { EvidenceType } from "@prisma/client";
 import { generateEvidenceId } from "@/lib/evidence-id";
 import {
-  isValidSha256Hex,
-  normalizeSha256Hex,
-  computeSha256,
+  resolveIntakeHash,
 } from "@/lib/hash";
 import { requirePermission } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
@@ -51,8 +49,11 @@ export async function registerEvidence(
     }
     const evidenceType = evidenceTypeRaw as EvidenceType;
 
-    let hash: string;
-    let hashSource: "UPLOAD" | "EXTERNAL";
+    const intake = await resolveIntakeHash(file, externalHashRaw);
+    if (!intake.ok) {
+      return { ok: false, error: intake.error };
+    }
+
     let fileMeta: {
       fileName: string | null;
       filePath: string | null;
@@ -65,14 +66,11 @@ export async function registerEvidence(
       mimeType: null,
     };
 
-    if (file instanceof File && file.size > 0) {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      hash = computeSha256(buffer);
-      hashSource = "UPLOAD";
+    if (intake.fileMeta) {
       const stored = await storeEvidenceFile(
-        buffer,
-        file.name || "upload.bin",
-        file.type || "application/octet-stream"
+        intake.fileMeta.buffer,
+        intake.fileMeta.fileName,
+        intake.fileMeta.mimeType
       );
       fileMeta = {
         fileName: stored.fileName,
@@ -80,23 +78,10 @@ export async function registerEvidence(
         fileSize: stored.fileSize,
         mimeType: stored.mimeType,
       };
-    } else if (externalHashRaw) {
-      if (!isValidSha256Hex(externalHashRaw)) {
-        return {
-          ok: false,
-          error: "External hash must be a 64-character SHA-256 hex string.",
-        };
-      }
-      hash = normalizeSha256Hex(externalHashRaw);
-      hashSource = "EXTERNAL";
-    } else {
-      return {
-        ok: false,
-        error:
-          "Provide a digital file upload or an externally computed SHA-256 hash.",
-      };
     }
 
+    const hash = intake.hash;
+    const hashSource = intake.hashSource;
     const intakeDate = new Date();
 
     const created = await prisma.$transaction(async (tx) => {
@@ -137,8 +122,8 @@ export async function registerEvidence(
           hashMatch: true,
           notes:
             hashSource === "EXTERNAL"
-              ? "Hash provided from external forensic tool at intake."
-              : "Hash computed server-side from uploaded file at intake.",
+              ? `Hash provided from external forensic tool at intake (${intake.algorithm}).`
+              : "Hash computed server-side from uploaded file at intake (SHA-256).",
         },
       });
 
@@ -153,6 +138,7 @@ export async function registerEvidence(
             caseNumber: item.caseNumber,
             evidenceType: item.evidenceType,
             hashSource,
+            hashAlgorithm: intake.algorithm,
             originalHash: hash,
           },
         },

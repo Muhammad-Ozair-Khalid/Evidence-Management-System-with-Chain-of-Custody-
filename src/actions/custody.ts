@@ -9,8 +9,8 @@ import { revalidatePath } from "next/cache";
 import { CustodyEventType, Role } from "@prisma/client";
 import {
   hashesEqual,
-  isValidSha256Hex,
-  normalizeSha256Hex,
+  isValidExternalHash,
+  normalizeHashHex,
   computeSha256,
 } from "@/lib/hash";
 import { requirePermission } from "@/lib/permissions";
@@ -175,7 +175,7 @@ export async function logCustodyEvent(
         return {
           ok: false,
           error:
-            "Enter and confirm the freshly computed external SHA-256 hash (double-entry required).",
+            "Enter and confirm the freshly computed external hash — MD5 or SHA-256 (double-entry required).",
         };
       }
       if (!hashesEqual(manualHash, manualHashConfirm)) {
@@ -185,16 +185,17 @@ export async function logCustodyEvent(
             "New hash and Confirm new hash do not match. Correct the typo before submitting.",
         };
       }
-      if (!isValidSha256Hex(manualHash)) {
+      if (!isValidExternalHash(manualHash)) {
         return {
           ok: false,
-          error: "External hash must be a 64-character SHA-256 hex string.",
+          error:
+            "External hash must be MD5 (32 hex chars) or SHA-256 (64 hex chars).",
         };
       }
-      actualHash = normalizeSha256Hex(manualHash);
+      actualHash = normalizeHashHex(manualHash);
     }
 
-    const expectedHash = normalizeSha256Hex(item.currentHash);
+    const expectedHash = normalizeHashHex(item.currentHash);
     const hashMatch = hashesEqual(actualHash, expectedHash);
 
     const handlerFromId = item.currentCustodianId;
